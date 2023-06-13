@@ -1,10 +1,8 @@
 import React from "react";
 import { CssBaseline } from '@mui/material';
-import { Panel } from "./Panel/Panel";
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Logo from "./Logo/Logo";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -15,20 +13,24 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 
 const boards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const boards = [1, ];
+// const boards = [];
 
 const App = () => {
 
   return (
     <>
       <CssBaseline />
-      <Panel className="panel" id="boards">
-        <AppBar classes="header" position="sticky" sx={{py: [2, 3], bgcolor: "primary.light"}}>
+      <Box id="boards" sx={{display: "flex", flexDirection: "column", height: "100vh"}}>
+        <AppBar position="sticky" sx={{py: [2, 3], bgcolor: "primary.light"}}>
           <Toolbar>
-            <Logo />
-            <Typography variant="h4" component="h1">Task Board</Typography>
+            <Box sx={{mr: 2, '& img': {display: "block"}}}>
+              <img width="32" height="32" src="./img/logo.png" alt="The Logo of the Task Board App." />
+            </Box>
+          <Typography variant="h4" component="h1">Task Board</Typography>
           </Toolbar>
         </AppBar>
-        <main className="panel__main">
+        <Box component="main" sx={{flexGrow: 1, overflow: "auto"}}>
           <Container>
             <Grid container columns={{ xs: 1, sm: 2, md: 4 }} spacing={[2, 3]} sx={{py: [2, 3]}}>
               {boards.length ? boards.map((board) => {
@@ -52,13 +54,13 @@ const App = () => {
               }) : null}
             </Grid>
           </Container>
-        </main>
-        <footer className="panel__footer">
+        </Box>
+        <Box component="footer" sx={{boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)"}}>
           <Toolbar color="secondary" sx={{bgcolor: "primary.light", py: [2, 3]}}>
             <Button variant="contained" sx={{mx: ["auto", 0],}}>Add new board</Button>
           </Toolbar>
-        </footer>
-      </Panel>
+        </Box>
+      </Box>
     </>
   );
 };
