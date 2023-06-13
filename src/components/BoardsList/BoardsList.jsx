@@ -21,8 +21,8 @@ const BoardsList = ({ boards }) => {
                 width={["100%", "50%", "25%"]}
                 key={`board_${board.name}`}
               >
-                <Paper>
-                  <BoardCard board={board}></BoardCard>
+                <Paper elevation={0}>
+                  <BoardCard board={board} />
                 </Paper>
               </Grid>
             );

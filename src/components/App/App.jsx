@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 // ** Get data ** //
-import getData from "./getData/getData";
+import { getData } from "../../utils/transferData";
 
 // ** MUI components ** //
 import "@fontsource/roboto/300.css";
@@ -18,31 +18,23 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
 // ** Custom components ** //
-import BoardsList from "./BoardsList/BoardsList";
+import BoardsList from "../BoardsList/BoardsList";
+import CustomModal from "../CustomModal/CustomModal";
 
 // ** Component App ** //
 const App = () => {
+  const boardsCollection = "boards";
   const [boards, setBoards] = useState([]);
+  const [modalState, openModal] = useState(false);
+  const closeModal = () => openModal(false);
 
+  // ** getting boards data from server ** //
   useEffect(() => {
     (async () => {
-      const response = await getData();
+      const response = await getData(boardsCollection);
       setBoards(response);
     })();
   }, []);
-
-  // const boards = [
-  //   {name: "Board 1"},
-  //   {name: "Board 2"},
-  //   {name: "Board 3"},
-  //   {name: "Board 4"},
-  //   {name: "Board 5"},
-  //   {name: "Board 6"},
-  //   {name: "Board 7"},
-  //   {name: "Board 8"},
-  //   {name: "Board 9"},
-  //   {name: "Board 10"},
-  // ];
 
   return (
     <>
@@ -82,11 +74,17 @@ const App = () => {
             color="secondary"
             sx={{ bgcolor: "primary.light", py: [2, 3] }}
           >
-            <Button variant="contained" sx={{ mx: ["auto", 0] }}>
+            <Button
+              variant="contained"
+              sx={{ mx: ["auto", 0] }}
+              onClick={() => openModal(true)}
+            >
               Add new board
             </Button>
           </Toolbar>
         </Box>
+
+        <CustomModal modalState={modalState} cbClose={closeModal} />
       </Box>
     </>
   );
