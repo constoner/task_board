@@ -9,8 +9,8 @@
 /coverage
 
 # production
-/build
 .idea
+.github
 
 # misc
 .DS_Store
