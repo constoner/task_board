@@ -10,7 +10,6 @@
 
 # production
 .idea
-.github
 
 # misc
 .DS_Store
