@@ -1,7 +1,10 @@
+// React
 import React, { useState } from "react";
+
+// Import data functions
 import { addData } from "../../utils/transferData";
 
-// MUI components //
+// MUI components
 import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -14,7 +17,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
 
-// temporary style for modal //
+// temporary style for modal
 const style = {
   position: "absolute",
   top: "50%",
@@ -27,13 +30,13 @@ const style = {
   p: 4,
 };
 
-// statuses for validation //
+// statuses for validation
 const STATUSES = {
   default: "default",
   error: "error",
 };
 
-// Custom modal window component //
+// Custom modal window component
 const CustomModal = ({ modalState, cbClose, onCreate }) => {
   const [boardName, setName] = useState("");
   const [status, setStatus] = useState(STATUSES.default);
@@ -48,13 +51,13 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
       evt.preventDefault();
     }
 
-    // declining the empty input //
+    // Declining the empty input
     if (!boardName.trim().length) {
       setStatus(STATUSES.error);
       return;
     }
 
-    // send data to server //
+    // Send data to server
     addData(boardName, "boards", onCreate)
       .then(reset)
       .catch((err) => console.error(err));

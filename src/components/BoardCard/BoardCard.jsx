@@ -1,4 +1,7 @@
-// MUI components //
+// Import data functions
+import { deleteData } from "../../utils/transferData";
+
+// MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -7,8 +10,8 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
 const BoardCard = ({ boardName, id, onDelete }) => {
-  const deleteBoard = () => {
-    onDelete(id);
+  const removeBoard = () => {
+    deleteData("boards", id, onDelete).catch((err) => console.err(err));
   };
 
   return (
@@ -20,14 +23,24 @@ const BoardCard = ({ boardName, id, onDelete }) => {
           flexDirection: ["row", "row", "column"],
         }}
       >
-        <CardContent>
-          <Typography variant="h5" component="h2" sx={{ fontSize: 14 }}>
+        <CardContent sx={{ flexGrow: 0, overflow: "hidden" }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              fontSize: 14,
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+            }}
+            title={boardName}
+          >
             {boardName}
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
           <Button variant="outlined">Open</Button>
-          <Button variant="outlined" onClick={deleteBoard}>
+          <Button variant="outlined" onClick={() => removeBoard(id)}>
             Delete
           </Button>
         </CardActions>

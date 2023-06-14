@@ -1,10 +1,10 @@
-// React //
+// React
 import React, { useState, useEffect } from "react";
 
-// Get data //
+// Get data
 import { getData } from "../../utils/transferData";
 
-// MUI components //
+// MUI components
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -17,21 +17,30 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
-// Custom components //
+// Custom components
 import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
-// Component App //
+// Component App
 const App = () => {
   const boardsCollection = "boards";
   const [boards, setBoards] = useState([]);
   const [modalState, setModalState] = useState(false);
   const closeModal = () => setModalState(false);
+
   const addBoard = (newBoard) => {
     setBoards([...boards, newBoard]);
   };
 
-  // getting boards data from server //
+  const deleteBoard = (removedBoardID) => {
+    const removeBoardIndex = boards.findIndex((board) => {
+      return board.id === removedBoardID;
+    });
+    boards.splice(removeBoardIndex, 1);
+    setBoards([...boards]);
+  };
+
+  // Getting boards data from server
   useEffect(() => {
     getData(boardsCollection, setBoards).catch((err) => console.error(err));
   }, []);
@@ -60,7 +69,7 @@ const App = () => {
         </AppBar>
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
           <Container>
-            <BoardsList boards={boards} />
+            <BoardsList boards={boards} onDelete={deleteBoard} />
           </Container>
         </Box>
         <Box

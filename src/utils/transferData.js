@@ -1,11 +1,11 @@
-// Loading data from Firebase //
-// https://firebase.google.com/docs/web/setup#available-libraries //
+// Loading data from Firebase
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// imports //
+// Imports
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getDoc, addDoc, getFirestore } from "firebase/firestore";
+import {getFirestore, collection, doc, getDocs, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 
-// Your web app's Firebase configuration //
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDtqTq0IiF0yiXf8fbJ5V9UuuphNFQ0Hjs",
   authDomain: "task-board-bc141.firebaseapp.com",
@@ -15,11 +15,11 @@ const firebaseConfig = {
   appId: "1:141695702439:web:2e62298adab9562605d282"
 };
 
-// Initialize Firebase //
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// getting data from firebase //
+// Getting collection from firebase
 const getData = async (collectionName, cb) => {
   const querySnapshot = await getDocs(collection(db, collectionName));
 
@@ -33,7 +33,7 @@ const getData = async (collectionName, cb) => {
   cb(dataArray);
 };
 
-// push new data to firebase //
+// Push new doc to firebase
 const addData = async (dataName, collectionName, cb) => {
  await addDoc(collection(db, collectionName), {
     name: dataName,
@@ -47,4 +47,10 @@ const addData = async (dataName, collectionName, cb) => {
       );
 };
 
-export { getData, addData };
+// Delete doc from firebase
+const deleteData = async (collectionName, dataID, cb) => {
+  await deleteDoc(doc(db, collectionName, dataID));
+  cb(dataID);
+};
+
+export { getData, addData, deleteData };

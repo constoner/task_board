@@ -1,11 +1,11 @@
-// MUI components //
+// MUI components
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-// Custom components //
+// Custom components
 import BoardCard from "../BoardCard/BoardCard";
 
-const BoardsList = ({ boards }) => {
+const BoardsList = ({ boards, onDelete }) => {
   return (
     <Grid
       container
@@ -18,7 +18,11 @@ const BoardsList = ({ boards }) => {
             return (
               <Grid item width={["100%", "50%", "25%"]} key={id}>
                 <Paper elevation={0}>
-                  <BoardCard boardName={data.name} id={id} />
+                  <BoardCard
+                    boardName={data.name}
+                    id={id}
+                    onDelete={onDelete}
+                  />
                 </Paper>
               </Grid>
             );
