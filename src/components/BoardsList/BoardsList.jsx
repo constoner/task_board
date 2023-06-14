@@ -14,15 +14,11 @@ const BoardsList = ({ boards }) => {
       sx={{ py: [2, 3] }}
     >
       {boards.length
-        ? boards.map((board) => {
+        ? boards.map(({ id, data }) => {
             return (
-              <Grid
-                item
-                width={["100%", "50%", "25%"]}
-                key={`board_${board.name}`}
-              >
+              <Grid item width={["100%", "50%", "25%"]} key={id}>
                 <Paper elevation={0}>
-                  <BoardCard board={board} />
+                  <BoardCard boardName={data.name} id={id} />
                 </Paper>
               </Grid>
             );

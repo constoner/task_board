@@ -27,6 +27,9 @@ const App = () => {
   const [boards, setBoards] = useState([]);
   const [modalState, setModalState] = useState(false);
   const closeModal = () => setModalState(false);
+  const addBoard = (newBoard) => {
+    setBoards([...boards, newBoard]);
+  };
 
   // getting boards data from server //
   useEffect(() => {
@@ -81,7 +84,11 @@ const App = () => {
           </Toolbar>
         </Box>
 
-        <CustomModal modalState={modalState} cbClose={closeModal} />
+        <CustomModal
+          modalState={modalState}
+          cbClose={closeModal}
+          onCreate={addBoard}
+        />
       </Box>
     </>
   );

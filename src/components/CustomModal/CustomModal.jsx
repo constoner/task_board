@@ -34,7 +34,7 @@ const STATUSES = {
 };
 
 // Custom modal window component //
-const CustomModal = ({ modalState, cbClose }) => {
+const CustomModal = ({ modalState, cbClose, onCreate }) => {
   const [boardName, setName] = useState("");
   const [status, setStatus] = useState(STATUSES.default);
 
@@ -55,7 +55,7 @@ const CustomModal = ({ modalState, cbClose }) => {
     }
 
     // send data to server //
-    addData(boardName, "boards")
+    addData(boardName, "boards", onCreate)
       .then(reset)
       .catch((err) => console.error(err));
     cbClose();

@@ -3,7 +3,7 @@
 
 // imports //
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, addDoc, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getDoc, addDoc, getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration //
 const firebaseConfig = {
@@ -25,16 +25,26 @@ const getData = async (collectionName, cb) => {
 
   let dataArray = [];
   querySnapshot.forEach((doc) => {
-    dataArray.push(doc.data());
+    dataArray.push({
+      id: doc.id,
+      data: doc.data(),
+    });
   });
   cb(dataArray);
 };
 
 // push new data to firebase //
-const addData = async (dataName, collectionName) => {
-await addDoc(collection(db, collectionName), {
+const addData = async (dataName, collectionName, cb) => {
+ await addDoc(collection(db, collectionName), {
     name: dataName,
-  });
+  })
+  .then((docRef) => getDoc(docRef))
+  .then((doc) =>
+        cb({
+          id: doc.id,
+          data: doc.data(),
+        })
+      );
 };
 
 export { getData, addData };
