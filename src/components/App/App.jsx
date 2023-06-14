@@ -28,10 +28,12 @@ const App = () => {
   const [modalState, setModalState] = useState(false);
   const closeModal = () => setModalState(false);
 
+  // Adding new board to the array
   const addBoard = (newBoard) => {
     setBoards([...boards, newBoard]);
   };
 
+  // Removing clicked board from the array
   const deleteBoard = (removedBoardID) => {
     const removeBoardIndex = boards.findIndex((board) => {
       return board.id === removedBoardID;
@@ -69,7 +71,25 @@ const App = () => {
         </AppBar>
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
           <Container>
-            <BoardsList boards={boards} onDelete={deleteBoard} />
+            {!boards.length ? (
+              <Typography
+                variant="h2"
+                component="p"
+                align="center"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 8,
+                  fontWeight: 500,
+                  color: "grey.300",
+                }}
+              >
+                Add new taskboard!
+              </Typography>
+            ) : (
+              <BoardsList boards={boards} onDelete={deleteBoard} />
+            )}
           </Container>
         </Box>
         <Box

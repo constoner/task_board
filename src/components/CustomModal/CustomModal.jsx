@@ -17,7 +17,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
 
-// temporary style for modal
+// Temporary styles for modal window
 const style = {
   position: "absolute",
   top: "50%",
@@ -30,7 +30,7 @@ const style = {
   p: 4,
 };
 
-// statuses for validation
+// Statuses for validation
 const STATUSES = {
   default: "default",
   error: "error",
@@ -61,6 +61,8 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
     addData(boardName, "boards", onCreate)
       .then(reset)
       .catch((err) => console.error(err));
+
+    // Closing the modal window
     cbClose();
   };
 
@@ -76,8 +78,8 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
           timeout: 250,
         },
       }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      aria-labelledby="new board"
+      aria-describedby="creating new board"
     >
       <Fade in={modalState}>
         <Box sx={style}>
@@ -101,13 +103,7 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
                 />
               </FormControl>
             </Box>
-            <Button
-              onClick={() => {
-                createBoard();
-              }}
-            >
-              Save
-            </Button>
+            <Button onClick={() => createBoard()}>Save</Button>
             <Button
               onClick={() => {
                 cbClose();

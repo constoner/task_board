@@ -39,7 +39,6 @@ const BoardCard = ({ boardName, id, onDelete }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="outlined">Open</Button>
           <Button variant="outlined" onClick={() => removeBoard(id)}>
             Delete
           </Button>
