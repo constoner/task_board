@@ -1,10 +1,10 @@
-// ** React ** //
+// React //
 import React, { useState, useEffect } from "react";
 
-// ** Get data ** //
+// Get data //
 import { getData } from "../../utils/transferData";
 
-// ** MUI components ** //
+// MUI components //
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -17,23 +17,20 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
-// ** Custom components ** //
+// Custom components //
 import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
-// ** Component App ** //
+// Component App //
 const App = () => {
   const boardsCollection = "boards";
   const [boards, setBoards] = useState([]);
-  const [modalState, openModal] = useState(false);
-  const closeModal = () => openModal(false);
+  const [modalState, setModalState] = useState(false);
+  const closeModal = () => setModalState(false);
 
-  // ** getting boards data from server ** //
+  // getting boards data from server //
   useEffect(() => {
-    (async () => {
-      const response = await getData(boardsCollection);
-      setBoards(response);
-    })();
+    getData(boardsCollection, setBoards).catch((err) => console.error(err));
   }, []);
 
   return (
@@ -77,7 +74,7 @@ const App = () => {
             <Button
               variant="contained"
               sx={{ mx: ["auto", 0] }}
-              onClick={() => openModal(true)}
+              onClick={() => setModalState(true)}
             >
               Add new board
             </Button>

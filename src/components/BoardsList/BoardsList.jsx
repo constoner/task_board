@@ -1,8 +1,8 @@
-// ** MUI components ** //
+// MUI components //
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-// ** Custom components ** //
+// Custom components //
 import BoardCard from "../BoardCard/BoardCard";
 
 const BoardsList = ({ boards }) => {
