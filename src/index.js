@@ -15,7 +15,6 @@ const bodyStyle = {
   top: "0",
   right: "0",
   bottom: "0",
-  touchAction: "none",
   overflow: "hidden",
   height: "100%",
   maxHeight: "100%",
