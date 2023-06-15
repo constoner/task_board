@@ -72,6 +72,9 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
       onClose={(_, reason) => {
         reason !== "backdropClick" && cbClose();
       }}
+      onKeyDown={(evt) => {
+        evt.key === "Enter" && createBoard(evt);
+      }}
       closeAfterTransition
       keepMounted
       slots={{ backdrop: Backdrop }}
