@@ -69,9 +69,11 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
   return (
     <Modal
       open={modalState}
+      onClose={(_, reason) => {
+        reason !== "backdropClick" && cbClose();
+      }}
       closeAfterTransition
       keepMounted
-      disableEscapeKeyDown={true}
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: {
