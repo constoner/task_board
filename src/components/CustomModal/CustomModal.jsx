@@ -89,7 +89,7 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
               Create a new board
             </Typography>
             <Box component="form" noValidate autoComplete="off">
-              <FormControl autoFocus={true}>
+              <FormControl>
                 <InputLabel></InputLabel>
                 <FormHelperText>Please, fill the name</FormHelperText>
                 <TextField
@@ -99,6 +99,7 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
                   variant="filled"
                   value={boardName}
                   status={status}
+                  inputRef={(input) => input && input.focus()}
                   onChange={(evt) => setName(evt.target.value)}
                 />
               </FormControl>
