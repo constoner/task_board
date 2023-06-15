@@ -58,7 +58,7 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
     }
 
     // Send data to server
-    addData(boardName, "boards", onCreate)
+    addData(boardName.trim(), "boards", onCreate)
       .then(reset)
       .catch((err) => console.error(err));
 
