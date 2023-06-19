@@ -49,8 +49,7 @@ const addData = async (dataName, collectionName, cb) => {
 
 // Delete doc from firebase
 const deleteData = async (collectionName, dataID, cb) => {
-  await deleteDoc(doc(db, collectionName, dataID));
-  cb(dataID);
+  await deleteDoc(doc(db, collectionName, dataID)).then(cb(dataID));
 };
 
 export { getData, addData, deleteData };

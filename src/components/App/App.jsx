@@ -16,6 +16,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Custom components
 import BoardsList from "../BoardsList/BoardsList";
@@ -25,6 +26,7 @@ import CustomModal from "../CustomModal/CustomModal";
 const App = () => {
   const boardsCollection = "boards";
   const [boards, setBoards] = useState([]);
+  const [loadingState, setLoadingState] = useState(true);
   const [modalState, setModalState] = useState(false);
   const closeModal = () => setModalState(false);
 
@@ -44,7 +46,9 @@ const App = () => {
 
   // Getting boards data from server
   useEffect(() => {
-    getData(boardsCollection, setBoards).catch((err) => console.error(err));
+    getData(boardsCollection, setBoards)
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingState(false));
   }, []);
 
   return (
@@ -70,8 +74,25 @@ const App = () => {
           </Toolbar>
         </AppBar>
         <Box component="main" sx={{ flexGrow: 1, overflow: "auto" }}>
-          <Container>
-            {!boards.length ? (
+          <Container
+            sx={{
+              height: "100%",
+            }}
+          >
+            {loadingState ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  fontWeight: 500,
+                  color: "grey.300",
+                }}
+              >
+                <CircularProgress></CircularProgress>
+              </Box>
+            ) : !boards.length ? (
               <Typography
                 variant="h2"
                 component="p"
