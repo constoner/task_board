@@ -1,0 +1,11 @@
+.swiper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px 24px;
+}
+
+.swiper-pagination {
+  position: static;
+  margin-top: 16px;
+}

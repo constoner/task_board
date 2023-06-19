@@ -45,6 +45,7 @@
   "devDependencies": {
     "eslint": "^8.42.0",
     "eslint-plugin-react": "^7.32.2",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "swiper": "^9.4.1"
   }
 }
