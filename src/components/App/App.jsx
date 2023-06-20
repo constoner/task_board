@@ -1,6 +1,8 @@
 // React
 import React, { useState, useEffect } from "react";
 
+// Import utils
+import { RemoveScroll } from "react-remove-scroll";
 // Get data
 import { getData } from "../../utils/transferData";
 
@@ -14,12 +16,12 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+// import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
 // Custom components
-import BoardsList from "../BoardsList/BoardsList";
+// import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 import Tasks from "../Tasks/Tasks";
 
@@ -37,13 +39,13 @@ const App = () => {
   };
 
   // Removing clicked board from the array
-  const deleteBoard = (removedBoardID) => {
-    const removeBoardIndex = boards.findIndex((board) => {
-      return board.id === removedBoardID;
-    });
-    boards.splice(removeBoardIndex, 1);
-    setBoards([...boards]);
-  };
+  // const deleteBoard = (removedBoardID) => {
+  //   const removeBoardIndex = boards.findIndex((board) => {
+  //     return board.id === removedBoardID;
+  //   });
+  //   boards.splice(removeBoardIndex, 1);
+  //   setBoards([...boards]);
+  // };
 
   // Getting boards data from server
   useEffect(() => {
@@ -165,38 +167,40 @@ const App = () => {
           component="main"
           sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
         >
-          {loadingState ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                fontWeight: 500,
-                color: "grey.300",
-              }}
-            >
-              <CircularProgress></CircularProgress>
-            </Box>
-          ) : !boards.length ? (
-            <Typography
-              variant="h2"
-              component="p"
-              align="center"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                pt: "25%",
-                fontWeight: 500,
-                color: "grey.300",
-              }}
-            >
-              Add new taskboard!
-            </Typography>
-          ) : (
-            <Tasks boards={boards} />
-          )}
+          <RemoveScroll style={{ height: "100%" }}>
+            {loadingState ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  fontWeight: 500,
+                  color: "grey.300",
+                }}
+              >
+                <CircularProgress></CircularProgress>
+              </Box>
+            ) : !boards.length ? (
+              <Typography
+                variant="h2"
+                component="p"
+                align="center"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  pt: "25%",
+                  fontWeight: 500,
+                  color: "grey.300",
+                }}
+              >
+                Add new taskboard!
+              </Typography>
+            ) : (
+              <Tasks boards={boards} />
+            )}
+          </RemoveScroll>
         </Box>
         <Box
           component="footer"

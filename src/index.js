@@ -9,13 +9,16 @@ const rootElement = document.getElementById("root");
 const root = ReactDOM.createRoot(rootElement);
 
 // Disabling body scroll
-const bodyStyle = {
-  overflow: "hidden",
-  width: "100%",
-  height: "100%",
-  maxHeight: "100%",
-};
-Object.assign(document.body.style, bodyStyle);
+// const bodyStyle = {
+//   webkitOverflowScrolling: "touch",
+//   overflow: "hidden",
+// };
+
+// Object.assign(document.body.style, bodyStyle);
+
+// document.body.ontouchstart = (evt) => {
+//   evt.preventDefault();
+// };
 
 // Render App
 root.render(
