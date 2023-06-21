@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 
 // Import utils
-import { RemoveScroll } from "react-remove-scroll";
+// import { RemoveScroll } from "react-remove-scroll";
+
 // Get data
 import { getData } from "../../utils/transferData";
 
@@ -146,7 +147,7 @@ const App = () => {
 
       <Box
         id="one-board"
-        sx={{ display: "flex", flexDirection: "column", height: "100vh" }}
+        sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
         <AppBar position="sticky" sx={{ py: [1, 3], bgcolor: "primary.light" }}>
           <Toolbar>
@@ -167,40 +168,40 @@ const App = () => {
           component="main"
           sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
         >
-          <RemoveScroll style={{ height: "100%" }}>
-            {loadingState ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  fontWeight: 500,
-                  color: "grey.300",
-                }}
-              >
-                <CircularProgress></CircularProgress>
-              </Box>
-            ) : !boards.length ? (
-              <Typography
-                variant="h2"
-                component="p"
-                align="center"
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  pt: "25%",
-                  fontWeight: 500,
-                  color: "grey.300",
-                }}
-              >
-                Add new taskboard!
-              </Typography>
-            ) : (
-              <Tasks boards={boards} />
-            )}
-          </RemoveScroll>
+          {/* <RemoveScroll style={{ height: "100%" }}> */}
+          {loadingState ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                fontWeight: 500,
+                color: "grey.300",
+              }}
+            >
+              <CircularProgress></CircularProgress>
+            </Box>
+          ) : !boards.length ? (
+            <Typography
+              variant="h2"
+              component="p"
+              align="center"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                pt: "25%",
+                fontWeight: 500,
+                color: "grey.300",
+              }}
+            >
+              Add new taskboard!
+            </Typography>
+          ) : (
+            <Tasks boards={boards} />
+          )}
+          {/* </RemoveScroll> */}
         </Box>
         <Box
           component="footer"
