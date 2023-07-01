@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(rootElement);
 
 // Disabling body scroll
 const htmlStyle = {
- height: "100vh",
+//  height: "100vh",
 };
 
 const bodyStyle = {
@@ -20,7 +20,7 @@ const bodyStyle = {
   height: "100vh",
   margin: 0,
   padding: 0,
-  overflow: "hidden",
+  // overflow: "hidden",
 };
 
 const rootStyle = {
