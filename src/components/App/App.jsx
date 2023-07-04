@@ -199,7 +199,7 @@ const App = () => {
               Add new taskboard!
             </Typography>
           ) : (
-            <Tasks boards={boards} />
+            <Tasks parentBoard="xEpgyyKrLIqjVwRREfFM" />
           )}
           {/* </RemoveScroll> */}
         </Box>
@@ -216,10 +216,10 @@ const App = () => {
           >
             <Button
               variant="contained"
-              sx={{ mx: ["auto", 0] }}
-              onClick={() => setModalState(true)}
+              sx={{ minWidth: "50%", mx: ["auto", 0] }}
+              onClick={() => console.log("I want back!")}
             >
-              Add new board
+              Back
             </Button>
           </Toolbar>
         </Box>

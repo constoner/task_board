@@ -25,18 +25,20 @@ const getData = async (collectionName, cb) => {
 
   let dataArray = [];
   querySnapshot.forEach((doc) => {
+    const {boardID, name, cardID} = doc.data();
     dataArray.push({
       id: doc.id,
-      data: doc.data(),
+      data: {boardID, name, cardID},
     });
   });
   cb(dataArray);
 };
 
 // Push new doc to firebase
-const addData = async (dataName, collectionName, cb) => {
+const addData = async (dataName, collectionName, parentBoard, cb) => {
  await addDoc(collection(db, collectionName), {
     name: dataName,
+    boardID: parentBoard,
   })
   .then((docRef) => getDoc(docRef))
   .then((doc) =>
