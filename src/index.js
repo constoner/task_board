@@ -12,19 +12,19 @@ const root = ReactDOM.createRoot(rootElement);
 
 // Disabling body scroll
 const htmlStyle = {
-//  height: "100vh",
+ height: "100%",
 };
 
 const bodyStyle = {
   webkitOverflowScrolling: "touch",
-  height: "100vh",
+  height: "100%",
   margin: 0,
   padding: 0,
-  // overflow: "hidden",
+  overflow: "hidden",
 };
 
 const rootStyle = {
-  minHeight: "100vh",
+  minHeight: "100%",
   height: "100%",
 };
 
