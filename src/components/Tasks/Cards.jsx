@@ -22,24 +22,24 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
-const Tasks = ({ parentBoard }) => {
+const Cards = ({ parentBoard }) => {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
     getData("cards", setCards).catch((err) => console.error(err));
   }, []);
 
-  const newTask = {
+  const newCard = {
     boardID: parentBoard,
-    name: "new-task-name",
+    name: "new-card-name",
   };
 
-  const addTask = (newTask) => {
-    setCards([...cards, newTask]);
+  const addCard = (newCard) => {
+    setCards([...cards, newCard]);
   };
 
-  const createTaskList = () => {
-    addData(newTask.name.trim(), "cards", newTask.boardID, addTask);
+  const createCard = () => {
+    addData(newCard.name.trim(), "cards", newCard.boardID, addCard);
   };
 
   const deleteCard = (removedCardID) => {
@@ -131,7 +131,7 @@ const Tasks = ({ parentBoard }) => {
             }}
           >
             <Button
-              onClick={() => createTaskList()}
+              onClick={() => createCard()}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -149,4 +149,4 @@ const Tasks = ({ parentBoard }) => {
   );
 };
 
-export default Tasks;
+export default Cards;

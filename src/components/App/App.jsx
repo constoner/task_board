@@ -24,7 +24,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // Custom components
 // import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
-import Tasks from "../Tasks/Tasks";
+import Cards from "../Tasks/Cards";
 
 // Component App
 const App = () => {
@@ -199,7 +199,7 @@ const App = () => {
               Add new taskboard!
             </Typography>
           ) : (
-            <Tasks parentBoard="xEpgyyKrLIqjVwRREfFM" />
+            <Cards parentBoard="xEpgyyKrLIqjVwRREfFM" />
           )}
           {/* </RemoveScroll> */}
         </Box>
