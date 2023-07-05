@@ -3,7 +3,7 @@
 
 // Imports
 import { initializeApp } from "firebase/app";
-import {getFirestore, collection, doc, getDocs, getDoc, addDoc, deleteDoc } from "firebase/firestore";
+import {getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,39 +21,3 @@ const db = getFirestore(app);
 
 export {app, db};
 
-// Getting collection from firebase
-const getData = async (collectionName, cb) => {
-  const querySnapshot = await getDocs(collection(db, collectionName));
-
-  let dataArray = [];
-  querySnapshot.forEach((doc) => {
-    const {boardID, name, cardID} = doc.data();
-    dataArray.push({
-      id: doc.id,
-      data: {boardID, name, cardID},
-    });
-  });
-  cb(dataArray);
-};
-
-// Push new doc to firebase
-const addData = async (dataName, collectionName, parentBoard, cb) => {
- await addDoc(collection(db, collectionName), {
-    name: dataName,
-    boardID: parentBoard,
-  })
-  .then((docRef) => getDoc(docRef))
-  .then((doc) =>
-        cb({
-          id: doc.id,
-          data: doc.data(),
-        })
-      );
-};
-
-// Delete doc from firebase
-const deleteData = async (collectionName, dataID, cb) => {
-  await deleteDoc(doc(db, collectionName, dataID)).then(cb(dataID));
-};
-
-export { getData, addData, deleteData };

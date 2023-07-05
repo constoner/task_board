@@ -1,0 +1,17 @@
+.swiper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  padding: 8px 24px;
+}
+
+.swiper-wrapper {
+  height: 100%;
+  max-height: 100%;
+  flex-shrink: 1;
+}
+
+.swiper-slide {
+  height: 100%;
+}

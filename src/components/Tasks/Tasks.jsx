@@ -13,54 +13,16 @@ import { useEffect } from "react";
 
 // MUI components
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import List from "@mui/material/List";
 
-// Getting collection from firebase
-// const getData = async (collectionName, cb) => {
-//   const querySnapshot = await getDocs(collection(db, collectionName));
-
-//   let dataArray = [];
-//   querySnapshot.forEach((doc) => {
-//     const {boardID, name, cardID} = doc.data();
-//     dataArray.push({
-//       id: doc.id,
-//       data: {boardID, name, cardID},
-//     });
-//   });
-//   cb(dataArray);
-// };
-
-// Push new doc to firebase
-// const addData = async (dataName, collectionName, parentBoard, cb) => {
-//  await addDoc(collection(db, collectionName), {
-//     name: dataName,
-//     boardID: parentBoard,
-//   })
-//   .then((docRef) => getDoc(docRef))
-//   .then((doc) =>
-//         cb({
-//           id: doc.id,
-//           data: doc.data(),
-//         })
-//       );
-// };
-
-// Delete doc from firebase
-// const deleteData = async (collectionName, dataID, cb) => {
-//   await deleteDoc(doc(db, collectionName, dataID)).then(cb(dataID));
-// };
-
-const Task = ({ children }) => {
-  return <li>{children}</li>;
-};
+// Custom components
+import TaskItem from "../TaskItem/TaskItem";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
+
+  // get docs from firebase
   useEffect(() => {
     let tasks = [];
     getDocs(collection(db, "tasks"))
@@ -75,17 +37,64 @@ const Tasks = () => {
       .then(() => setTasks(tasks));
   }, []);
 
+  // Push new doc to firebase
+  const addTask = (dataName) => {
+    addDoc(collection(db, "tasks"), {
+      name: dataName,
+    })
+      .then((docRef) => getDoc(docRef))
+      .then((doc) =>
+        setTasks([
+          ...tasks,
+          {
+            id: doc.id,
+            data: doc.data(),
+          },
+        ])
+      );
+  };
+
+  // Delete doc from firebase
+  const deleteTask = (dataID) => {
+    deleteDoc(doc(db, "tasks", dataID)).then(() => {
+      const removedTaskIndex = tasks.findIndex((task) => {
+        return task.id === dataID;
+      });
+      tasks.splice(removedTaskIndex, 1);
+      setTasks([...tasks]);
+    });
+  };
+
   return (
-    <ul>
+    <List
+      sx={{
+        width: "100%",
+        position: "relative",
+        overflow: "auto",
+        "& ul": { padding: 0 },
+      }}
+    >
       {tasks.map(({ id, data }) => {
         return (
-          <Task key={id} id={id}>
-            {data.name}
-          </Task>
+          <TaskItem key={id}>
+            <Box
+              id={id}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <p>{data.name}</p>
+              <Button onClick={() => deleteTask(id)}>del</Button>
+            </Box>
+          </TaskItem>
         );
       })}
-      <li>Click to add new task</li>
-    </ul>
+      <TaskItem>
+        <Box sx={{ display: "flex" }}>
+          <Button onClick={() => addTask("new-task")}>
+            Click to add new task
+          </Button>
+        </Box>
+      </TaskItem>
+    </List>
   );
 };
 
