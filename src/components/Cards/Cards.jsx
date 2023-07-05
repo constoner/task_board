@@ -19,8 +19,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+
+// Custom components
+import Tasks from "../Tasks/Tasks";
 
 const Cards = ({ parentBoard }) => {
   const [cards, setCards] = useState([]);
@@ -91,20 +93,7 @@ const Cards = ({ parentBoard }) => {
                       {card.data.name}
                     </Typography>
                     <Box variant="body2">
-                      <ul>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Fugit omnis quos corrupti a!</li>
-                        <li>Qui reiciendis ducimus numquam atque?</li>
-                        <li>
-                          Asperiores voluptatum officiis fugit perspiciatis.
-                        </li>
-                        <li>Ullam quis sed dolorem est.</li>
-                        <li>Quia, rem! Consectetur, provident nulla!</li>
-                        <li>Hic soluta expedita maxime voluptatum?</li>
-                        <li>Error voluptates amet molestiae iste.</li>
-                        <li>Tenetur quis nulla dolore cumque?</li>
-                        <li>Dolorum, atque? Obcaecati, itaque! Labore!</li>
-                      </ul>
+                      <Tasks />
                     </Box>
                   </CardContent>
                   <CardActions sx={{ justifyContent: "flex-end" }}>

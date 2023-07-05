@@ -10,17 +10,14 @@ const bodyElement = document.querySelector("body");
 const rootElement = document.querySelector("#root");
 const root = ReactDOM.createRoot(rootElement);
 
-// Disabling body scroll
 const htmlStyle = {
  height: "100%",
 };
 
 const bodyStyle = {
-  webkitOverflowScrolling: "touch",
   height: "100%",
   margin: 0,
   padding: 0,
-  overflow: "hidden",
 };
 
 const rootStyle = {

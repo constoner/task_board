@@ -23,21 +23,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Custom components
 // import BoardsList from "../BoardsList/BoardsList";
-import CustomModal from "../CustomModal/CustomModal";
-import Cards from "../Tasks/Cards";
+// import CustomModal from "../CustomModal/CustomModal";
+import Cards from "../Cards/Cards";
 
 // Component App
 const App = () => {
   const boardsCollection = "boards";
   const [boards, setBoards] = useState([]);
   const [loadingState, setLoadingState] = useState(true);
-  const [modalState, setModalState] = useState(false);
-  const closeModal = () => setModalState(false);
+  // const [modalState, setModalState] = useState(false);
+  // const closeModal = () => setModalState(false);
 
   // Adding new board to the array
-  const addBoard = (newBoard) => {
-    setBoards([...boards, newBoard]);
-  };
+  // const addBoard = (newBoard) => {
+  //   setBoards([...boards, newBoard]);
+  // };
 
   // Removing clicked board from the array
   // const deleteBoard = (removedBoardID) => {
@@ -223,12 +223,6 @@ const App = () => {
             </Button>
           </Toolbar>
         </Box>
-
-        <CustomModal
-          modalState={modalState}
-          cbClose={closeModal}
-          onCreate={addBoard}
-        />
       </Box>
     </>
   );

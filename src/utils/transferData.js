@@ -19,6 +19,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+export {app, db};
+
 // Getting collection from firebase
 const getData = async (collectionName, cb) => {
   const querySnapshot = await getDocs(collection(db, collectionName));
