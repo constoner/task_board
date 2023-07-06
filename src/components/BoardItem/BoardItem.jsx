@@ -9,11 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
-const BoardCard = ({ boardName, id, onDelete }) => {
-  const removeBoard = () => {
-    deleteData("boards", id, onDelete).catch((err) => console.err(err));
-  };
-
+const BoardItem = ({ boardName, id, onDelete }) => {
   return (
     <Card>
       <Box
@@ -39,13 +35,11 @@ const BoardCard = ({ boardName, id, onDelete }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="outlined" onClick={() => removeBoard(id)}>
-            Delete
-          </Button>
+          <Button variant="outlined">Delete</Button>
         </CardActions>
       </Box>
     </Card>
   );
 };
 
-export default BoardCard;
+export default BoardItem;

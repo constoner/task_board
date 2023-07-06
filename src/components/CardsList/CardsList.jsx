@@ -71,10 +71,10 @@ const CardsList = ({ parentBoard }) => {
     setLoadingState(true);
     deleteDoc(doc(db, "cards", dataID))
       .then(() => {
-        const removedTaskIndex = cards.findIndex((task) => {
+        const removedCardIndex = cards.findIndex((task) => {
           return task.id === dataID;
         });
-        cards.splice(removedTaskIndex, 1);
+        cards.splice(removedCardIndex, 1);
         setCards([...cards]);
       })
       .finally(() => setLoadingState(false));
