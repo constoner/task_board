@@ -20,6 +20,8 @@ const BoardsList = ({ reloadTrigger }) => {
 
   // get docs from firebase
   useEffect(() => {
+    setLoadingState(true);
+
     let boards = [];
     getDocs(collection(db, "boards"))
       .then((result) => {
@@ -64,15 +66,15 @@ const BoardsList = ({ reloadTrigger }) => {
       component="p"
       align="center"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        pt: "25%",
+        width: "min-content",
+        mx: "auto",
+        pt: "50%",
         fontWeight: 500,
         color: "grey.300",
+        textTransform: "uppercase",
       }}
     >
-      Add new taskboard!
+      no any boards yet...
     </Typography>
   ) : (
     <Grid

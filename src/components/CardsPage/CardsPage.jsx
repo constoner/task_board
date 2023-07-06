@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 //Custom components
 import CardsList from "../CardsList/CardsList";
 
-const CardsPage = ({ parentBoard }) => {
+const CardsPage = ({ parentBoard, setActivePage }) => {
   return (
     <>
       {/* header */}
@@ -51,7 +51,7 @@ const CardsPage = ({ parentBoard }) => {
           <Button
             variant="contained"
             sx={{ minWidth: "50%", mx: ["auto", 0] }}
-            onClick={() => console.log("I want back!")}
+            onClick={() => setActivePage("boards")}
           >
             Back
           </Button>

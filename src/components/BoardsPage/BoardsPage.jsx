@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
-const BoardsPage = () => {
+const BoardsPage = ({ setActivePage }) => {
   const [modalState, setModalState] = useState(false);
 
   return (
@@ -63,6 +63,13 @@ const BoardsPage = () => {
             onClick={() => setModalState(true)}
           >
             Add new board
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ mx: ["auto", 0] }}
+            onClick={() => setActivePage("cards")}
+          >
+            to cards
           </Button>
         </Toolbar>
       </Box>
