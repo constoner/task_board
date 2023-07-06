@@ -35,7 +35,7 @@ const Tasks = () => {
         });
       })
       .then(() => setTasks(tasks));
-  }, []);
+  });
 
   // Push new doc to firebase
   const addTask = (dataName) => {

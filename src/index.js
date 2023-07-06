@@ -15,9 +15,13 @@ const htmlStyle = {
 };
 
 const bodyStyle = {
+  position: "fixed",
+  width: "100%",
   height: "100%",
   margin: 0,
   padding: 0,
+  touchAction: "none",
+  overflow: "hidden",
 };
 
 const rootStyle = {

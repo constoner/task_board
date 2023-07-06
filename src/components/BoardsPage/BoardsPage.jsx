@@ -65,7 +65,7 @@ const BoardsPage = ({ setActivePage }) => {
             Add new board
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             sx={{ mx: ["auto", 0] }}
             onClick={() => setActivePage("cards")}
           >

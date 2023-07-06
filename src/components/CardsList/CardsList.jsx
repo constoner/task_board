@@ -94,22 +94,6 @@ const CardsList = ({ parentBoard }) => {
     >
       <CircularProgress></CircularProgress>
     </Box>
-  ) : !cards.length ? (
-    <Typography
-      variant="h2"
-      component="p"
-      align="center"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        pt: "25%",
-        fontWeight: 500,
-        color: "grey.300",
-      }}
-    >
-      Add new taskboard!
-    </Typography>
   ) : (
     <Box sx={{ height: "100%", py: 2 }}>
       <Swiper spaceBetween={50} slidesPerView={1} direction="horizontal">
