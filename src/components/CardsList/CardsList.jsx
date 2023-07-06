@@ -56,11 +56,11 @@ const CardsList = ({ parentBoard }) => {
       .then((docRef) => getDoc(docRef))
       .then((doc) =>
         setCards([
-          ...cards,
           {
             id: doc.id,
             data: doc.data(),
           },
+          ...cards,
         ])
       )
       .finally(() => setLoadingState(false));
@@ -68,15 +68,19 @@ const CardsList = ({ parentBoard }) => {
 
   // Delete doc from firebase
   const deleteCard = (dataID) => {
-    deleteDoc(doc(db, "cards", dataID)).then(() => {
-      const removedTaskIndex = cards.findIndex((task) => {
-        return task.id === dataID;
-      });
-      cards.splice(removedTaskIndex, 1);
-      setCards([...cards]);
-    });
+    setLoadingState(true);
+    deleteDoc(doc(db, "cards", dataID))
+      .then(() => {
+        const removedTaskIndex = cards.findIndex((task) => {
+          return task.id === dataID;
+        });
+        cards.splice(removedTaskIndex, 1);
+        setCards([...cards]);
+      })
+      .finally(() => setLoadingState(false));
   };
 
+  // Component
   return loadingState ? (
     <Box
       sx={{

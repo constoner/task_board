@@ -11,6 +11,7 @@ import CardsList from "../CardsList/CardsList";
 const CardsPage = ({ parentBoard }) => {
   return (
     <>
+      {/* header */}
       <AppBar position="sticky" sx={{ py: [1, 3], bgcolor: "primary.light" }}>
         <Toolbar>
           <Box sx={{ mr: 2, "& img": { display: "block" } }}>
@@ -26,12 +27,14 @@ const CardsPage = ({ parentBoard }) => {
           </Typography>
         </Toolbar>
       </AppBar>
+      {/* main */}
       <Box
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
         <CardsList parentBoard="HhZOSnz7NAZp4sPTYSsa" />
       </Box>
+      {/* footer */}
       <Box
         component="footer"
         sx={{
