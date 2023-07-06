@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 // Custom components
 import Tasks from "../Tasks/Tasks";
 
-const CardItem = ({ name, id, buttonCB }) => {
+const CardItem = ({ name, id, buttonCB, loadedContent }) => {
   return (
     <Box
       sx={{
@@ -35,7 +35,7 @@ const CardItem = ({ name, id, buttonCB }) => {
           {name}
         </Typography>
         <Box variant="body2">
-          <Tasks />
+          <Tasks loadedContent={loadedContent} />
         </Box>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end", marginTop: "-16px" }}>

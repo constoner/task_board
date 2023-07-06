@@ -29,6 +29,7 @@ import CardItem from "../CardItem/CardItem";
 const CardsList = ({ parentBoard }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [cards, setCards] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   // get docs from firebase
   useEffect(() => {
@@ -42,7 +43,22 @@ const CardsList = ({ parentBoard }) => {
           });
         });
       })
-      .then(() => setCards(cards))
+      .then(() => setCards(cards));
+    // .finally(() => setLoadingState(false));
+  }, []);
+
+  useEffect(() => {
+    let tasks = [];
+    getDocs(collection(db, "tasks"))
+      .then((result) => {
+        result.forEach((doc) => {
+          tasks.push({
+            id: doc.id,
+            data: { name: doc.data().name },
+          });
+        });
+      })
+      .then(() => setTasks(tasks))
       .finally(() => setLoadingState(false));
   }, []);
 
@@ -112,6 +128,7 @@ const CardsList = ({ parentBoard }) => {
                   name={card.data.name}
                   id={card.id}
                   buttonCB={deleteCard}
+                  loadedContent={tasks}
                 />
               </Card>
             </SwiperSlide>

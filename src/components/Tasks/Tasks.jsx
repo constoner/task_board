@@ -1,12 +1,5 @@
 // Get data
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../utils/transferData";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -19,23 +12,8 @@ import List from "@mui/material/List";
 // Custom components
 import TaskItem from "../TaskItem/TaskItem";
 
-const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
-
-  // get docs from firebase
-  useEffect(() => {
-    let tasks = [];
-    getDocs(collection(db, "tasks"))
-      .then((result) => {
-        result.forEach((doc) => {
-          tasks.push({
-            id: doc.id,
-            data: { name: doc.data().name },
-          });
-        });
-      })
-      .then(() => setTasks(tasks));
-  });
+const Tasks = ({ loadedContent }) => {
+  const [tasks, setTasks] = useState(loadedContent);
 
   // Push new doc to firebase
   const addTask = (dataName) => {
