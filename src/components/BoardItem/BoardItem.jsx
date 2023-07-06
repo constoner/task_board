@@ -1,6 +1,3 @@
-// Import data functions
-import { deleteData } from "../../utils/transferData";
-
 // MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
-const BoardItem = ({ boardName, id, onDelete }) => {
+const BoardItem = ({ boardName, id, buttonCB }) => {
   return (
     <Card>
       <Box
@@ -35,7 +32,9 @@ const BoardItem = ({ boardName, id, onDelete }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="outlined">Delete</Button>
+          <Button variant="outlined" onClick={() => buttonCB(id)}>
+            Delete
+          </Button>
         </CardActions>
       </Box>
     </Card>

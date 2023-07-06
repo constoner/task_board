@@ -1,8 +1,7 @@
-// React
-import React, { useState } from "react";
-
-// Import data functions
-import { addData } from "../../utils/transferData";
+// Get data
+import { collection, getDoc, addDoc } from "firebase/firestore";
+import { db } from "../../utils/transferData";
+import { useState } from "react";
 
 // MUI components
 import { Box } from "@mui/material";
@@ -37,13 +36,34 @@ const STATUSES = {
 };
 
 // Custom modal window component
-const CustomModal = ({ modalState, cbClose, onCreate }) => {
+const CustomModal = ({ modalState, setModalState }) => {
+  // const [loadingState, setLoadingState] = useState(false);
+  const [boards, setBoards] = useState("");
   const [boardName, setName] = useState("");
   const [status, setStatus] = useState(STATUSES.default);
 
   const reset = () => {
     setStatus(STATUSES.default);
     setName("");
+  };
+
+  // Push new doc to firebase
+  const addBoard = (dataName) => {
+    // setLoadingState(true);
+    addDoc(collection(db, "boards"), {
+      name: dataName,
+    })
+      .then((docRef) => getDoc(docRef))
+      .then((doc) =>
+        setBoards([
+          ...boards,
+          {
+            id: doc.id,
+            data: doc.data(),
+          },
+        ])
+      );
+    // .finally(() => setLoadingState(false));
   };
 
   const createBoard = (evt) => {
@@ -58,19 +78,18 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
     }
 
     // Send data to server
-    addData(boardName.trim(), "boards", onCreate)
-      .then(reset)
-      .catch((err) => console.error(err));
+    addBoard(boardName.trim());
 
     // Closing the modal window
-    cbClose();
+    reset();
+    setModalState(false);
   };
 
   return (
     <Modal
       open={modalState}
       onClose={(_, reason) => {
-        reason !== "backdropClick" && cbClose();
+        reason !== "backdropClick" && setModalState(false);
       }}
       onKeyDown={(evt) => {
         evt.key === "Enter" && createBoard(evt);
@@ -112,8 +131,8 @@ const CustomModal = ({ modalState, cbClose, onCreate }) => {
             <Button onClick={() => createBoard()}>Save</Button>
             <Button
               onClick={() => {
-                cbClose();
                 reset();
+                setModalState(false);
               }}
             >
               Undo

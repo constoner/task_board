@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 
 // Custom components
 import BoardsList from "../BoardsList/BoardsList";
-// import CustomModal from "../CustomModal/CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 
 const BoardsPage = () => {
   const [modalState, setModalState] = useState(false);
@@ -41,7 +41,7 @@ const BoardsPage = () => {
             height: "100%",
           }}
         >
-          <BoardsList />
+          <BoardsList reloadTrigger={modalState} />
         </Container>
       </Box>
 
@@ -68,11 +68,7 @@ const BoardsPage = () => {
       </Box>
 
       {/* modal */}
-      {/* <CustomModal
-        modalState={modalState}
-        cbClose={closeModal}
-        onCreate={addBoard}
-      /> */}
+      <CustomModal modalState={modalState} setModalState={setModalState} />
     </>
   );
 };

@@ -1,12 +1,5 @@
 // Get data
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "../../utils/transferData";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -21,7 +14,7 @@ import Paper from "@mui/material/Paper";
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
 
-const BoardsList = () => {
+const BoardsList = ({ reloadTrigger }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [boards, setBoards] = useState([]);
 
@@ -39,39 +32,17 @@ const BoardsList = () => {
       })
       .then(() => setBoards(boards))
       .finally(() => setLoadingState(false));
-  }, []);
-
-  // Push new doc to firebase
-  const addBoard = (dataName) => {
-    setLoadingState(true);
-    addDoc(collection(db, "boards"), {
-      name: dataName,
-    })
-      .then((docRef) => getDoc(docRef))
-      .then((doc) =>
-        setBoards([
-          ...boards,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ])
-      )
-      .finally(() => setLoadingState(false));
-  };
+  }, [reloadTrigger]);
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {
-    setLoadingState(true);
-    deleteDoc(doc(db, "boards", dataID))
-      .then(() => {
-        const removedBoardIndex = boards.findIndex((task) => {
-          return task.id === dataID;
-        });
-        boards.splice(removedBoardIndex, 1);
-        setBoards([...boards]);
-      })
-      .finally(() => setLoadingState(false));
+    deleteDoc(doc(db, "boards", dataID)).then(() => {
+      const removedBoardIndex = boards.findIndex((boardItem) => {
+        return boardItem.id === dataID;
+      });
+      boards.splice(removedBoardIndex, 1);
+      setBoards([...boards]);
+    });
   };
 
   return loadingState ? (
@@ -114,11 +85,7 @@ const BoardsList = () => {
         return (
           <Grid item width={["100%", "50%", "25%"]} key={id}>
             <Paper elevation={0}>
-              <BoardItem
-                boardName={data.name}
-                id={id}
-                // onDelete={onDelete}
-              />
+              <BoardItem boardName={data.name} id={id} buttonCB={deleteBoard} />
             </Paper>
           </Grid>
         );
