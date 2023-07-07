@@ -123,7 +123,9 @@ const CustomModal = ({ modalState, setModalState }) => {
                   variant="filled"
                   value={boardName}
                   status={status}
-                  inputRef={(input) => input && input.focus()}
+                  inputRef={(input) =>
+                    input && setTimeout(() => input.focus(), 500)
+                  }
                   onChange={(evt) => setName(evt.target.value)}
                 />
               </FormControl>
