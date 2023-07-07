@@ -24,5 +24,12 @@
 }
 
 .swiper-card {
-  margin: 16px 8px;;
+  margin: 16px 8px 48px;
+}
+
+.swiper-pagination {
+  --swiper-theme-color: #42A5F5;
+  bottom: 0 !important;
+  padding: 16px 0 8px;
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));
 }

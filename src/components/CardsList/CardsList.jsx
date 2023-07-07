@@ -1,6 +1,8 @@
 // Swiper component
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import "swiper/css";
+import "swiper/css/pagination";
 import "./style.css";
 
 // Get data
@@ -112,20 +114,17 @@ const CardsList = ({ parentBoard }) => {
     </Box>
   ) : (
     <Box sx={{ height: "100%" }}>
-      <Swiper spaceBetween={50} slidesPerView={1} direction="horizontal">
+      <Swiper
+        modules={[Pagination]}
+        pagination={true}
+        spaceBetween={50}
+        slidesPerView={1}
+        direction="horizontal"
+      >
         {cards.map((card) => {
           return (
             <SwiperSlide key={card.id} id={card.id} style={{ height: "100%" }}>
-              <Card
-                className="swiper-card"
-                elevation={4}
-                sx={
-                  {
-                    // maxHeight: "95%",
-                    // p: 2,
-                  }
-                }
-              >
+              <Card className="swiper-card" elevation={4}>
                 <CardItem
                   name={card.data.name}
                   id={card.id}
