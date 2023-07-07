@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import Button from "@mui/material/Button";
 
 // Custom components
@@ -21,10 +22,8 @@ const BoardsPage = ({ setActivePage }) => {
       <AppBar position="sticky" sx={{ py: [1, 3], bgcolor: "primary.light" }}>
         <Toolbar>
           <Box sx={{ mr: 2, "& img": { display: "block" } }}>
-            <img
-              width="32"
-              height="32"
-              src="./img/logo.png"
+            <PlaylistAddCheckRoundedIcon
+              sx={{ width: "40px", height: "40px" }}
               alt="The Logo of the Task Board App."
             />
           </Box>
