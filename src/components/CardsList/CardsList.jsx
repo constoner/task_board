@@ -24,6 +24,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 // Custom components
 import CardItem from "../CardItem/CardItem";
@@ -155,7 +156,7 @@ const CardsList = ({ parentBoard }) => {
               }}
             >
               <Typography>Add new task list</Typography>
-              <p>+</p>
+              <AddIcon />
             </Button>
           </Box>
         </SwiperSlide>

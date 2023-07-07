@@ -4,9 +4,10 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 // Custom components
-import Tasks from "../Tasks/Tasks";
+import TasksList from "../TasksList/TasksList";
 
 const CardItem = ({ name, id, buttonCB, loadedContent }) => {
   return (
@@ -35,14 +36,15 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
           {name}
         </Typography>
         <Box variant="body2">
-          <Tasks loadedContent={loadedContent} />
+          <TasksList loadedContent={loadedContent} />
         </Box>
       </CardContent>
       <CardActions
         sx={{ justifyContent: "flex-end", marginTop: "-16px", p: 2 }}
       >
-        <Button variant="outlined" onClick={() => buttonCB(id)}>
-          Remove
+        <Button variant="outlined" color="error" onClick={() => buttonCB(id)}>
+          <DeleteOutlineIcon sx={{ mr: 1 }} />
+          <span>Remove</span>
         </Button>
       </CardActions>
     </Box>

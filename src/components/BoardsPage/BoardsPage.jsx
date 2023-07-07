@@ -8,6 +8,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 // Custom components
 import BoardsList from "../BoardsList/BoardsList";
@@ -61,7 +62,8 @@ const BoardsPage = ({ setActivePage }) => {
             sx={{ mx: ["auto", 0] }}
             onClick={() => setModalState(true)}
           >
-            Add new board
+            <AddIcon sx={{ mr: 1 }} />
+            <span>Add new board</span>
           </Button>
           <Button
             variant="outlined"

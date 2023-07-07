@@ -7,11 +7,14 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
+import ClearIcon from "@mui/icons-material/Clear";
+import CreateIcon from "@mui/icons-material/Create";
+import { grey } from "@mui/material/colors";
 
 // Custom components
 import TaskItem from "../TaskItem/TaskItem";
 
-const Tasks = ({ loadedContent }) => {
+const TasksList = ({ loadedContent }) => {
   const [tasks, setTasks] = useState(loadedContent);
 
   // Push new doc to firebase
@@ -57,7 +60,9 @@ const Tasks = ({ loadedContent }) => {
               sx={{ display: "flex", justifyContent: "space-between" }}
             >
               <p>{data.name}</p>
-              <Button onClick={() => deleteTask(id)}>del</Button>
+              <Button onClick={() => deleteTask(id)} ariaLabel="Delete task.">
+                <ClearIcon sx={{ color: grey[500] }} />
+              </Button>
             </Box>
           </TaskItem>
         );
@@ -68,7 +73,8 @@ const Tasks = ({ loadedContent }) => {
             onClick={() => addTask("new-task")}
             sx={{ marginLeft: "-8px" }}
           >
-            Click to add new task
+            <CreateIcon sx={{ mr: 1 }} />
+            <span>Click to add new task</span>
           </Button>
         </Box>
       </TaskItem>
@@ -76,4 +82,4 @@ const Tasks = ({ loadedContent }) => {
   );
 };
 
-export default Tasks;
+export default TasksList;

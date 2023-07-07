@@ -15,6 +15,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
 
 // Temporary styles for modal window
 const style = {
@@ -130,14 +132,18 @@ const CustomModal = ({ modalState, setModalState }) => {
                 />
               </FormControl>
             </Box>
-            <Button onClick={() => createBoard()}>Save</Button>
+            <Button onClick={() => createBoard()}>
+              <DoneIcon sx={{ mr: 1 }} />
+              <span>Create</span>
+            </Button>
             <Button
               onClick={() => {
                 reset();
                 setModalState(false);
               }}
             >
-              Undo
+              <ClearIcon sx={{ mr: 1 }} />
+              <span>Cancel</span>
             </Button>
           </Container>
         </Box>

@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 //Custom components
 import CardsList from "../CardsList/CardsList";
@@ -52,7 +53,8 @@ const CardsPage = ({ parentBoard, setActivePage }) => {
             sx={{ minWidth: "50%", mx: ["auto", 0] }}
             onClick={() => setActivePage("boards")}
           >
-            Back
+            <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+            <span>Back</span>
           </Button>
         </Toolbar>
       </Box>

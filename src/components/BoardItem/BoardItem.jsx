@@ -5,6 +5,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { grey } from "@mui/material/colors";
 
 const BoardItem = ({ boardName, id, buttonCB }) => {
   return (
@@ -32,8 +34,8 @@ const BoardItem = ({ boardName, id, buttonCB }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="outlined" onClick={() => buttonCB(id)}>
-            Delete
+          <Button onClick={() => buttonCB(id)} ariaLabel="Delete board.">
+            <DeleteOutlineIcon sx={{ color: grey[500] }} />
           </Button>
         </CardActions>
       </Box>
