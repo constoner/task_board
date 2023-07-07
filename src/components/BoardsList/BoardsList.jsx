@@ -61,21 +61,27 @@ const BoardsList = ({ reloadTrigger }) => {
       <CircularProgress></CircularProgress>
     </Box>
   ) : !boards.length ? (
-    <Typography
-      variant="h2"
-      component="p"
-      align="center"
+    <Box
       sx={{
-        width: "min-content",
-        mx: "auto",
-        pt: "50%",
-        fontWeight: 500,
-        color: "grey.300",
-        textTransform: "uppercase",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
       }}
     >
-      no any boards yet...
-    </Typography>
+      <Typography
+        variant="h2"
+        component="p"
+        sx={{
+          fontWeight: 500,
+          color: "grey.300",
+          textAlign: "center",
+          textTransform: "uppercase",
+        }}
+      >
+        no any boards yet...
+      </Typography>
+    </Box>
   ) : (
     <Grid
       container
