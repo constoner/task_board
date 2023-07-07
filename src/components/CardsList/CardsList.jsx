@@ -111,18 +111,20 @@ const CardsList = ({ parentBoard }) => {
       <CircularProgress></CircularProgress>
     </Box>
   ) : (
-    <Box sx={{ height: "100%", py: 2 }}>
+    <Box sx={{ height: "100%" }}>
       <Swiper spaceBetween={50} slidesPerView={1} direction="horizontal">
         {cards.map((card) => {
           return (
             <SwiperSlide key={card.id} id={card.id} style={{ height: "100%" }}>
               <Card
+                className="swiper-card"
                 elevation={4}
-                sx={{
-                  maxHeight: "95%",
-                  p: 2,
-                  overflow: "auto",
-                }}
+                sx={
+                  {
+                    // maxHeight: "95%",
+                    // p: 2,
+                  }
+                }
               >
                 <CardItem
                   name={card.data.name}

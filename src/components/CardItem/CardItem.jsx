@@ -18,7 +18,7 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
         height: "100%",
       }}
     >
-      <CardContent sx={{ flexGrow: 0, flexShrink: 1 }}>
+      <CardContent sx={{ flexGrow: 0, flexShrink: 1, p: 2 }}>
         <Typography
           variant="h5"
           component="h2"
@@ -38,7 +38,9 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
           <Tasks loadedContent={loadedContent} />
         </Box>
       </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end", marginTop: "-16px" }}>
+      <CardActions
+        sx={{ justifyContent: "flex-end", marginTop: "-16px", p: 2 }}
+      >
         <Button variant="outlined" onClick={() => buttonCB(id)}>
           Remove
         </Button>

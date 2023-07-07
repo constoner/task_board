@@ -2,7 +2,6 @@
 import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../utils/transferData";
 import { useState } from "react";
-import { useEffect } from "react";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -47,8 +46,6 @@ const Tasks = ({ loadedContent }) => {
     <List
       sx={{
         width: "100%",
-        position: "relative",
-        overflow: "auto",
         "& ul": { padding: 0 },
       }}
     >
@@ -67,7 +64,10 @@ const Tasks = ({ loadedContent }) => {
       })}
       <TaskItem>
         <Box sx={{ display: "flex" }}>
-          <Button onClick={() => addTask("new-task")}>
+          <Button
+            onClick={() => addTask("new-task")}
+            sx={{ marginLeft: "-8px" }}
+          >
             Click to add new task
           </Button>
         </Box>
