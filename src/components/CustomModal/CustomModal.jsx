@@ -31,21 +31,13 @@ const style = {
   p: 4,
 };
 
-// Statuses for validation
-const STATUSES = {
-  default: "default",
-  error: "error",
-};
-
 // Custom modal window component
 const CustomModal = ({ modalState, setModalState }) => {
   // const [loadingState, setLoadingState] = useState(false);
   const [boards, setBoards] = useState("");
   const [boardName, setName] = useState("");
-  const [status, setStatus] = useState(STATUSES.default);
 
   const reset = () => {
-    setStatus(STATUSES.default);
     setName("");
   };
 
@@ -75,7 +67,6 @@ const CustomModal = ({ modalState, setModalState }) => {
 
     // Declining the empty input
     if (!boardName.trim().length) {
-      setStatus(STATUSES.error);
       return;
     }
 
@@ -124,7 +115,6 @@ const CustomModal = ({ modalState, setModalState }) => {
                   placeholder="New board name"
                   variant="filled"
                   value={boardName}
-                  status={status}
                   inputRef={(input) =>
                     input && setTimeout(() => input.focus(), 500)
                   }
