@@ -14,13 +14,14 @@ import Paper from "@mui/material/Paper";
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
 
-const BoardsList = ({ reloadTrigger }) => {
+const BoardsList = ({ reloadTrigger, triggerReload }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [boards, setBoards] = useState([]);
 
   // get docs from firebase
   useEffect(() => {
     setLoadingState(true);
+    triggerReload(false);
 
     let boards = [];
     getDocs(collection(db, "boards"))
@@ -34,7 +35,7 @@ const BoardsList = ({ reloadTrigger }) => {
       })
       .then(() => setBoards(boards))
       .finally(() => setLoadingState(false));
-  }, [reloadTrigger]);
+  }, [reloadTrigger, triggerReload]);
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {

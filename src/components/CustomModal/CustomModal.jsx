@@ -13,7 +13,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -26,13 +25,12 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
 // Custom modal window component
-const CustomModal = ({ modalState, setModalState }) => {
+const CustomModal = ({ modalState, setModalState, cb }) => {
   // const [loadingState, setLoadingState] = useState(false);
   const [boards, setBoards] = useState("");
   const [boardName, setName] = useState("");
@@ -76,6 +74,7 @@ const CustomModal = ({ modalState, setModalState }) => {
     // Closing the modal window
     reset();
     setModalState(false);
+    cb(true);
   };
 
   return (
@@ -88,7 +87,7 @@ const CustomModal = ({ modalState, setModalState }) => {
         evt.key === "Enter" && createBoard(evt);
       }}
       closeAfterTransition
-      keepMounted
+      keepMounted={true}
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: {
@@ -101,22 +100,17 @@ const CustomModal = ({ modalState, setModalState }) => {
       <Fade in={modalState}>
         <Box sx={style}>
           <Container>
-            <Typography variant="h6">New Board</Typography>
-            <Typography variant="body2" component="p">
-              Create a new board
-            </Typography>
+            <Typography variant="h6">Create a new board</Typography>
             <Box component="form" noValidate autoComplete="off">
               <FormControl>
                 <InputLabel></InputLabel>
-                <FormHelperText>Please, fill the name</FormHelperText>
                 <TextField
                   id="new-board-name"
                   label="New board name"
-                  placeholder="New board name"
                   variant="filled"
                   value={boardName}
                   inputRef={(input) =>
-                    input && setTimeout(() => input.focus(), 500)
+                    input && setTimeout(() => input.focus(), 250)
                   }
                   onChange={(evt) => setName(evt.target.value)}
                 />

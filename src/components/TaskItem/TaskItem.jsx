@@ -32,11 +32,13 @@ const TaskItem = ({ id, name, cb }) => {
 
   // Edit task
   const editTask = () => {
-    taskName && setEditState(false);
     setDoc(doc(db, "tasks", id), {
       name: taskName,
     });
+    taskName && setEditState(false);
   };
+
+  document.addEventListener("focusout", () => editTask());
 
   return (
     <li>

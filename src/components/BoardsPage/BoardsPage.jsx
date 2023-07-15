@@ -16,6 +16,7 @@ import CustomModal from "../CustomModal/CustomModal";
 
 const BoardsPage = ({ setActivePage }) => {
   const [modalState, setModalState] = useState(false);
+  const [addingNewBoard, triggerAddingNewBoard] = useState(false);
 
   return (
     <>
@@ -41,7 +42,10 @@ const BoardsPage = ({ setActivePage }) => {
             height: "100%",
           }}
         >
-          <BoardsList reloadTrigger={modalState} />
+          <BoardsList
+            reloadTrigger={addingNewBoard}
+            triggerReload={triggerAddingNewBoard}
+          />
         </Container>
       </Box>
 
@@ -76,7 +80,11 @@ const BoardsPage = ({ setActivePage }) => {
       </Box>
 
       {/* modal */}
-      <CustomModal modalState={modalState} setModalState={setModalState} />
+      <CustomModal
+        modalState={modalState}
+        setModalState={setModalState}
+        cb={triggerAddingNewBoard}
+      />
     </>
   );
 };
