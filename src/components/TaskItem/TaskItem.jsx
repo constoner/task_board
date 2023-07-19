@@ -33,7 +33,7 @@ const TaskItem = ({ id, name, cb }) => {
   // Edit task
   const editTask = () => {
     setDoc(doc(db, "tasks", id), {
-      name: taskName,
+      name: taskName.trim(),
     });
     taskName && setEditState(false);
   };
