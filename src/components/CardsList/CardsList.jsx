@@ -67,6 +67,7 @@ const CardsList = ({ parentBoard }) => {
 
   // Push new doc to firebase
   const addCard = (dataName) => {
+    // console.log(cards);
     setLoadingState(true);
     addDoc(collection(db, "cards"), {
       name: dataName,
@@ -82,8 +83,12 @@ const CardsList = ({ parentBoard }) => {
           ...cards,
         ])
       )
-      .finally(() => setLoadingState(false));
+      // .then(() => console.log("card created"))
+      .then(() => setLoadingState(false));
+    // .then(() => console.log("cards updated"));
   };
+
+  useEffect(() => console.log(cards), [cards]);
 
   // Delete doc from firebase
   const deleteCard = (dataID) => {
@@ -147,7 +152,7 @@ const CardsList = ({ parentBoard }) => {
             }}
           >
             <Button
-              onClick={() => addCard("new-test-card")}
+              onClick={() => setTimeout(() => addCard("new-test-card"), 100)}
               sx={{
                 display: "flex",
                 flexDirection: "column",

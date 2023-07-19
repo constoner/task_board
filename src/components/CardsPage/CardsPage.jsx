@@ -32,7 +32,7 @@ const CardsPage = ({ parentBoard, setActivePage }) => {
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
-        <CardsList parentBoard="HhZOSnz7NAZp4sPTYSsa" />
+        <CardsList parentBoard={parentBoard} />
       </Box>
       {/* footer */}
       <Box
