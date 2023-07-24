@@ -56,12 +56,12 @@ const NameForm = ({ id, name, collection }) => {
         {!editState ? (
           <Button
             sx={{ ml: "auto", color: grey[500] }}
-            onClick={() => setTimeout(() => setEditState(true), 100)}
+            onClick={() => setEditState(true)}
           >
             <CreateIcon />
           </Button>
         ) : (
-          <Button sx={{ ml: "auto" }} onClick={() => editName()}>
+          <Button sx={{ ml: "auto" }}>
             <DoneIcon />
           </Button>
         )}

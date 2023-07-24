@@ -58,12 +58,12 @@ const TaskItem = ({ id, name, cb }) => {
         {!editState ? (
           <Button
             sx={{ ml: "auto", color: grey[500] }}
-            onClick={() => setTimeout(() => setEditState(true), 100)}
+            onClick={() => setEditState(true)}
           >
             <CreateIcon />
           </Button>
         ) : (
-          <Button sx={{ ml: "auto" }} onClick={() => editTask()}>
+          <Button sx={{ ml: "auto" }}>
             <DoneIcon />
           </Button>
         )}
