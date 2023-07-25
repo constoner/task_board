@@ -58,7 +58,18 @@ const TaskItem = ({ id, name, cb }) => {
         {!editState ? (
           <Button
             sx={{ ml: "auto", color: grey[500] }}
-            onClick={() => setEditState(true)}
+            onClick={() =>
+              editState
+                ? () => {
+                    let editStateInterval = setInterval(() => {
+                      if (!editState) {
+                        clearInterval(editStateInterval);
+                        setEditState(true);
+                      }
+                    }, 100);
+                  }
+                : setEditState(true)
+            }
           >
             <CreateIcon />
           </Button>
