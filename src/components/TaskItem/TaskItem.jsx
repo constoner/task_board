@@ -8,9 +8,9 @@ import { db } from "../../utils/transferData";
 // MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CreateIcon from "@mui/icons-material/Create";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import DoneIcon from "@mui/icons-material/Done";
+import Create from "@mui/icons-material/Create";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import Done from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
 
 import { TextField } from "@mui/material";
@@ -31,14 +31,14 @@ const TaskItem = ({ id, name, cb }) => {
   );
 
   // Edit task
-  const editTask = () => {
+  const editTask = (id) => {
     setDoc(doc(db, "tasks", id), {
       name: taskName.trim(),
     });
     taskName && setEditState(false);
   };
 
-  document.addEventListener("focusout", () => editTask());
+  document.addEventListener("focusout", () => editTask(id));
 
   return (
     <li>
@@ -58,30 +58,24 @@ const TaskItem = ({ id, name, cb }) => {
         {!editState ? (
           <Button
             sx={{ ml: "auto", color: grey[500] }}
+            aria-label="edit task."
             onClick={() =>
               editState
-                ? () => {
-                    let editStateInterval = setInterval(() => {
-                      if (!editState) {
-                        clearInterval(editStateInterval);
-                        setEditState(true);
-                      }
-                    }, 100);
-                  }
+                ? setTimeout(() => setEditState(true), 250)
                 : setEditState(true)
             }
           >
-            <CreateIcon />
+            <Create />
           </Button>
         ) : (
-          <Button sx={{ ml: "auto" }}>
-            <DoneIcon />
+          <Button sx={{ ml: "auto" }} aria-label="done editing.">
+            <Done />
           </Button>
         )}
 
         {/* Delete */}
         <Button onClick={() => cb(id)} aria-label="Delete task.">
-          <DeleteOutlineIcon sx={{ color: grey[500] }} />
+          <DeleteOutline sx={{ color: grey[500] }} />
         </Button>
       </Box>
     </li>
