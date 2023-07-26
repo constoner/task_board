@@ -9,6 +9,7 @@ import { db } from "../../utils/transferData";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Create from "@mui/icons-material/Create";
+import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import Done from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
@@ -18,15 +19,26 @@ import { TextField } from "@mui/material";
 const TaskItem = ({ id, name, cb }) => {
   const [editState, setEditState] = useState(false);
   const [taskName, setTaskName] = useState(name);
+  const [deleting, setDeleting] = useState(false);
 
   if (taskName === "") {
     setTimeout(() => setEditState(true), 0);
-    // setEditState(true);
   }
 
   const Name = ({ children }) => (
-    <Box component="p" sx={{ pl: "14px" }}>
-      {children}
+    <Box
+      component="p"
+      sx={{
+        boxSizing: "border-box",
+        margin: 0,
+        padding: "16.5px 14px",
+        fontSize: "1rem",
+        fontWeight: 400,
+        lineHeight: "1.4375em",
+        letterSpacing: "0.00938em",
+      }}
+    >
+      <span>{children}</span>
     </Box>
   );
 
@@ -38,7 +50,9 @@ const TaskItem = ({ id, name, cb }) => {
     taskName && setEditState(false);
   };
 
-  document.addEventListener("focusout", () => editTask(id));
+  document.addEventListener("focusout", () =>
+    setTimeout(() => editTask(id), 0)
+  );
 
   return (
     <li>
@@ -48,6 +62,8 @@ const TaskItem = ({ id, name, cb }) => {
         ) : (
           <TextField
             placeholder="input new task"
+            multiline
+            maxRows={10}
             inputRef={(input) => input && input.focus()}
             value={taskName}
             onChange={(evt) => setTaskName(evt.target.value)}
@@ -59,7 +75,10 @@ const TaskItem = ({ id, name, cb }) => {
           <Button
             sx={{ ml: "auto", color: grey[500] }}
             aria-label="edit task."
-            onClick={() => setTimeout(() => setEditState(true), 250)}
+            onClick={(evt) => {
+              console.log(evt.target);
+              setTimeout(() => setEditState(true), 100);
+            }}
           >
             <Create />
           </Button>
@@ -70,8 +89,18 @@ const TaskItem = ({ id, name, cb }) => {
         )}
 
         {/* Delete */}
-        <Button onClick={() => cb(id)} aria-label="Delete task.">
-          <DeleteOutline sx={{ color: grey[500] }} />
+        <Button onClick={() => cb(id, setDeleting)} aria-label="Delete task.">
+          {!deleting ? (
+            <DeleteOutline sx={{ color: grey[500] }} />
+          ) : (
+            <CircularProgress
+              sx={{
+                width: "24px !important",
+                height: "24px !important",
+                color: grey[500],
+              }}
+            />
+          )}
         </Button>
       </Box>
     </li>

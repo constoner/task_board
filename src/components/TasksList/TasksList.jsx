@@ -35,11 +35,13 @@ const TasksList = ({ loadedContent }) => {
   };
 
   // Delete doc from firebase
-  const deleteTask = (dataID) => {
+  const deleteTask = (dataID, cb) => {
+    cb(true);
     deleteDoc(doc(db, "tasks", dataID)).then(() => {
       const removedTaskIndex = tasks.findIndex((task) => {
         return task.id === dataID;
       });
+      cb(false);
       tasks.splice(removedTaskIndex, 1);
       setTasks([...tasks]);
     });
