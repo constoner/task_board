@@ -59,11 +59,7 @@ const TaskItem = ({ id, name, cb }) => {
           <Button
             sx={{ ml: "auto", color: grey[500] }}
             aria-label="edit task."
-            onClick={() =>
-              editState
-                ? setTimeout(() => setEditState(true), 250)
-                : setEditState(true)
-            }
+            onClick={() => setTimeout(() => setEditState(true), 250)}
           >
             <Create />
           </Button>
