@@ -43,16 +43,12 @@ const TaskItem = ({ id, name, cb }) => {
   );
 
   // Edit task
-  const editTask = (id) => {
+  const pushTask = (id) => {
     setDoc(doc(db, "tasks", id), {
       name: taskName.trim(),
     });
-    taskName && setEditState(false);
+    setTimeout(() => taskName && setEditState(false), 100);
   };
-
-  document.addEventListener("focusout", () =>
-    setTimeout(() => editTask(id), 0)
-  );
 
   return (
     <li>
@@ -67,6 +63,9 @@ const TaskItem = ({ id, name, cb }) => {
             inputRef={(input) => input && input.focus()}
             value={taskName}
             onChange={(evt) => setTaskName(evt.target.value)}
+            onBlur={() => {
+              pushTask(id);
+            }}
           />
         )}
 
@@ -75,9 +74,8 @@ const TaskItem = ({ id, name, cb }) => {
           <Button
             sx={{ ml: "auto", color: grey[500] }}
             aria-label="edit task."
-            onClick={(evt) => {
-              console.log(evt.target);
-              setTimeout(() => setEditState(true), 100);
+            onClick={() => {
+              setEditState(true);
             }}
           >
             <Create />
