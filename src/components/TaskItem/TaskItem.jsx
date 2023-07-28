@@ -47,7 +47,7 @@ const TaskItem = ({ id, name, cb }) => {
     setDoc(doc(db, "tasks", id), {
       name: taskName.trim(),
     });
-    setTimeout(() => taskName && setEditState(false), 100);
+    setTimeout(() => taskName && setEditState(false), 200);
   };
 
   return (
