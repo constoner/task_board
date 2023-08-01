@@ -14,7 +14,7 @@ import { grey } from "@mui/material/colors";
 
 import { TextField } from "@mui/material";
 
-const NameForm = ({ id, name, collection }) => {
+const EditableName = ({ id, name, collection }) => {
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
 
@@ -70,4 +70,4 @@ const NameForm = ({ id, name, collection }) => {
   );
 };
 
-export default NameForm;
+export default EditableName;

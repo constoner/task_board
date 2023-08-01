@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 // Custom components
-import NameForm from "../NameForm/NameForm";
+import EditableName from "../EditableName/EditableName";
 import TasksList from "../TasksList/TasksList";
 
 const CardItem = ({ name, id, buttonCB, loadedContent }) => {
@@ -34,7 +34,7 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
           }}
           title={name}
         >
-          <NameForm id={id} name={name} collection="cards" />
+          <EditableName id={id} name={name} collection="cards" />
         </Typography>
         <Box variant="body2">
           <TasksList loadedContent={loadedContent} />
