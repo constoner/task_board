@@ -8,35 +8,47 @@ import { db } from "../../utils/transferData";
 // MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CreateIcon from "@mui/icons-material/Create";
-import DoneIcon from "@mui/icons-material/Done";
+import Create from "@mui/icons-material/Create";
+import CircularProgress from "@mui/material/CircularProgress";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import Done from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
 
 import { TextField } from "@mui/material";
 
-const EditableName = ({ id, name, collection }) => {
+const EditableName = ({ id, name, collection, cb = false }) => {
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
+  const [deleting, setDeleting] = useState(false);
 
   if (nameValue === "") {
     setTimeout(() => setEditState(true), 0);
-    // setEditState(true);
   }
 
   const Name = ({ children }) => (
-    <Box component="p" sx={{ pl: "14px" }}>
-      {children}
+    <Box
+      component="p"
+      sx={{
+        boxSizing: "border-box",
+        margin: 0,
+        padding: "16.5px 14px",
+        fontSize: "1rem",
+        lineHeight: "1.4375em",
+        letterSpacing: "0.00938em",
+        textTransform: () => (!cb ? "uppercase" : "unset"),
+      }}
+    >
+      <span>{children}</span>
     </Box>
   );
 
-  // Edit task
-  const editName = () => {
+  // Edit name
+  const pushName = (id) => {
     setDoc(doc(db, collection, id), {
       name: nameValue.trim(),
-    }).then(() => nameValue && setEditState(false));
+    });
+    setTimeout(() => nameValue && setEditState(false), 100); // 200ms not compitable
   };
-
-  document.addEventListener("focusout", () => editName());
 
   return (
     <li>
@@ -45,10 +57,18 @@ const EditableName = ({ id, name, collection }) => {
           <Name>{nameValue}</Name>
         ) : (
           <TextField
-            placeholder="input new task"
+            placeholder={`input new ${collection.slice(
+              0,
+              collection.length - 1
+            )}.`}
+            multiline
+            maxRows={10}
             inputRef={(input) => input && input.focus()}
             value={nameValue}
             onChange={(evt) => setNameValue(evt.target.value)}
+            onBlur={() => {
+              pushName(id);
+            }}
           />
         )}
 
@@ -56,15 +76,41 @@ const EditableName = ({ id, name, collection }) => {
         {!editState ? (
           <Button
             sx={{ ml: "auto", color: grey[500] }}
-            onClick={() => setEditState(true)}
+            aria-label={`edit ${collection.slice(
+              0,
+              collection.length - 1
+            )} name.`}
+            onClick={() => {
+              setEditState(true);
+            }}
           >
-            <CreateIcon />
+            <Create />
           </Button>
         ) : (
-          <Button sx={{ ml: "auto" }}>
-            <DoneIcon />
+          <Button sx={{ ml: "auto" }} aria-label="done editing.">
+            <Done />
           </Button>
         )}
+
+        {/* Delete */}
+        {cb ? (
+          <Button
+            onClick={() => cb(id, setDeleting)}
+            aria-label={`Delete ${collection.slice(0, collection.length - 1)}.`}
+          >
+            {!deleting ? (
+              <DeleteOutline sx={{ color: grey[500] }} />
+            ) : (
+              <CircularProgress
+                sx={{
+                  width: "24px !important",
+                  height: "24px !important",
+                  color: grey[500],
+                }}
+              />
+            )}
+          </Button>
+        ) : null}
       </Box>
     </li>
   );

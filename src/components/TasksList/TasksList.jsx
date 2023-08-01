@@ -12,7 +12,7 @@ import List from "@mui/material/List";
 import AddIcon from "@mui/icons-material/Add";
 
 // Custom components
-import TaskItem from "../TaskItem/TaskItem";
+import EditableName from "../EditableName/EditableName";
 
 const TasksList = ({ loadedContent }) => {
   const [tasks, setTasks] = useState(loadedContent);
@@ -55,7 +55,15 @@ const TasksList = ({ loadedContent }) => {
       }}
     >
       {tasks.map(({ id, data }) => {
-        return <TaskItem key={id} id={id} name={data.name} cb={deleteTask} />;
+        return (
+          <EditableName
+            key={id}
+            id={id}
+            name={data.name}
+            collection="tasks"
+            cb={deleteTask}
+          />
+        );
       })}
 
       {/* Add new task */}
