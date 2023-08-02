@@ -20,7 +20,7 @@ const page = {
 
 // Component App
 const App = () => {
-  const [activePage, setActivePage] = useState(page.cards);
+  const [activePage, setActivePage] = useState(page.boards);
 
   return (
     <>

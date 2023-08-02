@@ -36,9 +36,17 @@ const EditableName = ({ id, name, collection, cb = false }) => {
         lineHeight: "1.4375em",
         letterSpacing: "0.00938em",
         textTransform: () => (!cb ? "uppercase" : "unset"),
+        overflow: "hidden",
+        overflowWrap: "break-word",
       }}
     >
-      <span>{children}</span>
+      <Box
+        component="span"
+        title={children}
+        sx={{ overflowWrap: "break-word" }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 
@@ -47,72 +55,70 @@ const EditableName = ({ id, name, collection, cb = false }) => {
     setDoc(doc(db, collection, id), {
       name: nameValue.trim(),
     });
-    setTimeout(() => nameValue && setEditState(false), 100); // 200ms not compitable
+    setTimeout(() => nameValue && setEditState(false), 150); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long
   };
 
   return (
-    <li>
-      <Box id={id} sx={{ display: "flex" }}>
-        {!editState ? (
-          <Name>{nameValue}</Name>
-        ) : (
-          <TextField
-            placeholder={`input new ${collection.slice(
-              0,
-              collection.length - 1
-            )}.`}
-            multiline
-            maxRows={10}
-            inputRef={(input) => input && input.focus()}
-            value={nameValue}
-            onChange={(evt) => setNameValue(evt.target.value)}
-            onBlur={() => {
-              pushName(id);
-            }}
-          />
-        )}
+    <Box id={id} sx={{ display: "flex" }}>
+      {!editState ? (
+        <Name>{nameValue}</Name>
+      ) : (
+        <TextField
+          placeholder={`input new ${collection.slice(
+            0,
+            collection.length - 1
+          )}.`}
+          multiline
+          maxRows={10}
+          inputRef={(input) => input && input.focus()}
+          value={nameValue}
+          onChange={(evt) => setNameValue(evt.target.value)}
+          onBlur={() => {
+            pushName(id);
+          }}
+        />
+      )}
 
-        {/* Edit */}
-        {!editState ? (
-          <Button
-            sx={{ ml: "auto", color: grey[500] }}
-            aria-label={`edit ${collection.slice(
-              0,
-              collection.length - 1
-            )} name.`}
-            onClick={() => {
-              setEditState(true);
-            }}
-          >
-            <Create />
-          </Button>
-        ) : (
-          <Button sx={{ ml: "auto" }} aria-label="done editing.">
-            <Done />
-          </Button>
-        )}
+      {/* Edit */}
+      {!editState ? (
+        <Button
+          sx={{ ml: "auto", color: grey[500] }}
+          aria-label={`edit ${collection.slice(
+            0,
+            collection.length - 1
+          )} name.`}
+          onClick={() => {
+            setEditState(true);
+          }}
+        >
+          <Create />
+        </Button>
+      ) : (
+        <Button sx={{ ml: "auto" }} aria-label="done editing.">
+          <Done />
+        </Button>
+      )}
 
-        {/* Delete */}
-        {cb ? (
-          <Button
-            onClick={() => cb(id, setDeleting)}
-            aria-label={`Delete ${collection.slice(0, collection.length - 1)}.`}
-          >
-            {!deleting ? (
-              <DeleteOutline sx={{ color: grey[500] }} />
-            ) : (
-              <CircularProgress
-                sx={{
-                  width: "24px !important",
-                  height: "24px !important",
-                  color: grey[500],
-                }}
-              />
-            )}
-          </Button>
-        ) : null}
-      </Box>
-    </li>
+      {/* Delete */}
+      {cb ? (
+        <Button
+          onClick={() => cb(id, setDeleting)}
+          aria-label={`Delete ${collection.slice(0, collection.length - 1)}.`}
+        >
+          {!deleting ? (
+            <DeleteOutline sx={{ color: grey[500] }} />
+          ) : (
+            <CircularProgress
+              sx={{
+                width: "24px !important",
+                height: "24px !important",
+                color: grey[500],
+              }}
+            />
+          )}
+        </Button>
+      ) : null}
+    </Box>
   );
 };
 

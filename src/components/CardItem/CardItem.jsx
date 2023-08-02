@@ -2,7 +2,6 @@
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
@@ -21,21 +20,16 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
       }}
     >
       <CardContent sx={{ flexGrow: 0, flexShrink: 1, p: 2 }}>
-        <Typography
-          variant="h5"
-          component="h2"
+        <Box
           sx={{
             mb: 1,
             fontSize: 18,
             fontWeight: 500,
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
           }}
           title={name}
         >
           <EditableName id={id} name={name} collection="cards" />
-        </Typography>
+        </Box>
         <Box variant="body2">
           <TasksList loadedContent={loadedContent} />
         </Box>

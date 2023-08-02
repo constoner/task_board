@@ -15,10 +15,10 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../utils/transferData";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // MUI components
+import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -33,23 +33,9 @@ const CardsList = ({ parentBoard }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [cards, setCards] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const swiperRef = useRef(null);
 
   // get docs from firebase
-  useEffect(() => {
-    let cards = [];
-    getDocs(collection(db, "cards"))
-      .then((result) => {
-        result.forEach((doc) => {
-          cards.push({
-            id: doc.id,
-            data: { name: doc.data().name },
-          });
-        });
-      })
-      .then(() => setCards(cards));
-    // .finally(() => setLoadingState(false));
-  }, []);
-
   useEffect(() => {
     let tasks = [];
     getDocs(collection(db, "tasks"))
@@ -65,6 +51,21 @@ const CardsList = ({ parentBoard }) => {
       .finally(() => setLoadingState(false));
   }, []);
 
+  useEffect(() => {
+    let cards = [];
+    getDocs(collection(db, "cards"))
+      .then((result) => {
+        result.forEach((doc) => {
+          cards.push({
+            id: doc.id,
+            data: { name: doc.data().name },
+          });
+        });
+      })
+      .then(() => setCards(cards));
+    // .finally(() => setLoadingState(false));
+  }, []);
+
   // Push new doc to firebase
   const addCard = (dataName) => {
     setLoadingState(true);
@@ -75,25 +76,23 @@ const CardsList = ({ parentBoard }) => {
       .then((docRef) => getDoc(docRef))
       .then((doc) =>
         setCards([
+          ...cards,
           {
             id: doc.id,
             data: doc.data(),
           },
-          ...cards,
         ])
       )
       .then(() => setLoadingState(false));
   };
-
-  useEffect(() => console.log(cards), [cards]);
 
   // Delete doc from firebase
   const deleteCard = (dataID) => {
     setLoadingState(true);
     deleteDoc(doc(db, "cards", dataID))
       .then(() => {
-        const removedCardIndex = cards.findIndex((task) => {
-          return task.id === dataID;
+        const removedCardIndex = cards.findIndex((card) => {
+          return card.id === dataID;
         });
         cards.splice(removedCardIndex, 1);
         setCards([...cards]);
@@ -102,68 +101,68 @@ const CardsList = ({ parentBoard }) => {
   };
 
   // Component
-  return loadingState ? (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        fontWeight: 500,
-        color: "grey.300",
-      }}
-    >
-      <CircularProgress></CircularProgress>
-    </Box>
-  ) : (
-    <Box sx={{ height: "100%" }}>
-      <Swiper
-        modules={[Pagination]}
-        pagination={true}
-        spaceBetween={50}
-        slidesPerView={1}
-        direction="horizontal"
+  return (
+    <>
+      <Backdrop
+        sx={{ backgroundColor: "rgba(255, 255, 255, 0.8)", zIndex: 100 }}
+        open={loadingState}
       >
-        {cards.map((card) => {
-          return (
-            <SwiperSlide key={card.id} id={card.id} style={{ height: "100%" }}>
-              <Card className="swiper-card" elevation={4}>
-                <CardItem
-                  name={card.data.name}
-                  id={card.id}
-                  buttonCB={deleteCard}
-                  loadedContent={tasks}
-                />
-              </Card>
-            </SwiperSlide>
-          );
-        })}
-        <SwiperSlide>
-          <Box
-            sx={{
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              onClick={() => setTimeout(() => addCard("new-test-card"), 100)}
+        <CircularProgress />
+      </Backdrop>
+      <Box sx={{ height: "100%" }}>
+        <Swiper
+          ref={swiperRef}
+          modules={[Pagination]}
+          pagination={true}
+          spaceBetween={50}
+          slidesPerView={1}
+          direction="horizontal"
+        >
+          {cards.map((card) => {
+            return (
+              <SwiperSlide
+                key={card.id}
+                id={card.id}
+                style={{ height: "100%" }}
+              >
+                <Card className="swiper-card" elevation={4}>
+                  <CardItem
+                    name={card.data.name}
+                    id={card.id}
+                    buttonCB={deleteCard}
+                    loadedContent={tasks}
+                  />
+                </Card>
+              </SwiperSlide>
+            );
+          })}
+          <SwiperSlide>
+            <Box
               sx={{
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Typography>Add new task list</Typography>
-              <AddIcon />
-            </Button>
-          </Box>
-        </SwiperSlide>
-      </Swiper>
-    </Box>
+              <Button
+                onClick={() => setTimeout(() => addCard("New task list"), 100)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography>Add new task list</Typography>
+                <AddIcon />
+              </Button>
+            </Box>
+          </SwiperSlide>
+        </Swiper>
+      </Box>
+    </>
   );
 };
 

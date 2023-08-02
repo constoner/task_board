@@ -56,13 +56,15 @@ const TasksList = ({ loadedContent }) => {
     >
       {tasks.map(({ id, data }) => {
         return (
-          <EditableName
-            key={id}
-            id={id}
-            name={data.name}
-            collection="tasks"
-            cb={deleteTask}
-          />
+          <li>
+            <EditableName
+              key={id}
+              id={id}
+              name={data.name}
+              collection="tasks"
+              cb={deleteTask}
+            />
+          </li>
         );
       })}
 
