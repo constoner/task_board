@@ -21,6 +21,12 @@ const page = {
 // Component App
 const App = () => {
   const [activePage, setActivePage] = useState(page.boards);
+  const [activeBoard, setActiveBoard] = useState({});
+
+  const showCards = (boardsArray, boardID) => {
+    setActiveBoard(...boardsArray.filter(({ id }) => id === boardID));
+    setActivePage(page.cards);
+  };
 
   return (
     <>
@@ -30,12 +36,9 @@ const App = () => {
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
         {activePage === page.boards ? (
-          <BoardsPage setActivePage={setActivePage} />
+          <BoardsPage onBoardClick={showCards} />
         ) : (
-          <CardsPage
-            parentBoard={"HhZOSnz7NAZp4sPTYSsa"}
-            setActivePage={setActivePage}
-          />
+          <CardsPage activeBoard={activeBoard} goBack={setActivePage} />
         )}
       </Box>
     </>

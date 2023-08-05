@@ -10,6 +10,8 @@ import {
   collection,
   doc,
   getDocs,
+  query,
+  where,
   getDoc,
   addDoc,
   deleteDoc,
@@ -29,7 +31,7 @@ import AddIcon from "@mui/icons-material/Add";
 // Custom components
 import CardItem from "../CardItem/CardItem";
 
-const CardsList = ({ parentBoard }) => {
+const CardsList = ({ activeBoard }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [cards, setCards] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -53,7 +55,9 @@ const CardsList = ({ parentBoard }) => {
 
   useEffect(() => {
     let cards = [];
-    getDocs(collection(db, "cards"))
+    getDocs(
+      query(collection(db, "cards"), where("boardID", "==", activeBoard.id))
+    )
       .then((result) => {
         result.forEach((doc) => {
           cards.push({
@@ -64,23 +68,23 @@ const CardsList = ({ parentBoard }) => {
       })
       .then(() => setCards(cards));
     // .finally(() => setLoadingState(false));
-  }, []);
+  });
 
   // Push new doc to firebase
   const addCard = (dataName) => {
     setLoadingState(true);
     addDoc(collection(db, "cards"), {
       name: dataName,
-      boardID: parentBoard,
+      boardID: activeBoard.id,
     })
       .then((docRef) => getDoc(docRef))
       .then((doc) =>
         setCards([
-          ...cards,
           {
             id: doc.id,
             data: doc.data(),
           },
+          ...cards,
         ])
       )
       .then(() => setLoadingState(false));

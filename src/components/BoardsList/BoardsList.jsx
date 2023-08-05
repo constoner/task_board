@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
 
-const BoardsList = ({ reloadTrigger, triggerReload }) => {
+const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [boards, setBoards] = useState([]);
 
@@ -39,6 +39,14 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {
+    getDocs(collection(db, "cards")).then((result) =>
+      result.forEach((card) => {
+        if (card.data().boardID === dataID) {
+          deleteDoc(doc(db, "cards", card.id));
+        }
+      })
+    );
+
     deleteDoc(doc(db, "boards", dataID)).then(() => {
       const removedBoardIndex = boards.findIndex((boardItem) => {
         return boardItem.id === dataID;
@@ -94,7 +102,13 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
         return (
           <Grid item width={["100%", "50%", "25%"]} key={id}>
             <Paper elevation={0}>
-              <BoardItem boardName={data.name} id={id} buttonCB={deleteBoard} />
+              <BoardItem
+                boards={boards}
+                boardName={data.name}
+                id={id}
+                buttonCB={deleteBoard}
+                onBoardClick={onBoardClick}
+              />
             </Paper>
           </Grid>
         );

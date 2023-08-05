@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
-const BoardsPage = ({ setActivePage }) => {
+const BoardsPage = ({ onBoardClick }) => {
   const [modalState, setModalState] = useState(false);
   const [addingNewBoard, triggerAddingNewBoard] = useState(false);
 
@@ -45,6 +45,7 @@ const BoardsPage = ({ setActivePage }) => {
           <BoardsList
             reloadTrigger={addingNewBoard}
             triggerReload={triggerAddingNewBoard}
+            onBoardClick={onBoardClick}
           />
         </Container>
       </Box>
@@ -68,13 +69,6 @@ const BoardsPage = ({ setActivePage }) => {
           >
             <AddIcon sx={{ mr: 1 }} />
             <span>Add new board</span>
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{ mx: ["auto", 0] }}
-            onClick={() => setActivePage("cards")}
-          >
-            to cards
           </Button>
         </Toolbar>
       </Box>

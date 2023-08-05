@@ -56,9 +56,8 @@ const TasksList = ({ loadedContent }) => {
     >
       {tasks.map(({ id, data }) => {
         return (
-          <li>
+          <li key={id}>
             <EditableName
-              key={id}
               id={id}
               name={data.name}
               collection="tasks"
@@ -69,7 +68,7 @@ const TasksList = ({ loadedContent }) => {
       })}
 
       {/* Add new task */}
-      <li>
+      <li key="add">
         <Box
           sx={{
             display: "flex",

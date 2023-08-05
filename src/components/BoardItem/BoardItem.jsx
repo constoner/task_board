@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { grey } from "@mui/material/colors";
 
-const BoardItem = ({ boardName, id, buttonCB }) => {
+const BoardItem = ({ boards, boardName, id, buttonCB, onBoardClick }) => {
   return (
     <Card>
       <Box
@@ -18,7 +18,10 @@ const BoardItem = ({ boardName, id, buttonCB }) => {
           flexDirection: ["row", "row", "column"],
         }}
       >
-        <CardContent sx={{ flexGrow: 0, overflow: "hidden" }}>
+        <CardContent
+          sx={{ flexGrow: 1, overflow: "hidden" }}
+          onClick={() => onBoardClick(boards, id)}
+        >
           <Typography
             variant="h5"
             component="h2"

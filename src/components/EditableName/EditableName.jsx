@@ -52,9 +52,13 @@ const EditableName = ({ id, name, collection, cb = false }) => {
 
   // Edit name
   const pushName = (id) => {
-    setDoc(doc(db, collection, id), {
-      name: nameValue.trim(),
-    });
+    setDoc(
+      doc(db, collection, id),
+      {
+        name: nameValue.trim(),
+      },
+      { merge: true }
+    );
     setTimeout(() => nameValue && setEditState(false), 150); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long
   };
 

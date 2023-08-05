@@ -10,7 +10,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 //Custom components
 import CardsList from "../CardsList/CardsList";
 
-const CardsPage = ({ parentBoard, setActivePage }) => {
+const CardsPage = ({ activeBoard, goBack }) => {
   return (
     <>
       {/* header */}
@@ -23,7 +23,7 @@ const CardsPage = ({ parentBoard, setActivePage }) => {
             />
           </Box>
           <Typography variant="h5" component="h1">
-            Board_Name
+            {activeBoard.data.name}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -32,7 +32,7 @@ const CardsPage = ({ parentBoard, setActivePage }) => {
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
-        <CardsList parentBoard={parentBoard} />
+        <CardsList activeBoard={activeBoard} />
       </Box>
       {/* footer */}
       <Box
@@ -51,7 +51,7 @@ const CardsPage = ({ parentBoard, setActivePage }) => {
           <Button
             variant="contained"
             sx={{ minWidth: "50%", mx: ["auto", 0] }}
-            onClick={() => setActivePage("boards")}
+            onClick={() => goBack("boards")}
           >
             <KeyboardBackspaceIcon sx={{ mr: 1 }} />
             <span>Back</span>
