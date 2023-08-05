@@ -70,7 +70,12 @@ const TasksList = ({ loadedContent }) => {
 
       {/* Add new task */}
       <li>
-        <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            display: "flex",
+            px: "14px",
+          }}
+        >
           <Button onClick={() => addTask()} sx={{ marginLeft: "-8px" }}>
             <AddIcon sx={{ mr: 1 }} />
             <span>Click to add new task</span>
