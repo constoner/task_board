@@ -45,13 +45,16 @@ const CardsList = ({ activeBoard }) => {
         result.forEach((doc) => {
           tasks.push({
             id: doc.id,
-            data: { name: doc.data().name },
+            data: {
+              name: doc.data().name,
+              cardID: doc.data().cardID,
+            },
           });
         });
       })
-      .then(() => setTasks(tasks))
-      .finally(() => setLoadingState(false));
-  }, []);
+      .then(() => setTasks(tasks));
+    // .finally(() => setLoadingState(false));
+  });
 
   useEffect(() => {
     let cards = [];
@@ -66,8 +69,8 @@ const CardsList = ({ activeBoard }) => {
           });
         });
       })
-      .then(() => setCards(cards));
-    // .finally(() => setLoadingState(false));
+      .then(() => setCards(cards))
+      .finally(() => setLoadingState(false));
   });
 
   // Push new doc to firebase
@@ -123,6 +126,9 @@ const CardsList = ({ activeBoard }) => {
           direction="horizontal"
         >
           {cards.map((card) => {
+            const taskData = tasks.filter(
+              (taskItem) => taskItem.data.cardID === card.id
+            );
             return (
               <SwiperSlide
                 key={card.id}
@@ -134,7 +140,7 @@ const CardsList = ({ activeBoard }) => {
                     name={card.data.name}
                     id={card.id}
                     buttonCB={deleteCard}
-                    loadedContent={tasks}
+                    taskData={taskData}
                   />
                 </Card>
               </SwiperSlide>

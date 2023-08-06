@@ -14,13 +14,14 @@ import AddIcon from "@mui/icons-material/Add";
 // Custom components
 import EditableName from "../EditableName/EditableName";
 
-const TasksList = ({ loadedContent }) => {
-  const [tasks, setTasks] = useState(loadedContent);
+const TasksList = ({ taskData, cardID }) => {
+  const [tasks, setTasks] = useState(taskData);
 
   // Push new doc to firebase
   const addTask = () => {
     addDoc(collection(db, "tasks"), {
       name: "",
+      cardID: cardID,
     })
       .then((docRef) => getDoc(docRef))
       .then((doc) => {

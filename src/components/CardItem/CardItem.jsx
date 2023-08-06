@@ -10,7 +10,7 @@ import { grey } from "@mui/material/colors";
 import EditableName from "../EditableName/EditableName";
 import TasksList from "../TasksList/TasksList";
 
-const CardItem = ({ name, id, buttonCB, loadedContent }) => {
+const CardItem = ({ name, id, buttonCB, taskData }) => {
   return (
     <Box
       sx={{
@@ -33,7 +33,7 @@ const CardItem = ({ name, id, buttonCB, loadedContent }) => {
           <EditableName id={id} name={name} collection="cards" />
         </Box>
         <Box variant="body2">
-          <TasksList loadedContent={loadedContent} />
+          <TasksList taskData={taskData} cardID={id} />
         </Box>
       </CardContent>
       <CardActions
