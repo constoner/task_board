@@ -42,7 +42,15 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
     getDocs(collection(db, "cards")).then((result) =>
       result.forEach((card) => {
         if (card.data().boardID === dataID) {
-          deleteDoc(doc(db, "cards", card.id));
+          getDocs(collection(db, "tasks"))
+            .then((result) =>
+              result.forEach((task) => {
+                if (task.data().cardID === card.id) {
+                  deleteDoc(doc(db, "tasks", task.id));
+                }
+              })
+            )
+            .then(() => deleteDoc(doc(db, "cards", card.id)));
         }
       })
     );

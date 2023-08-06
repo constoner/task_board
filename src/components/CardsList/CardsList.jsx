@@ -96,6 +96,14 @@ const CardsList = ({ activeBoard }) => {
   // Delete doc from firebase
   const deleteCard = (dataID) => {
     setLoadingState(true);
+    getDocs(collection(db, "tasks")).then((result) =>
+      result.forEach((task) => {
+        if (task.data().cardID === dataID) {
+          deleteDoc(doc(db, "tasks", task.id));
+        }
+      })
+    );
+
     deleteDoc(doc(db, "cards", dataID))
       .then(() => {
         const removedCardIndex = cards.findIndex((card) => {
