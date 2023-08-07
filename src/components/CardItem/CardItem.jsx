@@ -27,6 +27,7 @@ const CardItem = ({ name, id, buttonCB, taskData }) => {
             fontSize: 18,
             fontWeight: 500,
             borderBottom: `2px solid ${grey[500]}`,
+            textTransform: "capitalize",
           }}
           title={name}
         >

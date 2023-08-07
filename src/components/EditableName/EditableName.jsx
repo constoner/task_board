@@ -59,7 +59,7 @@ const EditableName = ({ id, name, collection, cb = false }) => {
       },
       { merge: true }
     );
-    setTimeout(() => nameValue && setEditState(false), 150); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long
+    setTimeout(() => nameValue && setEditState(false), 50); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long, put back 50ms for some experiment
   };
 
   return (
@@ -71,7 +71,7 @@ const EditableName = ({ id, name, collection, cb = false }) => {
           placeholder={`input new ${collection.slice(
             0,
             collection.length - 1
-          )}.`}
+          )}`}
           multiline
           maxRows={10}
           inputRef={(input) => input && input.focus()}
@@ -92,7 +92,9 @@ const EditableName = ({ id, name, collection, cb = false }) => {
             collection.length - 1
           )} name.`}
           onClick={() => {
-            setEditState(true);
+            editState
+              ? setTimeout(() => setEditState(true), 200) // add delay more, than after editing (see string #62)
+              : setEditState(true);
           }}
         >
           <Create />

@@ -83,11 +83,11 @@ const CardsList = ({ activeBoard }) => {
       .then((docRef) => getDoc(docRef))
       .then((doc) =>
         setCards([
+          ...cards,
           {
             id: doc.id,
             data: doc.data(),
           },
-          ...cards,
         ])
       )
       .then(() => setLoadingState(false));
