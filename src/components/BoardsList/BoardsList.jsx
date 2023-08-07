@@ -1,6 +1,6 @@
 // Get data
 import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
-import { db } from "../../utils/transferData";
+import * as backend from "../../data/fromFirebase";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -24,7 +24,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
     triggerReload(false);
 
     let boards = [];
-    getDocs(collection(db, "boards"))
+    getDocs(collection(backend.initializeDataBase(), "boards"))
       .then((result) => {
         result.forEach((doc) => {
           boards.push({
@@ -39,23 +39,27 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {
-    getDocs(collection(db, "cards")).then((result) =>
+    getDocs(collection(backend.initializeDataBase(), "cards")).then((result) =>
       result.forEach((card) => {
         if (card.data().boardID === dataID) {
-          getDocs(collection(db, "tasks"))
+          getDocs(collection(backend.initializeDataBase(), "tasks"))
             .then((result) =>
               result.forEach((task) => {
                 if (task.data().cardID === card.id) {
-                  deleteDoc(doc(db, "tasks", task.id));
+                  deleteDoc(
+                    doc(backend.initializeDataBase(), "tasks", task.id)
+                  );
                 }
               })
             )
-            .then(() => deleteDoc(doc(db, "cards", card.id)));
+            .then(() =>
+              deleteDoc(doc(backend.initializeDataBase(), "cards", card.id))
+            );
         }
       })
     );
 
-    deleteDoc(doc(db, "boards", dataID)).then(() => {
+    deleteDoc(doc(backend.initializeDataBase(), "boards", dataID)).then(() => {
       const removedBoardIndex = boards.findIndex((boardItem) => {
         return boardItem.id === dataID;
       });

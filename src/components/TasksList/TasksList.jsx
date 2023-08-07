@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Get data
 import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../../utils/transferData";
+import * as backend from "../../data/fromFirebase";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -19,7 +19,7 @@ const TasksList = ({ taskData, cardID }) => {
 
   // Push new doc to firebase
   const addTask = () => {
-    addDoc(collection(db, "tasks"), {
+    addDoc(collection(backend.initializeDataBase(), "tasks"), {
       name: "",
       cardID: cardID,
     })
@@ -38,7 +38,7 @@ const TasksList = ({ taskData, cardID }) => {
   // Delete doc from firebase
   const deleteTask = (dataID, cb) => {
     cb(true);
-    deleteDoc(doc(db, "tasks", dataID)).then(() => {
+    deleteDoc(doc(backend.initializeDataBase(), "tasks", dataID)).then(() => {
       const removedTaskIndex = tasks.findIndex((task) => {
         return task.id === dataID;
       });

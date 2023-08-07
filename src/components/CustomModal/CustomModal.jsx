@@ -1,6 +1,6 @@
 // Get data
 import { collection, getDoc, addDoc } from "firebase/firestore";
-import { db } from "../../utils/transferData";
+import * as backend from "../../data/fromFirebase";
 import { useState } from "react";
 
 // MUI components
@@ -42,7 +42,7 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
   // Push new doc to firebase
   const addBoard = (dataName) => {
     // setLoadingState(true);
-    addDoc(collection(db, "boards"), {
+    addDoc(collection(backend.initializeDataBase(), "boards"), {
       name: dataName,
     })
       .then((docRef) => getDoc(docRef))

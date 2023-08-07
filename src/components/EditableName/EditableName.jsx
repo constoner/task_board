@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Get data
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../utils/transferData";
+import * as backend from "../../data/fromFirebase";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -53,7 +53,7 @@ const EditableName = ({ id, name, collection, cb = false }) => {
   // Edit name
   const pushName = (id) => {
     setDoc(
-      doc(db, collection, id),
+      doc(backend.initializeDataBase(), collection, id),
       {
         name: nameValue.trim(),
       },

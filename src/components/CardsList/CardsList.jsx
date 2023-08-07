@@ -16,7 +16,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "../../utils/transferData";
+import * as backend from "../../data/fromFirebase";
 import { useState, useEffect, useRef } from "react";
 
 // MUI components
@@ -40,7 +40,7 @@ const CardsList = ({ activeBoard }) => {
   // get docs from firebase
   useEffect(() => {
     let tasks = [];
-    getDocs(collection(db, "tasks"))
+    getDocs(collection(backend.initializeDataBase(), "tasks"))
       .then((result) => {
         result.forEach((doc) => {
           tasks.push({
@@ -59,7 +59,10 @@ const CardsList = ({ activeBoard }) => {
   useEffect(() => {
     let cards = [];
     getDocs(
-      query(collection(db, "cards"), where("boardID", "==", activeBoard.id))
+      query(
+        collection(backend.initializeDataBase(), "cards"),
+        where("boardID", "==", activeBoard.id)
+      )
     )
       .then((result) => {
         result.forEach((doc) => {
@@ -76,7 +79,7 @@ const CardsList = ({ activeBoard }) => {
   // Push new doc to firebase
   const addCard = (dataName) => {
     setLoadingState(true);
-    addDoc(collection(db, "cards"), {
+    addDoc(collection(backend.initializeDataBase(), "cards"), {
       name: dataName,
       boardID: activeBoard.id,
     })
@@ -96,15 +99,15 @@ const CardsList = ({ activeBoard }) => {
   // Delete doc from firebase
   const deleteCard = (dataID) => {
     setLoadingState(true);
-    getDocs(collection(db, "tasks")).then((result) =>
+    getDocs(collection(backend.initializeDataBase(), "tasks")).then((result) =>
       result.forEach((task) => {
         if (task.data().cardID === dataID) {
-          deleteDoc(doc(db, "tasks", task.id));
+          deleteDoc(doc(backend.initializeDataBase(), "tasks", task.id));
         }
       })
     );
 
-    deleteDoc(doc(db, "cards", dataID))
+    deleteDoc(doc(backend.initializeDataBase(), "cards", dataID))
       .then(() => {
         const removedCardIndex = cards.findIndex((card) => {
           return card.id === dataID;
