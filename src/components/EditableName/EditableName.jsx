@@ -16,7 +16,14 @@ import { grey } from "@mui/material/colors";
 
 import { TextField } from "@mui/material";
 
-const EditableName = ({ id, name, collection, cb = false }) => {
+const EditableName = ({
+  id,
+  name,
+  collection,
+  cb = false,
+  isInputBusy,
+  setInputState,
+}) => {
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
   const [deleting, setDeleting] = useState(false);
@@ -59,7 +66,8 @@ const EditableName = ({ id, name, collection, cb = false }) => {
       },
       { merge: true }
     );
-    setTimeout(() => nameValue && setEditState(false), 50); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long, put back 50ms for some experiment
+    setEditState(false); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long
+    setInputState(false);
   };
 
   return (
@@ -92,9 +100,15 @@ const EditableName = ({ id, name, collection, cb = false }) => {
             collection.length - 1
           )} name.`}
           onClick={() => {
-            editState
-              ? setTimeout(() => setEditState(true), 200) // add delay more, than after editing (see string #62)
-              : setEditState(true);
+            if (isInputBusy) {
+              setTimeout(() => {
+                setInputState(true);
+                setEditState(true);
+              }, 200);
+            } else {
+              setEditState(true);
+              setInputState(true);
+            }
           }}
         >
           <Create />

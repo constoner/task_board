@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 // Custom components
 import EditableName from "../EditableName/EditableName";
 
-const TasksList = ({ taskData, cardID }) => {
+const TasksList = ({ taskData, cardID, status, setStatus }) => {
   const [tasks, setTasks] = useState(taskData);
 
   // Push new doc to firebase
@@ -63,6 +63,8 @@ const TasksList = ({ taskData, cardID }) => {
               name={data.name}
               collection="tasks"
               cb={deleteTask}
+              isInputBusy={status}
+              setInputState={setStatus}
             />
           </li>
         );

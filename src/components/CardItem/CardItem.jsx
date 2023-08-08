@@ -9,8 +9,11 @@ import { grey } from "@mui/material/colors";
 // Custom components
 import EditableName from "../EditableName/EditableName";
 import TasksList from "../TasksList/TasksList";
+import { useState } from "react";
 
 const CardItem = ({ name, id, buttonCB, taskData }) => {
+  const [isInputBusy, setInputState] = useState(false);
+
   return (
     <Box
       sx={{
@@ -31,10 +34,21 @@ const CardItem = ({ name, id, buttonCB, taskData }) => {
           }}
           title={name}
         >
-          <EditableName id={id} name={name} collection="cards" />
+          <EditableName
+            id={id}
+            name={name}
+            status={isInputBusy}
+            setStatus={setInputState}
+            collection="cards"
+          />
         </Box>
         <Box variant="body2">
-          <TasksList taskData={taskData} cardID={id} />
+          <TasksList
+            taskData={taskData}
+            status={isInputBusy}
+            setStatus={setInputState}
+            cardID={id}
+          />
         </Box>
       </CardContent>
       <CardActions
