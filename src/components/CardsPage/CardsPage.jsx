@@ -22,7 +22,11 @@ const CardsPage = ({ activeBoard, goBack }) => {
               alt="The Logo of the Task Board App."
             />
           </Box>
-          <Typography variant="h5" component="h1">
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{ textTransform: "capitalize" }}
+          >
             {activeBoard.data.name}
           </Typography>
         </Toolbar>

@@ -33,6 +33,7 @@ import CardItem from "../CardItem/CardItem";
 
 const CardsList = ({ activeBoard }) => {
   const [loadingState, setLoadingState] = useState(true);
+  const [isInputBusy, setInputState] = useState(false);
   const [cards, setCards] = useState([]);
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
@@ -54,7 +55,7 @@ const CardsList = ({ activeBoard }) => {
       })
       .then(() => setTasks(tasks));
     // .finally(() => setLoadingState(false));
-  });
+  }, []);
 
   useEffect(() => {
     let cards = [];
@@ -74,7 +75,7 @@ const CardsList = ({ activeBoard }) => {
       })
       .then(() => setCards(cards))
       .finally(() => setLoadingState(false));
-  });
+  }, [activeBoard.id]);
 
   // Push new doc to firebase
   const addCard = (dataName) => {
@@ -152,6 +153,8 @@ const CardsList = ({ activeBoard }) => {
                     id={card.id}
                     buttonCB={deleteCard}
                     taskData={taskData}
+                    isInputBusy={isInputBusy}
+                    setInputState={setInputState}
                   />
                 </Card>
               </SwiperSlide>

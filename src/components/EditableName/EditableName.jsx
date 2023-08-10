@@ -28,8 +28,9 @@ const EditableName = ({
   const [nameValue, setNameValue] = useState(name);
   const [deleting, setDeleting] = useState(false);
 
+  // initial check when new task appears
   if (nameValue === "") {
-    setTimeout(() => setEditState(true), 0);
+    setTimeout(() => setEditState(true), 0); // zero for properly event order
   }
 
   const Name = ({ children }) => (
@@ -59,15 +60,19 @@ const EditableName = ({
 
   // Edit name
   const pushName = (id) => {
-    setDoc(
-      doc(backend.initializeDataBase(), collection, id),
-      {
-        name: nameValue.trim(),
-      },
-      { merge: true }
-    );
-    setEditState(false); // 200ms not compitable (to long), 100ms better but not almost, 50&75ms to short, 300ms to long
-    setInputState(false);
+    if (nameValue !== "") {
+      setDoc(
+        doc(backend.initializeDataBase(), collection, id),
+        {
+          name: nameValue.trim(),
+        },
+        { merge: true }
+      );
+      setTimeout(() => {
+        setEditState(false);
+        setInputState(false);
+      }, 100); // testing shortest possible interval - 100ms (75ms to short without trottling)
+    }
   };
 
   return (
@@ -100,14 +105,11 @@ const EditableName = ({
             collection.length - 1
           )} name.`}
           onClick={() => {
-            if (isInputBusy) {
+            if (!isInputBusy) {
               setTimeout(() => {
                 setInputState(true);
                 setEditState(true);
-              }, 200);
-            } else {
-              setEditState(true);
-              setInputState(true);
+              }, 0); // zero for running in properly order
             }
           }}
         >
