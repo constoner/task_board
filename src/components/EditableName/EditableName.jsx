@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Get data
 import { doc, setDoc } from "firebase/firestore";
-import * as backend from "../../data/fromFirebase";
+import * as backend from "../../data/utils";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -13,8 +13,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import Done from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
-
 import { TextField } from "@mui/material";
+
+// Custom components
+import Name from "./Name";
 
 const EditableName = ({
   id,
@@ -32,31 +34,6 @@ const EditableName = ({
   if (nameValue === "") {
     setTimeout(() => setEditState(true), 0); // zero for properly event order
   }
-
-  const Name = ({ children }) => (
-    <Box
-      component="p"
-      sx={{
-        boxSizing: "border-box",
-        margin: 0,
-        padding: "16.5px 14px",
-        fontSize: "1rem",
-        lineHeight: "1.4375em",
-        letterSpacing: "0.00938em",
-        textTransform: () => (!cb ? "uppercase" : "unset"),
-        overflow: "hidden",
-        overflowWrap: "break-word",
-      }}
-    >
-      <Box
-        component="span"
-        title={children}
-        sx={{ overflowWrap: "break-word" }}
-      >
-        {children}
-      </Box>
-    </Box>
-  );
 
   // Edit name
   const pushName = (id) => {
@@ -78,7 +55,7 @@ const EditableName = ({
   return (
     <Box id={id} sx={{ display: "flex" }}>
       {!editState ? (
-        <Name>{nameValue}</Name>
+        <Name isTitle={cb && true}>{nameValue}</Name>
       ) : (
         <TextField
           placeholder={`input new ${collection.slice(

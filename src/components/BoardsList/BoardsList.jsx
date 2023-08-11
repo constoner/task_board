@@ -1,6 +1,5 @@
 // Get data
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
-import * as backend from "../../data/fromFirebase";
+import * as backend from "../../data/utils";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -22,50 +21,25 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
   useEffect(() => {
     setLoadingState(true);
     triggerReload(false);
-
-    let boards = [];
-    getDocs(collection(backend.initializeDataBase(), "boards"))
-      .then((result) => {
-        result.forEach((doc) => {
-          boards.push({
-            id: doc.id,
-            data: { name: doc.data().name },
-          });
-        });
-      })
-      .then(() => setBoards(boards))
+    backend
+      .getBoards()
+      .then((loadedBoards) => setBoards(loadedBoards))
+      .catch(console.error)
       .finally(() => setLoadingState(false));
   }, [reloadTrigger, triggerReload]);
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {
-    getDocs(collection(backend.initializeDataBase(), "cards")).then((result) =>
-      result.forEach((card) => {
-        if (card.data().boardID === dataID) {
-          getDocs(collection(backend.initializeDataBase(), "tasks"))
-            .then((result) =>
-              result.forEach((task) => {
-                if (task.data().cardID === card.id) {
-                  deleteDoc(
-                    doc(backend.initializeDataBase(), "tasks", task.id)
-                  );
-                }
-              })
-            )
-            .then(() =>
-              deleteDoc(doc(backend.initializeDataBase(), "cards", card.id))
-            );
-        }
-      })
-    );
-
-    deleteDoc(doc(backend.initializeDataBase(), "boards", dataID)).then(() => {
-      const removedBoardIndex = boards.findIndex((boardItem) => {
-        return boardItem.id === dataID;
+    backend
+      .removeBoard(dataID)
+      .catch(console.error)
+      .then(() => {
+        const removedBoardIndex = boards.findIndex((boardItem) => {
+          return boardItem.id === dataID;
+        });
+        boards.splice(removedBoardIndex, 1);
+        setBoards([...boards]);
       });
-      boards.splice(removedBoardIndex, 1);
-      setBoards([...boards]);
-    });
   };
 
   return loadingState ? (
@@ -79,7 +53,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
         color: "grey.300",
       }}
     >
-      <CircularProgress></CircularProgress>
+      <CircularProgress />
     </Box>
   ) : !boards.length ? (
     <Box

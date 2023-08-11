@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Get data
 import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
-import * as backend from "../../data/fromFirebase";
+import * as backend from "../../data/utils";
 
 // MUI components
 import Box from "@mui/material/Box";

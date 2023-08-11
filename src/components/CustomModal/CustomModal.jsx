@@ -1,6 +1,6 @@
 // Get data
 import { collection, getDoc, addDoc } from "firebase/firestore";
-import * as backend from "../../data/fromFirebase";
+import * as backend from "../../data/utils";
 import { useState } from "react";
 
 // MUI components

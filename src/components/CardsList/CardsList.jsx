@@ -16,7 +16,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import * as backend from "../../data/fromFirebase";
+import * as backend from "../../data/utils";
 import { useState, useEffect, useRef } from "react";
 
 // MUI components
