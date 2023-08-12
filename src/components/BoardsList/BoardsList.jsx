@@ -6,6 +6,7 @@ import { useEffect } from "react";
 // MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -30,6 +31,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
 
   // Delete doc from firebase
   const deleteBoard = (dataID) => {
+    setLoadingState(true);
     backend
       .removeBoard(dataID)
       .catch(console.error)
@@ -39,67 +41,65 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
         });
         boards.splice(removedBoardIndex, 1);
         setBoards([...boards]);
-      });
+      })
+      .finally(() => setLoadingState(false));
   };
 
-  return loadingState ? (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        fontWeight: 500,
-        color: "grey.300",
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  ) : !boards.length ? (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography
-        variant="h2"
-        component="p"
-        sx={{
-          fontWeight: 500,
-          color: "grey.300",
-          textAlign: "center",
-          textTransform: "uppercase",
-        }}
+  return (
+    <>
+      <Backdrop
+        sx={{ backgroundColor: "rgba(255, 255, 255, 0.8)", zIndex: 100 }}
+        open={loadingState}
       >
-        no any boards yet...
-      </Typography>
-    </Box>
-  ) : (
-    <Grid
-      container
-      columns={{ xs: 1, sm: 2, md: 4 }}
-      spacing={[2, 3]}
-      sx={{ py: [2, 3] }}
-    >
-      {boards.map(({ id, data }) => {
-        return (
-          <Grid item width={["100%", "50%", "25%"]} key={id}>
-            <Paper elevation={0}>
-              <BoardItem
-                boards={boards}
-                boardName={data.name}
-                id={id}
-                buttonCB={deleteBoard}
-                onBoardClick={onBoardClick}
-              />
-            </Paper>
-          </Grid>
-        );
-      })}
-    </Grid>
+        <CircularProgress />
+      </Backdrop>
+      {!boards.length ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Typography
+            variant="h2"
+            component="p"
+            sx={{
+              fontWeight: 500,
+              color: "grey.300",
+              textAlign: "center",
+              textTransform: "uppercase",
+            }}
+          >
+            no any boards yet...
+          </Typography>
+        </Box>
+      ) : (
+        <Grid
+          container
+          columns={{ xs: 1, sm: 2, md: 4 }}
+          spacing={[2, 3]}
+          sx={{ py: [2, 3] }}
+        >
+          {boards.map(({ id, data }) => {
+            return (
+              <Grid item width={["100%", "50%", "25%"]} key={id}>
+                <Paper elevation={0}>
+                  <BoardItem
+                    boards={boards}
+                    boardName={data.name}
+                    id={id}
+                    buttonCB={deleteBoard}
+                    onBoardClick={onBoardClick}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
+    </>
   );
 };
 
