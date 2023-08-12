@@ -30,8 +30,8 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
   }, [reloadTrigger, triggerReload]);
 
   // Delete doc from firebase
-  const deleteBoard = (dataID) => {
-    setLoadingState(true);
+  const deleteBoard = (dataID, cb) => {
+    cb(true);
     backend
       .removeBoard(dataID)
       .catch(console.error)
@@ -42,7 +42,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
         boards.splice(removedBoardIndex, 1);
         setBoards([...boards]);
       })
-      .finally(() => setLoadingState(false));
+      .finally(() => cb(false));
   };
 
   return (
