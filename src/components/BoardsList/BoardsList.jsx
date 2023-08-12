@@ -48,7 +48,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
   return (
     <>
       <Backdrop
-        sx={{ backgroundColor: "rgba(255, 255, 255, 0.8)", zIndex: 100 }}
+        sx={{ backgroundColor: "rgba(255, 255, 255, 1)", zIndex: 100 }}
         open={loadingState}
       >
         <CircularProgress />

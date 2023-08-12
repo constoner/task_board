@@ -3,7 +3,7 @@
 
 // Imports
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -60,3 +60,9 @@ export const removeBoard = (dataID) => {
   return deleteDoc(doc(initializeDataBase(), "boards", dataID));
 };
 
+export const pushBoard = (dataName) => {
+  return addDoc(collection(initializeDataBase(), "boards"), {
+    name: dataName,
+  })
+    .then((docRef) => getDoc(docRef));
+};

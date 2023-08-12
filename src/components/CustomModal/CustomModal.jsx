@@ -1,5 +1,4 @@
 // Get data
-import { collection, getDoc, addDoc } from "firebase/firestore";
 import * as backend from "../../data/utils";
 import { useState } from "react";
 
@@ -16,22 +15,10 @@ import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
-
-// Temporary styles for modal window
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+import { style } from "./style";
 
 // Custom modal window component
 const CustomModal = ({ modalState, setModalState, cb }) => {
-  // const [loadingState, setLoadingState] = useState(false);
   const [boards, setBoards] = useState("");
   const [boardName, setName] = useState("");
 
@@ -41,21 +28,15 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
 
   // Push new doc to firebase
   const addBoard = (dataName) => {
-    // setLoadingState(true);
-    addDoc(collection(backend.initializeDataBase(), "boards"), {
-      name: dataName,
-    })
-      .then((docRef) => getDoc(docRef))
-      .then((doc) =>
-        setBoards([
-          ...boards,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ])
-      );
-    // .finally(() => setLoadingState(false));
+    backend.pushBoard(dataName).then((doc) =>
+      setBoards([
+        ...boards,
+        {
+          id: doc.id,
+          data: doc.data(),
+        },
+      ])
+    );
   };
 
   const createBoard = (evt) => {
