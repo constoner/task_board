@@ -6,16 +6,6 @@ import "swiper/css/pagination";
 import "./style.css";
 
 // Get data
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  where,
-  getDoc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
 import * as backend from "../../data/utils";
 import { useState, useEffect, useRef } from "react";
 
@@ -24,12 +14,10 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
 
 // Custom components
 import CardItem from "../CardItem/CardItem";
+import EmptyItem from "../CardItem/EmptyItem";
 
 const CardsList = ({ activeBoard }) => {
   const [loadingState, setLoadingState] = useState(true);
@@ -40,51 +28,25 @@ const CardsList = ({ activeBoard }) => {
 
   // get docs from firebase
   useEffect(() => {
-    let tasks = [];
-    getDocs(collection(backend.initializeDataBase(), "tasks"))
-      .then((result) => {
-        result.forEach((doc) => {
-          tasks.push({
-            id: doc.id,
-            data: {
-              name: doc.data().name,
-              cardID: doc.data().cardID,
-            },
-          });
-        });
-      })
-      .then(() => setTasks(tasks));
-    // .finally(() => setLoadingState(false));
+    backend
+      .getTasks()
+      .then((loadedTasks) => setTasks(loadedTasks))
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
-    let cards = [];
-    getDocs(
-      query(
-        collection(backend.initializeDataBase(), "cards"),
-        where("boardID", "==", activeBoard.id)
-      )
-    )
-      .then((result) => {
-        result.forEach((doc) => {
-          cards.push({
-            id: doc.id,
-            data: { name: doc.data().name },
-          });
-        });
-      })
-      .then(() => setCards(cards))
+    backend
+      .getCards(activeBoard)
+      .then((loadedCards) => setCards(loadedCards))
+      .catch(console.error)
       .finally(() => setLoadingState(false));
-  }, [activeBoard.id]);
+  }, [activeBoard]);
 
   // Push new doc to firebase
   const addCard = (dataName) => {
     setLoadingState(true);
-    addDoc(collection(backend.initializeDataBase(), "cards"), {
-      name: dataName,
-      boardID: activeBoard.id,
-    })
-      .then((docRef) => getDoc(docRef))
+    backend
+      .pushCard(dataName, activeBoard)
       .then((doc) =>
         setCards([
           ...cards,
@@ -94,21 +56,15 @@ const CardsList = ({ activeBoard }) => {
           },
         ])
       )
-      .then(() => setLoadingState(false));
+      .catch(console.error)
+      .finally(() => setLoadingState(false));
   };
 
   // Delete doc from firebase
   const deleteCard = (dataID) => {
     setLoadingState(true);
-    getDocs(collection(backend.initializeDataBase(), "tasks")).then((result) =>
-      result.forEach((task) => {
-        if (task.data().cardID === dataID) {
-          deleteDoc(doc(backend.initializeDataBase(), "tasks", task.id));
-        }
-      })
-    );
-
-    deleteDoc(doc(backend.initializeDataBase(), "cards", dataID))
+    backend
+      .removeCard(dataID)
       .then(() => {
         const removedCardIndex = cards.findIndex((card) => {
           return card.id === dataID;
@@ -116,6 +72,7 @@ const CardsList = ({ activeBoard }) => {
         cards.splice(removedCardIndex, 1);
         setCards([...cards]);
       })
+      .catch(console.error)
       .finally(() => setLoadingState(false));
   };
 
@@ -137,52 +94,33 @@ const CardsList = ({ activeBoard }) => {
           slidesPerView={1}
           direction="horizontal"
         >
-          {cards.map((card) => {
-            const taskData = tasks.filter(
-              (taskItem) => taskItem.data.cardID === card.id
-            );
-            return (
-              <SwiperSlide
-                key={card.id}
-                id={card.id}
-                style={{ height: "100%" }}
-              >
-                <Card className="swiper-card" elevation={4}>
-                  <CardItem
-                    name={card.data.name}
+          {cards.length
+            ? cards.map((card) => {
+                const taskData = tasks.filter(
+                  (taskItem) => taskItem.data.cardID === card.id
+                );
+                return (
+                  <SwiperSlide
+                    key={card.id}
                     id={card.id}
-                    buttonCB={deleteCard}
-                    taskData={taskData}
-                    isInputBusy={isInputBusy}
-                    setInputState={setInputState}
-                  />
-                </Card>
-              </SwiperSlide>
-            );
-          })}
+                    style={{ height: "100%" }}
+                  >
+                    <Card className="swiper-card" elevation={4}>
+                      <CardItem
+                        name={card.data.name}
+                        id={card.id}
+                        buttonCB={deleteCard}
+                        taskData={taskData}
+                        isInputBusy={isInputBusy}
+                        setInputState={setInputState}
+                      />
+                    </Card>
+                  </SwiperSlide>
+                );
+              })
+            : null}
           <SwiperSlide>
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                onClick={() => setTimeout(() => addCard("New task list"), 100)}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography>Add new task list</Typography>
-                <AddIcon />
-              </Button>
-            </Box>
+            <EmptyItem onClick={addCard} />
           </SwiperSlide>
         </Swiper>
       </Box>

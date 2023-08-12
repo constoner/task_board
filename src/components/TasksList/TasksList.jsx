@@ -2,28 +2,22 @@
 import { useState } from "react";
 
 // Get data
-import { collection, doc, getDoc, addDoc, deleteDoc } from "firebase/firestore";
 import * as backend from "../../data/utils";
 
 // MUI components
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
-import AddIcon from "@mui/icons-material/Add";
 
 // Custom components
 import EditableName from "../EditableName/EditableName";
+import NewTask from "./NewTask";
 
 const TasksList = ({ taskData, cardID, status, setStatus }) => {
   const [tasks, setTasks] = useState(taskData);
 
   // Push new doc to firebase
   const addTask = () => {
-    addDoc(collection(backend.initializeDataBase(), "tasks"), {
-      name: "",
-      cardID: cardID,
-    })
-      .then((docRef) => getDoc(docRef))
+    backend
+      .pushTask(cardID)
       .then((doc) => {
         setTasks([
           ...tasks,
@@ -32,20 +26,24 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
             data: doc.data(),
           },
         ]);
-      });
+      })
+      .catch(console.error);
   };
 
   // Delete doc from firebase
   const deleteTask = (dataID, cb) => {
     cb(true);
-    deleteDoc(doc(backend.initializeDataBase(), "tasks", dataID)).then(() => {
-      const removedTaskIndex = tasks.findIndex((task) => {
-        return task.id === dataID;
-      });
-      cb(false);
-      tasks.splice(removedTaskIndex, 1);
-      setTasks([...tasks]);
-    });
+    backend
+      .removeTask(dataID)
+      .then(() => {
+        const removedTaskIndex = tasks.findIndex((task) => {
+          return task.id === dataID;
+        });
+        cb(false);
+        tasks.splice(removedTaskIndex, 1);
+        setTasks([...tasks]);
+      })
+      .catch(console.error);
   };
 
   return (
@@ -72,17 +70,7 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
 
       {/* Add new task */}
       <li key="add">
-        <Box
-          sx={{
-            display: "flex",
-            px: "14px",
-          }}
-        >
-          <Button onClick={() => addTask()} sx={{ marginLeft: "-8px" }}>
-            <AddIcon sx={{ mr: 1 }} />
-            <span>Click to add new task</span>
-          </Button>
-        </Box>
+        <NewTask onClick={addTask} />
       </li>
     </List>
   );

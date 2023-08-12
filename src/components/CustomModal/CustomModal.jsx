@@ -28,15 +28,18 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
 
   // Push new doc to firebase
   const addBoard = (dataName) => {
-    backend.pushBoard(dataName).then((doc) =>
-      setBoards([
-        ...boards,
-        {
-          id: doc.id,
-          data: doc.data(),
-        },
-      ])
-    );
+    backend
+      .pushBoard(dataName)
+      .then((doc) =>
+        setBoards([
+          ...boards,
+          {
+            id: doc.id,
+            data: doc.data(),
+          },
+        ])
+      )
+      .catch(console.error);
   };
 
   const createBoard = (evt) => {

@@ -2,7 +2,6 @@
 import { useState } from "react";
 
 // Get data
-import { doc, setDoc } from "firebase/firestore";
 import * as backend from "../../data/utils";
 
 // MUI components
@@ -36,19 +35,13 @@ const EditableName = ({
   }
 
   // Edit name
-  const pushName = (id) => {
+  const setName = (id) => {
     if (nameValue !== "") {
-      setDoc(
-        doc(backend.initializeDataBase(), collection, id),
-        {
-          name: nameValue.trim(),
-        },
-        { merge: true }
-      );
+      backend.pushName(id, collection, nameValue).catch(console.error);
       setTimeout(() => {
         setEditState(false);
         setInputState(false);
-      }, 100); // testing shortest possible interval - 100ms (75ms to short without trottling)
+      }, 150); // testing shortest possible interval - 100ms (75ms to short without trottling); increased to 150 because dont work in firefox
     }
   };
 
@@ -68,7 +61,7 @@ const EditableName = ({
           value={nameValue}
           onChange={(evt) => setNameValue(evt.target.value)}
           onBlur={() => {
-            pushName(id);
+            setName(id);
           }}
         />
       )}

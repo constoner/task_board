@@ -3,7 +3,7 @@
 
 // Imports
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDoc, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, doc, getDoc, getDocs, addDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,6 +22,7 @@ export const initializeDataBase = () => {
   return db;
 };
 
+// BOARDS
 export const getBoards = () => {
   let boards = [];
   return getDocs(collection(initializeDataBase(), "boards"))
@@ -65,4 +66,83 @@ export const pushBoard = (dataName) => {
     name: dataName,
   })
     .then((docRef) => getDoc(docRef));
+};
+
+// CARDS and TASKS
+export const getTasks = () => {
+  let tasks = [];
+  return getDocs(collection(initializeDataBase(), "tasks"))
+    .then((result) => {
+      result.forEach((doc) => {
+        tasks.push({
+          id: doc.id,
+          data: {
+            name: doc.data().name,
+            cardID: doc.data().cardID,
+          },
+        });
+      });
+      return tasks;
+    });
+};
+
+export const getCards = (activeBoard) => {
+  let cards = [];
+  return getDocs(
+    query(
+      collection(initializeDataBase(), "cards"),
+      where("boardID", "==", activeBoard.id)
+    )
+  )
+    .then((result) => {
+      result.forEach((doc) => {
+        cards.push({
+          id: doc.id,
+          data: { name: doc.data().name },
+        });
+      });
+      return cards;
+    })
+};
+
+export const pushCard = (dataName, activeBoard) => {
+  return addDoc(collection(initializeDataBase(), "cards"), {
+    name: dataName,
+    boardID: activeBoard.id,
+  })
+    .then((docRef) => getDoc(docRef));
+};
+
+export const removeCard = (dataID) => {
+  getDocs(collection(initializeDataBase(), "tasks")).then((result) =>
+    result.forEach((task) => {
+      if (task.data().cardID === dataID) {
+        deleteDoc(doc(initializeDataBase(), "tasks", task.id));
+      }
+    })
+  );
+
+  return deleteDoc(doc(initializeDataBase(), "cards", dataID));
+};
+
+export const pushTask = (cardID) => {
+  return addDoc(collection(initializeDataBase(), "tasks"), {
+    name: "",
+    cardID: cardID,
+  })
+    .then((docRef) => getDoc(docRef));
+};
+
+export const removeTask = (dataID) => {
+  return deleteDoc(doc(initializeDataBase(), "tasks", dataID));
+};
+
+export const pushName = (id, collectionName, newName) => {
+  return setDoc(
+    doc(initializeDataBase(), collectionName, id),
+    {
+      name: newName.trim(),
+    },
+    { merge: true }
+  );
 };
