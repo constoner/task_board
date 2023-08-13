@@ -24,7 +24,9 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
     triggerReload(false);
     backend
       .getBoards()
-      .then((loadedBoards) => setBoards(loadedBoards))
+      .then((loadedBoards) => {
+        setBoards(loadedBoards);
+      })
       .catch(console.error)
       .finally(() => setLoadingState(false));
   }, [reloadTrigger, triggerReload]);
@@ -53,7 +55,7 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
       >
         <CircularProgress />
       </Backdrop>
-      {!boards.length ? (
+      {loadingState === false && boards.length === 0 ? (
         <Box
           sx={{
             display: "flex",
