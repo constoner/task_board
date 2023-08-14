@@ -18,8 +18,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { style } from "./style";
 
 // Custom modal window component
-const CustomModal = ({ modalState, setModalState, cb }) => {
-  const [boards, setBoards] = useState("");
+const CustomModal = ({ modalState, setModalState, cb, addBoard }) => {
   const [boardName, setName] = useState("");
 
   const reset = () => {
@@ -27,22 +26,14 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
   };
 
   // Push new doc to firebase
-  const addBoard = (dataName) => {
+  const createBoard = (dataName) => {
     backend
       .pushBoard(dataName)
-      .then((doc) =>
-        setBoards([
-          ...boards,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ])
-      )
+      .then((doc) => addBoard(doc))
       .catch(console.error);
   };
 
-  const createBoard = (evt) => {
+  const appenBoard = (evt) => {
     if (evt) {
       evt.preventDefault();
     }
@@ -53,7 +44,7 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
     }
 
     // Send data to server
-    addBoard(boardName.trim());
+    createBoard(boardName.trim());
 
     // Closing the modal window
     reset();
@@ -68,7 +59,7 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
         reason !== "backdropClick" && setModalState(false);
       }}
       onKeyDown={(evt) => {
-        evt.key === "Enter" && createBoard(evt);
+        evt.key === "Enter" && appenBoard(evt);
       }}
       closeAfterTransition
       keepMounted={true}
@@ -100,7 +91,7 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
                 />
               </FormControl>
             </Box>
-            <Button onClick={() => createBoard()}>
+            <Button onClick={() => appenBoard()}>
               <DoneIcon sx={{ mr: 1 }} />
               <span>Create</span>
             </Button>

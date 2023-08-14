@@ -24,6 +24,8 @@ const EditableName = ({
   cb = false,
   isInputBusy,
   setInputState,
+  names,
+  setNames,
 }) => {
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
@@ -38,6 +40,12 @@ const EditableName = ({
   const setName = (id) => {
     if (nameValue !== "") {
       backend.pushName(id, collection, nameValue).catch(console.error);
+      names.forEach((item) => {
+        if (item.id === id) {
+          item.data.name = nameValue;
+        }
+      });
+      setNames([...names]);
       setTimeout(() => {
         setEditState(false);
         setInputState(false);

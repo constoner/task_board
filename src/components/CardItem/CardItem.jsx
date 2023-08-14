@@ -17,6 +17,12 @@ const CardItem = ({
   taskData,
   isInputBusy,
   setInputState,
+  cards,
+  setCards,
+  addTask,
+  removeTask,
+  tasks,
+  setTasks,
 }) => {
   return (
     <Box
@@ -44,6 +50,8 @@ const CardItem = ({
             collection="cards"
             isInputBusy={isInputBusy}
             setInputState={setInputState}
+            names={cards}
+            setNames={setCards}
           />
         </Box>
         <Box variant="body2">
@@ -52,6 +60,10 @@ const CardItem = ({
             status={isInputBusy}
             setStatus={setInputState}
             cardID={id}
+            addTask={addTask}
+            removeTask={removeTask}
+            tasks={tasks}
+            setTasks={setTasks}
           />
         </Box>
       </CardContent>

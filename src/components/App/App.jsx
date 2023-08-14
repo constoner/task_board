@@ -28,6 +28,48 @@ const App = () => {
     setActivePage(page.cards);
   };
 
+  // boards
+  const [boards, setBoards] = useState([]);
+
+  const removeBoard = (dataID) => {
+    const removedBoardIndex = boards.findIndex((boardItem) => {
+      return boardItem.id === dataID;
+    });
+    boards.splice(removedBoardIndex, 1);
+    setBoards([...boards]);
+  };
+
+  const addBoard = (doc) => {
+    setBoards([
+      ...boards,
+      {
+        id: doc.id,
+        data: doc.data(),
+      },
+    ]);
+  };
+
+  // cards
+  const [cards, setCards] = useState([]);
+
+  const addCard = (doc) => {
+    setCards([
+      ...cards,
+      {
+        id: doc.id,
+        data: doc.data(),
+      },
+    ]);
+  };
+
+  const removeCard = (dataID) => {
+    const removedCardIndex = cards.findIndex((card) => {
+      return card.id === dataID;
+    });
+    cards.splice(removedCardIndex, 1);
+    setCards([...cards]);
+  };
+
   return (
     <>
       <CssBaseline />
@@ -36,9 +78,22 @@ const App = () => {
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
         {activePage === page.boards ? (
-          <BoardsPage onBoardClick={showCards} />
+          <BoardsPage
+            onBoardClick={showCards}
+            addBoard={addBoard}
+            removeBoard={removeBoard}
+            boards={boards}
+            setBoards={setBoards}
+          />
         ) : (
-          <CardsPage activeBoard={activeBoard} goBack={setActivePage} />
+          <CardsPage
+            activeBoard={activeBoard}
+            goBack={setActivePage}
+            addCard={addCard}
+            removeCard={removeCard}
+            cards={cards}
+            setCards={setCards}
+          />
         )}
       </Box>
     </>

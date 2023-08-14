@@ -19,14 +19,43 @@ import Card from "@mui/material/Card";
 import CardItem from "../CardItem/CardItem";
 import EmptyItem from "../CardItem/EmptyItem";
 
-const CardsList = ({ activeBoard }) => {
+const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [isInputBusy, setInputState] = useState(false);
-  const [cards, setCards] = useState([]);
-  const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
 
-  // get docs from firebase
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (cardID) => {
+    backend
+      .pushTask(cardID)
+      .then((doc) => {
+        setTasks([
+          ...tasks,
+          {
+            id: doc.id,
+            data: doc.data(),
+          },
+        ]);
+      })
+      .catch(console.error);
+  };
+
+  const removeTask = (dataID, cb) => {
+    cb(true);
+    backend
+      .eraseTask(dataID)
+      .then(() => {
+        const removedTaskIndex = tasks.findIndex((task) => {
+          return task.id === dataID;
+        });
+        cb(false);
+        tasks.splice(removedTaskIndex, 1);
+        setTasks([...tasks]);
+      })
+      .catch(console.error);
+  };
+
   useEffect(() => {
     backend
       .getTasks()
@@ -40,37 +69,23 @@ const CardsList = ({ activeBoard }) => {
       .then((loadedCards) => setCards(loadedCards))
       .catch(console.error)
       .finally(() => setLoadingState(false));
-  }, [activeBoard]);
+  }, [activeBoard, setCards, setTasks]);
 
-  // Push new doc to firebase
-  const addCard = (dataName) => {
+  const createCard = (dataName) => {
     setLoadingState(true);
     backend
       .pushCard(dataName, activeBoard)
-      .then((doc) =>
-        setCards([
-          ...cards,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ])
-      )
+      .then((doc) => addCard(doc))
       .catch(console.error)
       .finally(() => setLoadingState(false));
   };
 
-  // Delete doc from firebase
   const deleteCard = (dataID) => {
     setLoadingState(true);
     backend
-      .removeCard(dataID)
+      .eraseCard(dataID)
       .then(() => {
-        const removedCardIndex = cards.findIndex((card) => {
-          return card.id === dataID;
-        });
-        cards.splice(removedCardIndex, 1);
-        setCards([...cards]);
+        removeCard(dataID);
       })
       .catch(console.error)
       .finally(() => setLoadingState(false));
@@ -113,6 +128,12 @@ const CardsList = ({ activeBoard }) => {
                         taskData={taskData}
                         isInputBusy={isInputBusy}
                         setInputState={setInputState}
+                        cards={cards}
+                        setCards={setCards}
+                        addTask={addTask}
+                        removeTask={removeTask}
+                        tasks={tasks}
+                        setTasks={setTasks}
                       />
                     </Card>
                   </SwiperSlide>
@@ -120,7 +141,7 @@ const CardsList = ({ activeBoard }) => {
               })
             : null}
           <SwiperSlide>
-            <EmptyItem onClick={addCard} />
+            <EmptyItem onClick={createCard} />
           </SwiperSlide>
         </Swiper>
       </Box>

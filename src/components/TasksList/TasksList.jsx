@@ -1,9 +1,3 @@
-//React
-import { useState } from "react";
-
-// Get data
-import * as backend from "../../data/utils";
-
 // MUI components
 import List from "@mui/material/List";
 
@@ -11,41 +5,16 @@ import List from "@mui/material/List";
 import EditableName from "../EditableName/EditableName";
 import NewTask from "./NewTask";
 
-const TasksList = ({ taskData, cardID, status, setStatus }) => {
-  const [tasks, setTasks] = useState(taskData);
-
-  // Push new doc to firebase
-  const addTask = () => {
-    backend
-      .pushTask(cardID)
-      .then((doc) => {
-        setTasks([
-          ...tasks,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ]);
-      })
-      .catch(console.error);
-  };
-
-  // Delete doc from firebase
-  const deleteTask = (dataID, cb) => {
-    cb(true);
-    backend
-      .removeTask(dataID)
-      .then(() => {
-        const removedTaskIndex = tasks.findIndex((task) => {
-          return task.id === dataID;
-        });
-        cb(false);
-        tasks.splice(removedTaskIndex, 1);
-        setTasks([...tasks]);
-      })
-      .catch(console.error);
-  };
-
+const TasksList = ({
+  taskData,
+  cardID,
+  status,
+  setStatus,
+  addTask,
+  removeTask,
+  tasks,
+  setTasks,
+}) => {
   return (
     <List
       sx={{
@@ -53,16 +22,18 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
         "& ul": { padding: 0 },
       }}
     >
-      {tasks.map(({ id, data }) => {
+      {taskData.map(({ id, data }) => {
         return (
           <li key={id}>
             <EditableName
               id={id}
               name={data.name}
               collection="tasks"
-              cb={deleteTask}
+              cb={removeTask}
               isInputBusy={status}
               setInputState={setStatus}
+              names={tasks}
+              setNames={setTasks}
             />
           </li>
         );
@@ -70,7 +41,7 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
 
       {/* Add new task */}
       <li key="add">
-        <NewTask onClick={addTask} />
+        <NewTask onClick={() => addTask(cardID)} />
       </li>
     </List>
   );

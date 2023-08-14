@@ -10,7 +10,14 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 //Custom components
 import CardsList from "../CardsList/CardsList";
 
-const CardsPage = ({ activeBoard, goBack }) => {
+const CardsPage = ({
+  activeBoard,
+  goBack,
+  addCard,
+  removeCard,
+  cards,
+  setCards,
+}) => {
   return (
     <>
       {/* header */}
@@ -36,7 +43,13 @@ const CardsPage = ({ activeBoard, goBack }) => {
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
-        <CardsList activeBoard={activeBoard} />
+        <CardsList
+          activeBoard={activeBoard}
+          addCard={addCard}
+          removeCard={removeCard}
+          cards={cards}
+          setCards={setCards}
+        />
       </Box>
       {/* footer */}
       <Box

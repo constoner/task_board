@@ -14,9 +14,15 @@ import Paper from "@mui/material/Paper";
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
 
-const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
+const BoardsList = ({
+  reloadTrigger,
+  triggerReload,
+  onBoardClick,
+  removeBoard,
+  boards,
+  setBoards,
+}) => {
   const [loadingState, setLoadingState] = useState(true);
-  const [boards, setBoards] = useState([]);
 
   // get docs from firebase
   useEffect(() => {
@@ -29,20 +35,16 @@ const BoardsList = ({ reloadTrigger, triggerReload, onBoardClick }) => {
       })
       .catch(console.error)
       .finally(() => setLoadingState(false));
-  }, [reloadTrigger, triggerReload]);
+  }, [reloadTrigger, triggerReload, setBoards]);
 
   // Delete doc from firebase
   const deleteBoard = (dataID, cb) => {
     cb(true);
     backend
-      .removeBoard(dataID)
+      .eraseBoard(dataID)
       .catch(console.error)
       .then(() => {
-        const removedBoardIndex = boards.findIndex((boardItem) => {
-          return boardItem.id === dataID;
-        });
-        boards.splice(removedBoardIndex, 1);
-        setBoards([...boards]);
+        removeBoard(dataID);
       })
       .finally(() => cb(false));
   };

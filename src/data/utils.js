@@ -37,7 +37,7 @@ export const getBoards = () => {
     });
 };
 
-export const removeBoard = (dataID) => {
+export const eraseBoard = (dataID) => {
   getDocs(collection(initializeDataBase(), "cards"))
     .then((result) =>
       result.forEach((card) => {
@@ -113,7 +113,7 @@ export const pushCard = (dataName, activeBoard) => {
     .then((docRef) => getDoc(docRef));
 };
 
-export const removeCard = (dataID) => {
+export const eraseCard = (dataID) => {
   getDocs(collection(initializeDataBase(), "tasks")).then((result) =>
     result.forEach((task) => {
       if (task.data().cardID === dataID) {
@@ -133,7 +133,7 @@ export const pushTask = (cardID) => {
     .then((docRef) => getDoc(docRef));
 };
 
-export const removeTask = (dataID) => {
+export const eraseTask = (dataID) => {
   return deleteDoc(doc(initializeDataBase(), "tasks", dataID));
 };
 
