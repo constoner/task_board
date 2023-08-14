@@ -13,62 +13,16 @@ import CardsPage from "../CardsPage/CardsPage";
 // Custom components
 import BoardsPage from "../BoardsPage/BoardsPage";
 
-const page = {
-  boards: "boards",
-  cards: "cards",
+const PAGE = {
+  BOARDS: "boards",
+  CARDS: "cards",
 };
 
 // Component App
 const App = () => {
-  const [activePage, setActivePage] = useState(page.boards);
-  const [activeBoard, setActiveBoard] = useState({});
-
-  const showCards = (boardsArray, boardID) => {
-    setActiveBoard(...boardsArray.filter(({ id }) => id === boardID));
-    setActivePage(page.cards);
-  };
-
-  // boards
-  const [boards, setBoards] = useState([]);
-
-  const removeBoard = (dataID) => {
-    const removedBoardIndex = boards.findIndex((boardItem) => {
-      return boardItem.id === dataID;
-    });
-    boards.splice(removedBoardIndex, 1);
-    setBoards([...boards]);
-  };
-
-  const addBoard = (doc) => {
-    setBoards([
-      ...boards,
-      {
-        id: doc.id,
-        data: doc.data(),
-      },
-    ]);
-  };
-
-  // cards
-  const [cards, setCards] = useState([]);
-
-  const addCard = (doc) => {
-    setCards([
-      ...cards,
-      {
-        id: doc.id,
-        data: doc.data(),
-      },
-    ]);
-  };
-
-  const removeCard = (dataID) => {
-    const removedCardIndex = cards.findIndex((card) => {
-      return card.id === dataID;
-    });
-    cards.splice(removedCardIndex, 1);
-    setCards([...cards]);
-  };
+  const { showCards, activePage, activeBoard, setActivePage } = useAppState();
+  const { boards, setBoards, removeBoard, addBoard } = useBoardsState();
+  const { cards, setCards, addCard, removeCard } = useCardsState();
 
   return (
     <>
@@ -77,7 +31,7 @@ const App = () => {
         id={activePage}
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        {activePage === page.boards ? (
+        {activePage === PAGE.BOARDS ? (
           <BoardsPage
             onBoardClick={showCards}
             addBoard={addBoard}
@@ -101,3 +55,68 @@ const App = () => {
 };
 
 export default App;
+
+// Custom hooks for states
+
+// App
+const useAppState = () => {
+  const [activePage, setActivePage] = useState(PAGE.BOARDS);
+  const [activeBoard, setActiveBoard] = useState({});
+
+  const showCards = (boardsArray, boardID) => {
+    setActiveBoard(...boardsArray.filter(({ id }) => id === boardID));
+    setActivePage(PAGE.CARDS);
+  };
+
+  return { showCards, activePage, activeBoard, setActivePage };
+};
+
+// Boards
+const useBoardsState = () => {
+  const [boards, setBoards] = useState([]);
+
+  const removeBoard = (dataID) => {
+    const removedBoardIndex = boards.findIndex((boardItem) => {
+      return boardItem.id === dataID;
+    });
+    boards.splice(removedBoardIndex, 1);
+    setBoards([...boards]);
+  };
+
+  const addBoard = (doc) => {
+    setBoards([
+      ...boards,
+      {
+        id: doc.id,
+        data: doc.data(),
+      },
+    ]);
+  };
+
+  return { boards, setBoards, removeBoard, addBoard };
+};
+
+// Cards
+const useCardsState = () => {
+  const [cards, setCards] = useState([]);
+
+  const addCard = (doc) => {
+    setCards([
+      ...cards,
+      {
+        id: doc.id,
+        data: doc.data(),
+      },
+    ]);
+  };
+
+  const removeCard = (dataID) => {
+    const removedCardIndex = cards.findIndex((card) => {
+      return card.id === dataID;
+    });
+    cards.splice(removedCardIndex, 1);
+    setCards([...cards]);
+  };
+
+  return { cards, setCards, addCard, removeCard };
+};

@@ -22,46 +22,15 @@ import EmptyItem from "../CardItem/EmptyItem";
 const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
   const [loadingState, setLoadingState] = useState(true);
   const [isInputBusy, setInputState] = useState(false);
+  const { tasks, setTasks, addTask, removeTask } = useTasksState();
   const swiperRef = useRef(null);
-
-  const [tasks, setTasks] = useState([]);
-
-  const addTask = (cardID) => {
-    backend
-      .pushTask(cardID)
-      .then((doc) => {
-        setTasks([
-          ...tasks,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ]);
-      })
-      .catch(console.error);
-  };
-
-  const removeTask = (dataID, cb) => {
-    cb(true);
-    backend
-      .eraseTask(dataID)
-      .then(() => {
-        const removedTaskIndex = tasks.findIndex((task) => {
-          return task.id === dataID;
-        });
-        cb(false);
-        tasks.splice(removedTaskIndex, 1);
-        setTasks([...tasks]);
-      })
-      .catch(console.error);
-  };
 
   useEffect(() => {
     backend
       .getTasks()
       .then((loadedTasks) => setTasks(loadedTasks))
       .catch(console.error);
-  }, []);
+  }, [setTasks]);
 
   useEffect(() => {
     backend
@@ -150,3 +119,40 @@ const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
 };
 
 export default CardsList;
+
+// Custom hook for tasks state
+const useTasksState = () => {
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (cardID) => {
+    backend
+      .pushTask(cardID)
+      .then((doc) => {
+        setTasks([
+          ...tasks,
+          {
+            id: doc.id,
+            data: doc.data(),
+          },
+        ]);
+      })
+      .catch(console.error);
+  };
+
+  const removeTask = (dataID, cb) => {
+    cb(true);
+    backend
+      .eraseTask(dataID)
+      .then(() => {
+        const removedTaskIndex = tasks.findIndex((task) => {
+          return task.id === dataID;
+        });
+        cb(false);
+        tasks.splice(removedTaskIndex, 1);
+        setTasks([...tasks]);
+      })
+      .catch(console.error);
+  };
+
+  return { tasks, setTasks, addTask, removeTask };
+};
