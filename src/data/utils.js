@@ -3,7 +3,7 @@
 
 // Imports
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, query, where, doc, getDoc, getDocs, addDoc, deleteDoc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, doc, getDoc, getDocs, deleteDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -62,10 +62,12 @@ export const eraseBoard = (dataID) => {
 };
 
 export const pushBoard = (dataName) => {
-  return addDoc(collection(initializeDataBase(), "boards"), {
+  const docRef = doc(initializeDataBase(), "boards", `b${Date.now()}`);
+
+  return setDoc(docRef, {
     name: dataName,
   })
-    .then((docRef) => getDoc(docRef));
+    .then(() => getDoc(docRef));
 };
 
 // CARDS and TASKS
@@ -106,11 +108,13 @@ export const getCards = (activeBoard) => {
 };
 
 export const pushCard = (dataName, activeBoard) => {
-  return addDoc(collection(initializeDataBase(), "cards"), {
+  const docRef = doc(initializeDataBase(), "cards", `c${Date.now()}`)
+
+  return setDoc(docRef, {
     name: dataName,
     boardID: activeBoard.id,
   })
-    .then((docRef) => getDoc(docRef));
+    .then(() => getDoc(docRef));
 };
 
 export const eraseCard = (dataID) => {
@@ -126,11 +130,12 @@ export const eraseCard = (dataID) => {
 };
 
 export const pushTask = (cardID) => {
-  return addDoc(collection(initializeDataBase(), "tasks"), {
+  const docRef = doc(initializeDataBase(), "tasks", `t${Date.now()}`)
+  return setDoc(docRef, {
     name: "",
     cardID: cardID,
   })
-    .then((docRef) => getDoc(docRef));
+    .then(() => getDoc(docRef));
 };
 
 export const eraseTask = (dataID) => {
@@ -138,11 +143,7 @@ export const eraseTask = (dataID) => {
 };
 
 export const pushName = (id, collectionName, newName) => {
-  return setDoc(
-    doc(initializeDataBase(), collectionName, id),
-    {
-      name: newName.trim(),
-    },
-    { merge: true }
-  );
+  const docRef = doc(initializeDataBase(), collectionName, id)
+
+  return setDoc(docRef, { name: newName.trim() }, { merge: true });
 };
