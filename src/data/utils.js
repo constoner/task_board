@@ -129,11 +129,12 @@ export const eraseCard = (dataID) => {
   return deleteDoc(doc(initializeDataBase(), "cards", dataID));
 };
 
-export const pushTask = (cardID) => {
+export const pushTask = (dataID) => {
   const docRef = doc(initializeDataBase(), "tasks", `t${Date.now()}`)
+
   return setDoc(docRef, {
     name: "",
-    cardID: cardID,
+    cardID: dataID,
   })
     .then(() => getDoc(docRef));
 };

@@ -1,6 +1,7 @@
 // Get data
 import * as backend from "../../data/utils";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import Context from "../App/context";
 
 // MUI components
 import { Box } from "@mui/material";
@@ -18,7 +19,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { style } from "./style";
 
 // Custom modal window component
-const CustomModal = ({ modalState, setModalState, cb, addBoard }) => {
+const CustomModal = ({ modalState, setModalState, cb }) => {
+  const { addBoard } = useContext(Context);
   const [boardName, setName] = useState("");
 
   const reset = () => {

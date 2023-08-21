@@ -14,13 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
-const BoardsPage = ({
-  onBoardClick,
-  addBoard,
-  removeBoard,
-  boards,
-  setBoards,
-}) => {
+const BoardsPage = () => {
   const [modalState, setModalState] = useState(false);
   const [addingNewBoard, triggerAddingNewBoard] = useState(false);
 
@@ -51,10 +45,6 @@ const BoardsPage = ({
           <BoardsList
             reloadTrigger={addingNewBoard}
             triggerReload={triggerAddingNewBoard}
-            onBoardClick={onBoardClick}
-            removeBoard={removeBoard}
-            boards={boards}
-            setBoards={setBoards}
           />
         </Container>
       </Box>
@@ -87,7 +77,6 @@ const BoardsPage = ({
         modalState={modalState}
         setModalState={setModalState}
         cb={triggerAddingNewBoard}
-        addBoard={addBoard}
       />
     </>
   );

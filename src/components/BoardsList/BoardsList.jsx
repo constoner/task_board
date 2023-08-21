@@ -1,7 +1,7 @@
-// Get data
+// React
 import * as backend from "../../data/utils";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import Context from "../App/context";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -14,14 +14,8 @@ import Paper from "@mui/material/Paper";
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
 
-const BoardsList = ({
-  reloadTrigger,
-  triggerReload,
-  onBoardClick,
-  removeBoard,
-  boards,
-  setBoards,
-}) => {
+const BoardsList = ({ reloadTrigger, triggerReload }) => {
+  const { boards, setBoards } = useContext(Context);
   const [loadingState, setLoadingState] = useState(true);
 
   // get docs from firebase
@@ -36,18 +30,6 @@ const BoardsList = ({
       .catch(console.error)
       .finally(() => setLoadingState(false));
   }, [reloadTrigger, triggerReload, setBoards]);
-
-  // Delete doc from firebase
-  const deleteBoard = (dataID, cb) => {
-    cb(true);
-    backend
-      .eraseBoard(dataID)
-      .catch(console.error)
-      .then(() => {
-        removeBoard(dataID);
-      })
-      .finally(() => cb(false));
-  };
 
   return (
     <>
@@ -90,13 +72,7 @@ const BoardsList = ({
             return (
               <Grid item width={["100%", "50%", "25%"]} key={id}>
                 <Paper elevation={0}>
-                  <BoardItem
-                    boards={boards}
-                    boardName={data.name}
-                    id={id}
-                    buttonCB={deleteBoard}
-                    onBoardClick={onBoardClick}
-                  />
+                  <BoardItem boardName={data.name} id={id} />
                 </Paper>
               </Grid>
             );

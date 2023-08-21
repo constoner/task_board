@@ -5,9 +5,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./style.css";
 
-// Get data
+// React
 import * as backend from "../../data/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import Context from "../App/context";
 
 // MUI components
 import Backdrop from "@mui/material/Backdrop";
@@ -19,10 +20,11 @@ import Card from "@mui/material/Card";
 import CardItem from "../CardItem/CardItem";
 import EmptyItem from "../CardItem/EmptyItem";
 
-const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
+const CardsList = () => {
+  const { activeBoard, cards, setCards, addCard, removeCard, tasks, setTasks } =
+    useContext(Context);
   const [loadingState, setLoadingState] = useState(true);
   const [isInputBusy, setInputState] = useState(false);
-  const { tasks, setTasks, addTask, removeTask } = useTasksState();
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -93,16 +95,10 @@ const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
                       <CardItem
                         name={card.data.name}
                         id={card.id}
-                        buttonCB={deleteCard}
+                        onDelete={deleteCard}
                         taskData={taskData}
                         isInputBusy={isInputBusy}
                         setInputState={setInputState}
-                        cards={cards}
-                        setCards={setCards}
-                        addTask={addTask}
-                        removeTask={removeTask}
-                        tasks={tasks}
-                        setTasks={setTasks}
                       />
                     </Card>
                   </SwiperSlide>
@@ -119,40 +115,3 @@ const CardsList = ({ activeBoard, addCard, removeCard, cards, setCards }) => {
 };
 
 export default CardsList;
-
-// Custom hook for tasks state
-const useTasksState = () => {
-  const [tasks, setTasks] = useState([]);
-
-  const addTask = (cardID) => {
-    backend
-      .pushTask(cardID)
-      .then((doc) => {
-        setTasks([
-          ...tasks,
-          {
-            id: doc.id,
-            data: doc.data(),
-          },
-        ]);
-      })
-      .catch(console.error);
-  };
-
-  const removeTask = (dataID, cb) => {
-    cb(true);
-    backend
-      .eraseTask(dataID)
-      .then(() => {
-        const removedTaskIndex = tasks.findIndex((task) => {
-          return task.id === dataID;
-        });
-        cb(false);
-        tasks.splice(removedTaskIndex, 1);
-        setTasks([...tasks]);
-      })
-      .catch(console.error);
-  };
-
-  return { tasks, setTasks, addTask, removeTask };
-};

@@ -1,3 +1,8 @@
+// React
+import { useContext } from "react";
+import Context from "../App/context";
+import * as backend from "../../data/utils";
+
 // MUI components
 import List from "@mui/material/List";
 
@@ -5,16 +10,24 @@ import List from "@mui/material/List";
 import EditableName from "../EditableName/EditableName";
 import NewTask from "./NewTask";
 
-const TasksList = ({
-  taskData,
-  cardID,
-  status,
-  setStatus,
-  addTask,
-  removeTask,
-  tasks,
-  setTasks,
-}) => {
+const TasksList = ({ taskData, cardID, status, setStatus }) => {
+  const { tasks, setTasks, addTask, removeTask } = useContext(Context);
+
+  const createTask = (cardID) => {
+    backend
+      .pushTask(cardID)
+      .then((doc) => addTask(doc))
+      .catch(console.error);
+  };
+
+  const deleteTask = (dataID, cb) => {
+    cb(true);
+    backend
+      .eraseTask(dataID)
+      .then(() => removeTask(dataID, cb))
+      .catch(console.error);
+  };
+
   return (
     <List
       sx={{
@@ -29,7 +42,7 @@ const TasksList = ({
               id={id}
               name={data.name}
               collection="tasks"
-              cb={removeTask}
+              cb={deleteTask}
               isInputBusy={status}
               setInputState={setStatus}
               names={tasks}
@@ -41,7 +54,7 @@ const TasksList = ({
 
       {/* Add new task */}
       <li key="add">
-        <NewTask onClick={() => addTask(cardID)} />
+        <NewTask onClick={() => createTask(cardID)} />
       </li>
     </List>
   );

@@ -1,3 +1,7 @@
+// React
+import { useContext } from "react";
+import Context from "../App/context";
+
 // MUI components
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
@@ -10,14 +14,9 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 //Custom components
 import CardsList from "../CardsList/CardsList";
 
-const CardsPage = ({
-  activeBoard,
-  goBack,
-  addCard,
-  removeCard,
-  cards,
-  setCards,
-}) => {
+const CardsPage = () => {
+  const { activeBoard, setActivePage } = useContext(Context);
+
   return (
     <>
       {/* header */}
@@ -43,13 +42,7 @@ const CardsPage = ({
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
-        <CardsList
-          activeBoard={activeBoard}
-          addCard={addCard}
-          removeCard={removeCard}
-          cards={cards}
-          setCards={setCards}
-        />
+        <CardsList />
       </Box>
       {/* footer */}
       <Box
@@ -68,7 +61,7 @@ const CardsPage = ({
           <Button
             variant="contained"
             sx={{ minWidth: "50%", mx: ["auto", 0] }}
-            onClick={() => goBack("boards")}
+            onClick={() => setActivePage("boards")}
           >
             <KeyboardBackspaceIcon sx={{ mr: 1 }} />
             <span>Back</span>

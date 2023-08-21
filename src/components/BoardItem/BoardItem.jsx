@@ -1,5 +1,7 @@
 // React
-import { useState } from "react";
+import { useState, useContext } from "react";
+import Context from "../App/context";
+import * as backend from "../../data/utils";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -12,8 +14,21 @@ import { grey } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 
-const BoardItem = ({ boards, boardName, id, buttonCB, onBoardClick }) => {
+const BoardItem = ({ boardName, id }) => {
+  const { boards, removeBoard, showCards } = useContext(Context);
   const [deleting, setDeleting] = useState(false);
+
+  // Delete doc from firebase
+  const deleteBoard = (dataID, cb) => {
+    cb(true);
+    backend
+      .eraseBoard(dataID)
+      .catch(console.error)
+      .then(() => {
+        removeBoard(dataID);
+      })
+      .finally(() => cb(false));
+  };
 
   return (
     <Card>
@@ -26,7 +41,7 @@ const BoardItem = ({ boards, boardName, id, buttonCB, onBoardClick }) => {
       >
         <CardContent
           sx={{ flexGrow: 1, overflow: "hidden" }}
-          onClick={() => onBoardClick(boards, id)}
+          onClick={() => showCards(boards, id)}
         >
           <Typography
             variant="h5"
@@ -44,7 +59,7 @@ const BoardItem = ({ boards, boardName, id, buttonCB, onBoardClick }) => {
         </CardContent>
         <CardActions sx={{ justifyContent: "flex-end" }}>
           <Button
-            onClick={() => buttonCB(id, setDeleting)}
+            onClick={() => deleteBoard(id, setDeleting)}
             aria-label="Delete board."
           >
             {!deleting ? (

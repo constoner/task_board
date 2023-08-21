@@ -1,5 +1,8 @@
 // React
-import React, { useState } from "react";
+import React from "react";
+import PAGE from "./costants";
+import Context from "./context";
+import useAppState from "./customHooks";
 
 // MUI components
 import "@fontsource/roboto/300.css";
@@ -13,110 +16,21 @@ import CardsPage from "../CardsPage/CardsPage";
 // Custom components
 import BoardsPage from "../BoardsPage/BoardsPage";
 
-const PAGE = {
-  BOARDS: "boards",
-  CARDS: "cards",
-};
-
 // Component App
 const App = () => {
-  const { showCards, activePage, activeBoard, setActivePage } = useAppState();
-  const { boards, setBoards, removeBoard, addBoard } = useBoardsState();
-  const { cards, setCards, addCard, removeCard } = useCardsState();
+  const state = useAppState();
 
   return (
-    <>
+    <Context.Provider value={state}>
       <CssBaseline />
       <Box
-        id={activePage}
+        id={state.activePage}
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        {activePage === PAGE.BOARDS ? (
-          <BoardsPage
-            onBoardClick={showCards}
-            addBoard={addBoard}
-            removeBoard={removeBoard}
-            boards={boards}
-            setBoards={setBoards}
-          />
-        ) : (
-          <CardsPage
-            activeBoard={activeBoard}
-            goBack={setActivePage}
-            addCard={addCard}
-            removeCard={removeCard}
-            cards={cards}
-            setCards={setCards}
-          />
-        )}
+        {state.activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
       </Box>
-    </>
+    </Context.Provider>
   );
 };
 
 export default App;
-
-// Custom hooks for states
-
-// App
-const useAppState = () => {
-  const [activePage, setActivePage] = useState(PAGE.BOARDS);
-  const [activeBoard, setActiveBoard] = useState({});
-
-  const showCards = (boardsArray, boardID) => {
-    setActiveBoard(...boardsArray.filter(({ id }) => id === boardID));
-    setActivePage(PAGE.CARDS);
-  };
-
-  return { showCards, activePage, activeBoard, setActivePage };
-};
-
-// Boards
-const useBoardsState = () => {
-  const [boards, setBoards] = useState([]);
-
-  const removeBoard = (dataID) => {
-    const removedBoardIndex = boards.findIndex((boardItem) => {
-      return boardItem.id === dataID;
-    });
-    boards.splice(removedBoardIndex, 1);
-    setBoards([...boards]);
-  };
-
-  const addBoard = (doc) => {
-    setBoards([
-      ...boards,
-      {
-        id: doc.id,
-        data: doc.data(),
-      },
-    ]);
-  };
-
-  return { boards, setBoards, removeBoard, addBoard };
-};
-
-// Cards
-const useCardsState = () => {
-  const [cards, setCards] = useState([]);
-
-  const addCard = (doc) => {
-    setCards([
-      ...cards,
-      {
-        id: doc.id,
-        data: doc.data(),
-      },
-    ]);
-  };
-
-  const removeCard = (dataID) => {
-    const removedCardIndex = cards.findIndex((card) => {
-      return card.id === dataID;
-    });
-    cards.splice(removedCardIndex, 1);
-    setCards([...cards]);
-  };
-
-  return { cards, setCards, addCard, removeCard };
-};

@@ -1,3 +1,7 @@
+// React
+import { useContext } from "react";
+import Context from "../App/context";
+
 // MUI components
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
@@ -13,17 +17,13 @@ import TasksList from "../TasksList/TasksList";
 const CardItem = ({
   name,
   id,
-  buttonCB,
+  onDelete,
   taskData,
   isInputBusy,
   setInputState,
-  cards,
-  setCards,
-  addTask,
-  removeTask,
-  tasks,
-  setTasks,
 }) => {
+  const { cards, setCards } = useContext(Context);
+
   return (
     <Box
       sx={{
@@ -60,17 +60,13 @@ const CardItem = ({
             status={isInputBusy}
             setStatus={setInputState}
             cardID={id}
-            addTask={addTask}
-            removeTask={removeTask}
-            tasks={tasks}
-            setTasks={setTasks}
           />
         </Box>
       </CardContent>
       <CardActions
         sx={{ justifyContent: "flex-end", marginTop: "-16px", p: 2 }}
       >
-        <Button variant="outlined" color="error" onClick={() => buttonCB(id)}>
+        <Button variant="outlined" color="error" onClick={() => onDelete(id)}>
           <DeleteOutlineIcon sx={{ mr: 1 }} />
           <span>Remove</span>
         </Button>
