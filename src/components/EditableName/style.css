@@ -1,0 +1,12 @@
+.name_element {
+    flex-grow: 1;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 16.5px 14px;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    cursor: text;
+}

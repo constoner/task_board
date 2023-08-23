@@ -2,6 +2,7 @@
 import * as backend from "../../data/utils";
 import { useState, useEffect, useContext } from "react";
 import Context from "../App/context";
+import PropTypes from "prop-types";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -65,13 +66,13 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
         <Grid
           container
           columns={{ xs: 1, sm: 2, md: 4 }}
-          spacing={[2, 3]}
-          sx={{ py: [2, 3] }}
+          spacing={[3, 3]}
+          sx={{ py: [3, 3], px: 1 }}
         >
           {boards.map(({ id, data }) => {
             return (
               <Grid item width={["100%", "50%", "25%"]} key={id}>
-                <Paper elevation={0}>
+                <Paper elevation={2}>
                   <BoardItem boardName={data.name} id={id} />
                 </Paper>
               </Grid>
@@ -84,3 +85,8 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
 };
 
 export default BoardsList;
+
+BoardsList.propTypes = {
+  reloadTrigger: PropTypes.bool.isRequired,
+  triggerReload: PropTypes.func.isRequired,
+};

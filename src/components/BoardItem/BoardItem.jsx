@@ -2,6 +2,7 @@
 import { useState, useContext } from "react";
 import Context from "../App/context";
 import * as backend from "../../data/utils";
+import PropTypes from "prop-types";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -14,11 +15,21 @@ import { grey } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 
+// Custom components
+import Confirmation from "../Confirmation/Confirmation";
+
 const BoardItem = ({ boardName, id }) => {
   const { boards, removeBoard, showCards } = useContext(Context);
   const [deleting, setDeleting] = useState(false);
+  const [confirmation, setConfirmation] = useState(false);
+  const [anchor, setAnchor] = useState(null);
 
   // Delete doc from firebase
+  const onDelete = (evt) => {
+    setAnchor(evt.currentTarget);
+    setConfirmation(true);
+  };
+
   const deleteBoard = (dataID, cb) => {
     cb(true);
     backend
@@ -31,7 +42,7 @@ const BoardItem = ({ boardName, id }) => {
   };
 
   return (
-    <Card>
+    <Card elevation={0}>
       <Box
         sx={{
           display: "flex",
@@ -57,10 +68,11 @@ const BoardItem = ({ boardName, id }) => {
             {boardName}
           </Typography>
         </CardContent>
-        <CardActions sx={{ justifyContent: "flex-end" }}>
+        <CardActions sx={{ justifyContent: "flex-end", p: 0 }}>
           <Button
-            onClick={() => deleteBoard(id, setDeleting)}
+            onClick={onDelete}
             aria-label="Delete board."
+            sx={{ minWidth: "48px", height: "100%" }}
           >
             {!deleting ? (
               <DeleteOutline sx={{ color: grey[500] }} />
@@ -76,8 +88,23 @@ const BoardItem = ({ boardName, id }) => {
           </Button>
         </CardActions>
       </Box>
+      <Confirmation
+        oneOfElements={"boards"}
+        anchor={anchor}
+        open={confirmation}
+        setDeleting={setDeleting}
+        id={id}
+        cb={deleteBoard}
+        setConfirmation={setConfirmation}
+        setAnchor={setAnchor}
+      />
     </Card>
   );
 };
 
 export default BoardItem;
+
+BoardItem.propTypes = {
+  boardName: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};

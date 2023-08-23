@@ -2,6 +2,7 @@
 import * as backend from "../../data/utils";
 import { useState, useContext } from "react";
 import Context from "../App/context";
+import PropTypes from "prop-types";
 
 // MUI components
 import { Box } from "@mui/material";
@@ -114,3 +115,9 @@ const CustomModal = ({ modalState, setModalState, cb }) => {
 };
 
 export default CustomModal;
+
+CustomModal.propTypes = {
+  modalState: PropTypes.bool.isRequired,
+  setModalState: PropTypes.func.isRequired,
+  cb: PropTypes.func.isRequired,
+};

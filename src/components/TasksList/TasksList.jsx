@@ -2,6 +2,7 @@
 import { useContext } from "react";
 import Context from "../App/context";
 import * as backend from "../../data/utils";
+import PropTypes from "prop-types";
 
 // MUI components
 import List from "@mui/material/List";
@@ -61,3 +62,10 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
 };
 
 export default TasksList;
+
+TasksList.propTypes = {
+  taskData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  cardID: PropTypes.string.isRequired,
+  status: PropTypes.bool.isRequired,
+  setStatus: PropTypes.func.isRequired,
+};

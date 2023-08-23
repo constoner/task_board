@@ -1,23 +1,24 @@
 // React
 import { useState } from "react";
-
-// Get data
+import PropTypes from "prop-types";
 import * as backend from "../../data/utils";
+import useNameState from "./nameHooks";
 
 // MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Create from "@mui/icons-material/Create";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import Done from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { TextField } from "@mui/material";
 
 // Custom components
 import Name from "./Name";
+import Confirmation from "../Confirmation/Confirmation";
 
 const EditableName = ({
+  isTitle = false,
   id,
   name,
   collection,
@@ -27,9 +28,21 @@ const EditableName = ({
   names,
   setNames,
 }) => {
+  const { setName } = useNameState();
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
   const [deleting, setDeleting] = useState(false);
+  const [confirmation, setConfirmation] = useState(false);
+  const [anchor, setAnchor] = useState(null);
+
+  const finishEditing = () => {
+    if (!isInputBusy) {
+      setTimeout(() => {
+        setInputState(true);
+        setEditState(true);
+      }, 0); // zero for running in properly order
+    }
+  };
 
   // initial check when new task appears
   if (nameValue === "") {
@@ -37,15 +50,10 @@ const EditableName = ({
   }
 
   // Edit name
-  const setName = (id) => {
+  const editName = (id) => {
     if (nameValue !== "") {
       backend.pushName(id, collection, nameValue).catch(console.error);
-      names.forEach((item) => {
-        if (item.id === id) {
-          item.data.name = nameValue;
-        }
-      });
-      setNames([...names]);
+      setName(names, id, nameValue, setNames);
       setTimeout(() => {
         setEditState(false);
         setInputState(false);
@@ -53,10 +61,21 @@ const EditableName = ({
     }
   };
 
+  const onDelete = (evt) => {
+    if (isTitle) {
+      setAnchor(evt.currentTarget);
+      setConfirmation(true);
+    } else {
+      cb(id, setDeleting);
+    }
+  };
+
   return (
     <Box id={id} sx={{ display: "flex" }}>
       {!editState ? (
-        <Name isTitle={cb && true}>{nameValue}</Name>
+        <Name isTitle={isTitle} onClick={finishEditing}>
+          {nameValue}
+        </Name>
       ) : (
         <TextField
           placeholder={`input new ${collection.slice(
@@ -64,62 +83,69 @@ const EditableName = ({
             collection.length - 1
           )}`}
           multiline
+          sx={{ flexGrow: 1 }}
           maxRows={10}
           inputRef={(input) => input && input.focus()}
           value={nameValue}
           onChange={(evt) => setNameValue(evt.target.value)}
           onBlur={() => {
-            setName(id);
+            editName(id);
           }}
         />
       )}
 
-      {/* Edit */}
-      {!editState ? (
-        <Button
-          sx={{ ml: "auto", color: grey[500] }}
-          aria-label={`edit ${collection.slice(
-            0,
-            collection.length - 1
-          )} name.`}
-          onClick={() => {
-            if (!isInputBusy) {
-              setTimeout(() => {
-                setInputState(true);
-                setEditState(true);
-              }, 0); // zero for running in properly order
-            }
-          }}
-        >
-          <Create />
-        </Button>
-      ) : (
-        <Button sx={{ ml: "auto" }} aria-label="done editing.">
-          <Done />
-        </Button>
-      )}
-
-      {/* Delete */}
-      {cb ? (
-        <Button
-          onClick={() => cb(id, setDeleting)}
-          aria-label={`Delete ${collection.slice(0, collection.length - 1)}.`}
-        >
-          {!deleting ? (
-            <DeleteOutline sx={{ color: grey[500] }} />
-          ) : (
-            <CircularProgress
-              sx={{
-                width: "24px !important",
-                height: "24px !important",
-                color: grey[500],
-              }}
-            />
-          )}
-        </Button>
+      <Button
+        onClick={onDelete}
+        aria-label={`Delete ${collection.slice(0, collection.length - 1)}.`}
+        title={isTitle ? "Delete card" : "Delete task"}
+        sx={{
+          minWidth: "unset",
+          height: "auto",
+          alignSelf: "flex-start",
+          py: 2,
+          marginLeft: -1,
+        }}
+      >
+        {!deleting ? (
+          <DeleteOutline
+            sx={{ color: () => (isTitle ? red[700] : grey[500]) }}
+          />
+        ) : (
+          <CircularProgress
+            sx={{
+              width: "24px !important",
+              height: "24px !important",
+              color: grey[500],
+            }}
+          />
+        )}
+      </Button>
+      {isTitle ? (
+        <Confirmation
+          oneOfElements={collection}
+          anchor={anchor}
+          open={confirmation}
+          cb={cb}
+          setDeleting={setDeleting}
+          id={id}
+          setConfirmation={setConfirmation}
+          setAnchor={setAnchor}
+        />
       ) : null}
     </Box>
   );
 };
 
 export default EditableName;
+
+EditableName.propTypes = {
+  isTitle: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  collection: PropTypes.string.isRequired,
+  cb: PropTypes.func,
+  isInputBusy: PropTypes.bool.isRequired,
+  setInputState: PropTypes.func.isRequired,
+  names: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setNames: PropTypes.func.isRequired,
+};

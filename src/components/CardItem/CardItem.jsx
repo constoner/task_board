@@ -1,13 +1,11 @@
 // React
 import { useContext } from "react";
 import Context from "../App/context";
+import PropTypes from "prop-types";
 
 // MUI components
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { grey } from "@mui/material/colors";
 
 // Custom components
@@ -33,7 +31,7 @@ const CardItem = ({
         height: "100%",
       }}
     >
-      <CardContent sx={{ flexGrow: 0, flexShrink: 1, p: 2 }}>
+      <CardContent sx={{ flexGrow: 0, flexShrink: 1, p: 1 }}>
         <Box
           sx={{
             mb: 1,
@@ -45,6 +43,7 @@ const CardItem = ({
           title={name}
         >
           <EditableName
+            isTitle={true}
             id={id}
             name={name}
             collection="cards"
@@ -52,6 +51,7 @@ const CardItem = ({
             setInputState={setInputState}
             names={cards}
             setNames={setCards}
+            cb={() => onDelete(id)}
           />
         </Box>
         <Box variant="body2">
@@ -63,16 +63,17 @@ const CardItem = ({
           />
         </Box>
       </CardContent>
-      <CardActions
-        sx={{ justifyContent: "flex-end", marginTop: "-16px", p: 2 }}
-      >
-        <Button variant="outlined" color="error" onClick={() => onDelete(id)}>
-          <DeleteOutlineIcon sx={{ mr: 1 }} />
-          <span>Remove</span>
-        </Button>
-      </CardActions>
     </Box>
   );
 };
 
 export default CardItem;
+
+CardItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  taskData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isInputBusy: PropTypes.bool.isRequired,
+  setInputState: PropTypes.func.isRequired,
+};

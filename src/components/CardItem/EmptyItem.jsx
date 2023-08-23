@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 // MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -32,3 +34,7 @@ const EmptyItem = ({ onClick }) => {
 };
 
 export default EmptyItem;
+
+EmptyItem.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

@@ -11,7 +11,6 @@ const root = ReactDOM.createRoot(rootElement);
 
 documentStyle(rootElement);
 
-// Render App
 root.render(
   <>
     <App />

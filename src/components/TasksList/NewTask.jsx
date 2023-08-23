@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 // MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -20,3 +22,7 @@ const NewTask = ({ onClick }) => {
 };
 
 export default NewTask;
+
+NewTask.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

@@ -14,7 +14,7 @@ import Context from "../App/context";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
 
 // Custom components
 import CardItem from "../CardItem/CardItem";
@@ -91,7 +91,7 @@ const CardsList = () => {
                     id={card.id}
                     style={{ height: "100%" }}
                   >
-                    <Card className="swiper-card" elevation={4}>
+                    <Paper className="swiper-card" elevation={4} sx={{ mt: 3 }}>
                       <CardItem
                         name={card.data.name}
                         id={card.id}
@@ -100,7 +100,7 @@ const CardsList = () => {
                         isInputBusy={isInputBusy}
                         setInputState={setInputState}
                       />
-                    </Card>
+                    </Paper>
                   </SwiperSlide>
                 );
               })
