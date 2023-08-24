@@ -16,6 +16,7 @@ import { TextField } from "@mui/material";
 // Custom components
 import Name from "./Name";
 import Confirmation from "../Confirmation/Confirmation";
+import setNameStyle from "./editableNameStyle";
 
 const EditableName = ({
   isTitle = false,
@@ -31,34 +32,31 @@ const EditableName = ({
   const { setName } = useNameState();
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
+  const [prevName, setPrevName] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
   const finishEditing = () => {
     if (!isInputBusy) {
-      setTimeout(() => {
-        setInputState(true);
-        setEditState(true);
-      }, 0); // zero for running in properly order
+      setInputState(true);
+      setEditState(true);
     }
   };
 
-  // initial check when new task appears
-  if (nameValue === "") {
-    setTimeout(() => setEditState(true), 0); // zero for properly event order
-  }
-
   // Edit name
   const editName = (id) => {
-    if (nameValue !== "") {
-      backend.pushName(id, collection, nameValue).catch(console.error);
-      setName(names, id, nameValue, setNames);
-      setTimeout(() => {
-        setEditState(false);
-        setInputState(false);
-      }, 150); // testing shortest possible interval - 100ms (75ms to short without trottling); increased to 150 because dont work in firefox
+    if (nameValue === prevName) {
+      setEditState(false);
+      setInputState(false);
+      return;
     }
+    setNameValue(nameValue.trim());
+    setPrevName(nameValue);
+    backend.pushName(id, collection, nameValue).catch(console.error);
+    setName(names, id, nameValue, setNames);
+    setEditState(false);
+    setInputState(false);
   };
 
   const onDelete = (evt) => {
@@ -71,7 +69,7 @@ const EditableName = ({
   };
 
   return (
-    <Box id={id} sx={{ display: "flex" }}>
+    <Box id={id} sx={setNameStyle(isTitle, grey[500])}>
       {!editState ? (
         <Name isTitle={isTitle} onClick={finishEditing}>
           {nameValue}
@@ -83,7 +81,7 @@ const EditableName = ({
             collection.length - 1
           )}`}
           multiline
-          sx={{ flexGrow: 1 }}
+          sx={{ flexGrow: 1, borderColor: "rgba(255,255,255,0)" }}
           maxRows={10}
           inputRef={(input) => input && input.focus()}
           value={nameValue}

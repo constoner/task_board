@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import "./style.css";
+import "./nameStyle.css";
 
 // MUI components
 import Box from "@mui/material/Box";

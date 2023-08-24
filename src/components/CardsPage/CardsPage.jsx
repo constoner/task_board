@@ -31,7 +31,7 @@ const CardsPage = () => {
           <Typography
             variant="h5"
             component="h1"
-            sx={{ textTransform: "capitalize" }}
+            sx={{ textTransform: "upperCase" }}
           >
             {activeBoard.data.name}
           </Typography>
