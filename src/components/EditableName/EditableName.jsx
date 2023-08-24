@@ -37,16 +37,16 @@ const EditableName = ({
 
   const finishEditing = () => {
     if (!isInputBusy) {
-      setTimeout(() => {
-        setInputState(true);
-        setEditState(true);
-      }, 0); // zero for running in properly order
+      setInputState(true);
+      setEditState(true);
     }
   };
 
   // initial check when new task appears
   if (nameValue === "") {
-    setTimeout(() => setEditState(true), 0); // zero for properly event order
+    setTimeout(() => {
+      setEditState(true);
+    }, 0); // zero for properly event order
   }
 
   // Edit name
@@ -54,10 +54,8 @@ const EditableName = ({
     if (nameValue !== "") {
       backend.pushName(id, collection, nameValue).catch(console.error);
       setName(names, id, nameValue, setNames);
-      setTimeout(() => {
-        setEditState(false);
-        setInputState(false);
-      }, 150); // testing shortest possible interval - 100ms (75ms to short without trottling); increased to 150 because dont work in firefox
+      setEditState(false);
+      setInputState(false);
     }
   };
 
