@@ -10,27 +10,23 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const Confirmation = ({
-  oneOfElements = "",
+  openStatus,
+  setOpen,
+  elementName = "",
   anchor,
-  open,
-  setConfirmation,
-  cb,
-  id,
-  setDeleting,
+  actionCB,
 }) => {
-  const elementName = oneOfElements.substring(0, oneOfElements.length - 1);
-
   const onPopoverYes = () => {
-    setConfirmation(false);
-    cb(id, setDeleting);
+    setOpen(false);
+    actionCB();
   };
 
-  const onPopoverNo = () => setConfirmation(false);
+  const onPopoverNo = () => setOpen(false);
 
   return (
     <Popover
-      open={open}
-      onClose={() => setConfirmation(false)}
+      open={openStatus}
+      onClose={() => setOpen(false)}
       anchorEl={anchor}
       anchorOrigin={{
         vertical: "bottom",
@@ -71,8 +67,9 @@ const Confirmation = ({
 export default Confirmation;
 
 Confirmation.propTypes = {
-  oneOfElements: PropTypes.string,
-  open: PropTypes.bool.isRequired,
-  // onYes: PropTypes.func.isRequired,
-  // onNo: PropTypes.func.isRequired,
+  openStatus: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  elementName: PropTypes.string,
+  anchor: PropTypes.object,
+  actionCB: PropTypes.func.isRequired,
 };

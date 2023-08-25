@@ -34,7 +34,7 @@ const EditableName = ({
   const [nameValue, setNameValue] = useState(name);
   const [prevName, setPrevName] = useState("");
   const [deleting, setDeleting] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
+  const [popoverStatus, setPopoverStatus] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
   const finishEditing = () => {
@@ -62,7 +62,7 @@ const EditableName = ({
   const onDelete = (evt) => {
     if (isTitle) {
       setAnchor(evt.currentTarget);
-      setConfirmation(true);
+      setPopoverStatus(true);
     } else {
       cb(id, setDeleting);
     }
@@ -120,14 +120,11 @@ const EditableName = ({
       </Button>
       {isTitle ? (
         <Confirmation
-          oneOfElements={collection}
+          openStatus={popoverStatus}
+          setOpen={setPopoverStatus}
+          elementName={"card"}
           anchor={anchor}
-          open={confirmation}
-          cb={cb}
-          setDeleting={setDeleting}
-          id={id}
-          setConfirmation={setConfirmation}
-          setAnchor={setAnchor}
+          actionCB={() => cb(id, setDeleting)}
         />
       ) : null}
     </Box>

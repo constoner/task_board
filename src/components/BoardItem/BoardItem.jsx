@@ -21,13 +21,13 @@ import Confirmation from "../Confirmation/Confirmation";
 const BoardItem = ({ boardName, id }) => {
   const { boards, removeBoard, showCards } = useContext(Context);
   const [deleting, setDeleting] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
+  const [popoverStatus, setPopoverStatus] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
   // Delete doc from firebase
   const onDelete = (evt) => {
     setAnchor(evt.currentTarget);
-    setConfirmation(true);
+    setPopoverStatus(true);
   };
 
   const deleteBoard = (dataID, cb) => {
@@ -89,14 +89,11 @@ const BoardItem = ({ boardName, id }) => {
         </CardActions>
       </Box>
       <Confirmation
-        oneOfElements={"boards"}
+        openStatus={popoverStatus}
+        setOpen={setPopoverStatus}
+        elementName={"board"}
         anchor={anchor}
-        open={confirmation}
-        setDeleting={setDeleting}
-        id={id}
-        cb={deleteBoard}
-        setConfirmation={setConfirmation}
-        setAnchor={setAnchor}
+        actionCB={() => deleteBoard(id, setDeleting)}
       />
     </Card>
   );
