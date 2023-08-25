@@ -42,10 +42,10 @@ const CardsList = () => {
       .finally(() => setLoadingState(false));
   }, [activeBoard, setCards, setTasks]);
 
-  const createCard = (dataName) => {
+  const createCard = () => {
     setLoadingState(true);
     backend
-      .pushCard(dataName, activeBoard)
+      .pushCard(activeBoard)
       .then((doc) => addCard(doc))
       .catch(console.error)
       .finally(() => setLoadingState(false));

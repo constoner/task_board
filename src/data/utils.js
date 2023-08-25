@@ -107,11 +107,11 @@ export const getCards = (activeBoard) => {
     })
 };
 
-export const pushCard = (dataName, activeBoard) => {
+export const pushCard = (activeBoard) => {
   const docRef = doc(initializeDataBase(), "cards", `c${Date.now()}`)
 
   return setDoc(docRef, {
-    name: dataName,
+    name: "",
     boardID: activeBoard.id,
   })
     .then(() => getDoc(docRef));
@@ -146,5 +146,5 @@ export const eraseTask = (dataID) => {
 export const pushName = (id, collectionName, newName) => {
   const docRef = doc(initializeDataBase(), collectionName, id)
 
-  return setDoc(docRef, { name: newName.trim() }, { merge: true });
+  return setDoc(docRef, { name: newName }, { merge: true });
 };

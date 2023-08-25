@@ -30,6 +30,7 @@ const Confirmation = ({
   return (
     <Popover
       open={open}
+      onClose={() => setConfirmation(false)}
       anchorEl={anchor}
       anchorOrigin={{
         vertical: "bottom",
