@@ -42,6 +42,7 @@ const TasksList = ({ taskData, cardID, status, setStatus }) => {
             <EditableName
               id={id}
               name={data.name}
+              done={data.done}
               collection="tasks"
               cb={deleteTask}
               isInputBusy={status}

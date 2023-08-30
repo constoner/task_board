@@ -1,8 +1,9 @@
 const useNameFn = () => {
-  const setName = (names, nameID, nameValue, setCB) => {
+  const setName = (names, nameID, nameValue, doneState, setCB) => {
     names.forEach((item) => {
       if (item.id === nameID) {
         item.data.name = nameValue;
+        item.data.done = doneState;
       }
     });
     setCB([...names]);

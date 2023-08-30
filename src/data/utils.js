@@ -80,6 +80,7 @@ export const getTasks = () => {
           id: doc.id,
           data: {
             name: doc.data().name,
+            done: doc.data().done,
             cardID: doc.data().cardID,
           },
         });
@@ -134,6 +135,7 @@ export const pushTask = (dataID) => {
 
   return setDoc(docRef, {
     name: "",
+    done: false,
     cardID: dataID,
   })
     .then(() => getDoc(docRef));
@@ -143,8 +145,8 @@ export const eraseTask = (dataID) => {
   return deleteDoc(doc(initializeDataBase(), "tasks", dataID));
 };
 
-export const pushName = (id, collectionName, newName) => {
+export const pushName = (id, collectionName, newName, doneState = false) => {
   const docRef = doc(initializeDataBase(), collectionName, id)
 
-  return setDoc(docRef, { name: newName }, { merge: true });
+  return setDoc(docRef, { name: newName, done: doneState }, { merge: true });
 };

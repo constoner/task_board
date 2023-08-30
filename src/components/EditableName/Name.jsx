@@ -5,7 +5,7 @@ import "./nameStyle.css";
 // MUI components
 import Box from "@mui/material/Box";
 
-const Name = ({ children, isTitle = false, onClick }) => {
+const Name = ({ children, isTitle = false, onClick, done }) => {
   const nameField = useRef({});
 
   useEffect(() => {
@@ -24,7 +24,8 @@ const Name = ({ children, isTitle = false, onClick }) => {
         title={children}
         sx={{
           overflowWrap: "break-word",
-          textTransform: () => (isTitle ? "upperCase" : "unset"),
+          textDecoration: () => (done ? "line-through" : "unset"),
+          color: () => (done ? "grey" : "unset"),
         }}
       >
         {children}

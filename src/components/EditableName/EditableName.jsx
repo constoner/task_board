@@ -9,9 +9,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
-import { grey } from "@mui/material/colors";
-import { red } from "@mui/material/colors";
-import { TextField } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
 
 // Custom components
 import Name from "./Name";
@@ -22,6 +22,7 @@ const EditableName = ({
   isTitle = false,
   id,
   name,
+  done,
   collection,
   cb = false,
   isInputBusy,
@@ -32,6 +33,7 @@ const EditableName = ({
   const { setName } = useNameState();
   const [editState, setEditState] = useState(false);
   const [nameValue, setNameValue] = useState(name);
+  const [doneState, setDoneState] = useState(done);
   const [prevName, setPrevName] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [popoverStatus, setPopoverStatus] = useState(false);
@@ -44,7 +46,11 @@ const EditableName = ({
     }
   };
 
-  // Edit name
+  const editCheckBox = (id) => {
+    backend.pushName(id, collection, nameValue, doneState).catch(console.error);
+    setName(names, id, nameValue, doneState, setNames);
+  };
+
   const editName = (id) => {
     if (nameValue === prevName) {
       setEditState(false);
@@ -53,8 +59,8 @@ const EditableName = ({
     }
     setNameValue(nameValue.trim());
     setPrevName(nameValue);
-    backend.pushName(id, collection, nameValue).catch(console.error);
-    setName(names, id, nameValue, setNames);
+    backend.pushName(id, collection, nameValue, doneState).catch(console.error);
+    setName(names, id, nameValue, doneState, setNames);
     setEditState(false);
     setInputState(false);
   };
@@ -70,8 +76,25 @@ const EditableName = ({
 
   return (
     <Box id={id} sx={setNameStyle(isTitle, grey[500])}>
+      {!isTitle ? (
+        <Checkbox
+          checked={doneState}
+          onChange={(evt) => {
+            setDoneState(evt.target.checked);
+          }}
+          onBlur={() => {
+            editCheckBox(id);
+          }}
+          sx={{
+            padding: 0,
+            marginRight: "-4px",
+            color: grey[500],
+          }}
+        />
+      ) : null}
+
       {!editState ? (
-        <Name isTitle={isTitle} onClick={finishEditing}>
+        <Name isTitle={isTitle} onClick={finishEditing} done={doneState}>
           {nameValue}
         </Name>
       ) : (
@@ -81,7 +104,7 @@ const EditableName = ({
             collection.length - 1
           )}`}
           multiline
-          sx={{ flexGrow: 1, borderColor: "rgba(255,255,255,0)" }}
+          sx={{ flexGrow: 1, borderColor: "rgba(255,255,255,1)" }}
           maxRows={10}
           inputRef={(input) => input && input.focus()}
           value={nameValue}
