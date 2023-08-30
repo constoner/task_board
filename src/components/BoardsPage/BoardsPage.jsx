@@ -22,8 +22,8 @@ const BoardsPage = () => {
     <>
       {/* header */}
       <AppBar position="sticky" sx={{ py: [1, 3], bgcolor: "primary.light" }}>
-        <Toolbar>
-          <Box sx={{ mr: 2, "& img": { display: "block" } }}>
+        <Toolbar sx={{ minHeight: "unset" }}>
+          <Box sx={{ mr: 2, "& svg": { display: "block" } }}>
             <PlaylistAddCheckRoundedIcon
               sx={{ width: "40px", height: "40px" }}
               alt="The Logo of the Task Board App."
@@ -53,6 +53,8 @@ const BoardsPage = () => {
       <Box
         component="footer"
         sx={{
+          position: "relative",
+          zIndex: "10",
           boxShadow:
             "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)",
         }}
