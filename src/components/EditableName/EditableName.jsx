@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Name from "./Name";
 import Confirmation from "../Confirmation/Confirmation";
 import setNameStyle from "./editableNameStyle";
+import debounce from "../../utils/debounce";
 
 const EditableName = ({
   isTitle = false,
@@ -47,9 +48,13 @@ const EditableName = ({
   };
 
   const editCheckBox = (id) => {
-    backend.pushName(id, collection, nameValue, doneState).catch(console.error);
-    setName(names, id, nameValue, doneState, setNames);
+    backend
+      .pushName(id, collection, nameValue, !doneState)
+      .catch(console.error);
+    setName(names, id, nameValue, !doneState, setNames);
   };
+
+  const debouncedEditCheckBox = debounce(editCheckBox, 1000);
 
   const editName = (id) => {
     if (nameValue === prevName) {
@@ -81,9 +86,7 @@ const EditableName = ({
           checked={doneState}
           onChange={(evt) => {
             setDoneState(evt.target.checked);
-          }}
-          onBlur={() => {
-            editCheckBox(id);
+            debouncedEditCheckBox(id);
           }}
           sx={{
             padding: 0,
