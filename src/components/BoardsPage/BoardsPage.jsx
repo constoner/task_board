@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import debounce from "../../utils/debounce";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -15,8 +16,21 @@ import BoardsList from "../BoardsList/BoardsList";
 import CustomModal from "../CustomModal/CustomModal";
 
 const BoardsPage = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [modalState, setModalState] = useState(false);
   const [addingNewBoard, triggerAddingNewBoard] = useState(false);
+
+  const handleWindowWidthChange = debounce(
+    () => setWindowWidth(window.innerWidth),
+    250
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowWidthChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowWidthChange);
+    };
+  }, [handleWindowWidthChange]);
 
   return (
     <>
@@ -32,6 +46,16 @@ const BoardsPage = () => {
           <Typography variant="h5" component="h1">
             Task Board
           </Typography>
+          {windowWidth < 900 ? null : (
+            <Button
+              variant="contained"
+              sx={{ ml: "auto" }}
+              onClick={() => setModalState(true)}
+            >
+              <AddIcon sx={{ mr: 1 }} />
+              <span>Add new board</span>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 
@@ -50,29 +74,31 @@ const BoardsPage = () => {
       </Box>
 
       {/* footer */}
-      <Box
-        component="footer"
-        sx={{
-          position: "relative",
-          zIndex: "10",
-          boxShadow:
-            "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)",
-        }}
-      >
-        <Toolbar
-          color="secondary"
-          sx={{ bgcolor: "primary.light", py: [2, 3] }}
+      {windowWidth >= 900 ? null : (
+        <Box
+          component="footer"
+          sx={{
+            position: "relative",
+            zIndex: "10",
+            boxShadow:
+              "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)",
+          }}
         >
-          <Button
-            variant="contained"
-            sx={{ mx: ["auto", 0] }}
-            onClick={() => setModalState(true)}
+          <Toolbar
+            color="secondary"
+            sx={{ bgcolor: "primary.light", py: [2, 3] }}
           >
-            <AddIcon sx={{ mr: 1 }} />
-            <span>Add new board</span>
-          </Button>
-        </Toolbar>
-      </Box>
+            <Button
+              variant="contained"
+              sx={{ mx: "auto" }}
+              onClick={() => setModalState(true)}
+            >
+              <AddIcon sx={{ mr: 1 }} />
+              <span>Add new board</span>
+            </Button>
+          </Toolbar>
+        </Box>
+      )}
 
       {/* modal */}
       <CustomModal

@@ -65,13 +65,13 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
       ) : (
         <Grid
           container
-          columns={{ xs: 1, sm: 2, md: 4 }}
+          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
           spacing={[3, 3]}
           sx={{ py: [3, 3], px: 1 }}
         >
           {boards.map(({ id, data }) => {
             return (
-              <Grid item width={["100%", "50%", "25%"]} key={id}>
+              <Grid item xs={1} sm={1} md={1} lg={1} key={id}>
                 <Paper elevation={2}>
                   <BoardItem boardName={data.name} id={id} />
                 </Paper>

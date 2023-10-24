@@ -1,5 +1,7 @@
+import debounce from "../../utils/debounce";
+
 // React
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Context from "../App/context";
 
 // MUI components
@@ -15,7 +17,20 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import CardsList from "../CardsList/CardsList";
 
 const CardsPage = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { activeBoard, setActivePage } = useContext(Context);
+
+  const handleWindowWidthChange = debounce(
+    () => setWindowWidth(window.innerWidth),
+    250
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowWidthChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowWidthChange);
+    };
+  }, [handleWindowWidthChange]);
 
   return (
     <>
@@ -35,6 +50,16 @@ const CardsPage = () => {
           >
             {activeBoard.data.name}
           </Typography>
+          {windowWidth < 900 ? null : (
+            <Button
+              variant="contained"
+              sx={{ minWidth: 160, ml: "auto" }}
+              onClick={() => setActivePage("boards")}
+            >
+              <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+              <span>Back</span>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       {/* main */}
@@ -44,30 +69,33 @@ const CardsPage = () => {
       >
         <CardsList />
       </Box>
+
       {/* footer */}
-      <Box
-        component="footer"
-        sx={{
-          position: "relative",
-          zIndex: 10,
-          boxShadow:
-            "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)",
-        }}
-      >
-        <Toolbar
-          color="secondary"
-          sx={{ bgcolor: "primary.light", py: [2, 3] }}
+      {windowWidth >= 900 ? null : (
+        <Box
+          component="footer"
+          sx={{
+            position: "relative",
+            zIndex: 10,
+            boxShadow:
+              "0px -2px 4px -1px rgba(0,0,0,0.2),0px -4px 5px 0px rgba(0,0,0,0.14),0px -1px 10px 0px rgba(0,0,0,0.12)",
+          }}
         >
-          <Button
-            variant="contained"
-            sx={{ minWidth: "50%", mx: ["auto", 0] }}
-            onClick={() => setActivePage("boards")}
+          <Toolbar
+            color="secondary"
+            sx={{ bgcolor: "primary.light", py: [2, 3] }}
           >
-            <KeyboardBackspaceIcon sx={{ mr: 1 }} />
-            <span>Back</span>
-          </Button>
-        </Toolbar>
-      </Box>
+            <Button
+              variant="contained"
+              sx={{ minWidth: 160, mx: "auto" }}
+              onClick={() => setActivePage("boards")}
+            >
+              <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+              <span>Back</span>
+            </Button>
+          </Toolbar>
+        </Box>
+      )}
     </>
   );
 };
