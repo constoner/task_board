@@ -1,3 +1,5 @@
+import debounce from "../../utils/debounce";
+
 // Swiper component
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
@@ -20,12 +22,44 @@ import Paper from "@mui/material/Paper";
 import CardItem from "../CardItem/CardItem";
 import EmptyItem from "../CardItem/EmptyItem";
 
+const CARDLISTGRID = {
+  extraSmall: { breakpoint: 320, columns: 1, gap: 64 },
+  small: { breakpoint: 600, columns: 2, gap: 32 },
+  medium: { breakpoint: 900, columns: 3, gap: 28 },
+  large: { breakpoint: 1200, columns: 4, gap: 16 },
+};
+
+const setSwiperGrid = (width) => {
+  let size = "extraSmall";
+  Object.entries(CARDLISTGRID).forEach(([key, value]) => {
+    if (width < value.breakpoint) {
+      return;
+    }
+    size = key;
+  });
+  return CARDLISTGRID[size];
+};
+
 const CardsList = () => {
   const { activeBoard, cards, setCards, addCard, removeCard, tasks, setTasks } =
     useContext(Context);
   const [loadingState, setLoadingState] = useState(true);
   const [isInputBusy, setInputState] = useState(false);
   const swiperRef = useRef(null);
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const handleWindowWidthChange = debounce(
+    () => setWindowWidth(window.innerWidth),
+    250
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowWidthChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowWidthChange);
+    };
+  }, [handleWindowWidthChange]);
 
   useEffect(() => {
     backend
@@ -76,8 +110,8 @@ const CardsList = () => {
           ref={swiperRef}
           modules={[Pagination]}
           pagination={true}
-          spaceBetween={50}
-          slidesPerView={1}
+          spaceBetween={setSwiperGrid(windowWidth).gap}
+          slidesPerView={setSwiperGrid(windowWidth).columns}
           direction="horizontal"
         >
           {cards.length

@@ -21,6 +21,7 @@
 
 .swiper-slide::-webkit-scrollbar {
   display: none;
+  height: 100%;
 }
 
 .swiper-card {

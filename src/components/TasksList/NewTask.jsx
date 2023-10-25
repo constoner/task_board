@@ -17,7 +17,7 @@ const NewTask = ({ onClick }) => {
         onClick={() => onClick()}
         sx={{ marginLeft: "-8px", marginTop: 2, marginBottom: -2 }}
       >
-        <AddIcon sx={{ mr: 1 }} />
+        <AddIcon />
         <span>Click to add new task</span>
       </Button>
     </Box>
