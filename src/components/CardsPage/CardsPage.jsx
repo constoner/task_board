@@ -15,6 +15,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 //Custom components
 import CardsList from "../CardsList/CardsList";
+import { Container } from "@mui/material";
 
 const CardsPage = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -36,38 +37,55 @@ const CardsPage = () => {
     <>
       {/* header */}
       <AppBar position="sticky" sx={{ py: [1, 2], bgcolor: "primary.light" }}>
-        <Toolbar sx={{ minHeight: "unset" }}>
-          <Box sx={{ mr: 2, "& svg": { display: "block" } }}>
-            <PlaylistAddCheckRoundedIcon
-              sx={{ width: "40px", height: "40px" }}
-              alt="The Logo of the Task Board App."
-            />
-          </Box>
-          <Typography
-            variant="h5"
-            component="h1"
-            sx={{ textTransform: "upperCase" }}
+        <Container>
+          <Toolbar
+            sx={{ minHeight: "unset !important", padding: "0 !important" }}
           >
-            {activeBoard.data.name}
-          </Typography>
-          {windowWidth < 900 ? null : (
-            <Button
-              variant="contained"
-              sx={{ minWidth: 160, ml: "auto" }}
-              onClick={() => setActivePage("boards")}
+            <Box sx={{ mr: 2, "& svg": { display: "block" } }}>
+              <PlaylistAddCheckRoundedIcon
+                sx={{ width: "40px", height: "40px" }}
+                alt="The Logo of the Task Board App."
+              />
+            </Box>
+            <Typography
+              variant="h5"
+              component="h1"
+              sx={{
+                width: "75%",
+                pr: 3,
+                textTransform: "upperCase",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }}
             >
-              <KeyboardBackspaceIcon sx={{ mr: 1 }} />
-              <span>Back</span>
-            </Button>
-          )}
-        </Toolbar>
+              {activeBoard.data.name}
+            </Typography>
+            {windowWidth < 900 ? null : (
+              <Button
+                variant="contained"
+                sx={{ minWidth: 160, ml: "auto" }}
+                onClick={() => setActivePage("boards")}
+              >
+                <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+                <span>Back</span>
+              </Button>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
       {/* main */}
       <Box
         component="main"
         sx={{ flexGrow: 1, height: "100%", overflow: "auto" }}
       >
-        <CardsList />
+        <Container
+          sx={{
+            height: "100%",
+          }}
+        >
+          <CardsList />
+        </Container>
       </Box>
 
       {/* footer */}
@@ -83,7 +101,11 @@ const CardsPage = () => {
         >
           <Toolbar
             color="secondary"
-            sx={{ bgcolor: "primary.light", py: [2, 3] }}
+            sx={{
+              minHeight: "unset !important",
+              bgcolor: "primary.light",
+              py: [1, 2],
+            }}
           >
             <Button
               variant="contained"

@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 // MUI components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -42,60 +44,76 @@ const BoardItem = ({ boardName, id }) => {
   };
 
   return (
-    <Card elevation={0}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: ["row", "row", "column"],
-        }}
-      >
-        <CardContent
-          sx={{ flexGrow: 1, overflow: "hidden" }}
-          onClick={() => showCards(boards, id)}
-        >
-          <Typography
-            variant="h5"
-            component="h2"
+    <Grid item xs={1} sm={1} md={1} lg={1}>
+      <Paper elevation={4}>
+        <Card elevation={0}>
+          <Box
             sx={{
-              fontSize: 14,
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
+              position: "relative",
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: ["row", "row", "column"],
+              cursor: "pointer",
             }}
-            title={boardName}
           >
-            {boardName}
-          </Typography>
-        </CardContent>
-        <CardActions sx={{ justifyContent: "flex-end", p: 0 }}>
-          <Button
-            onClick={onDelete}
-            aria-label="Delete board."
-            sx={{ minWidth: "48px", height: "100%" }}
-          >
-            {!deleting ? (
-              <DeleteOutline sx={{ color: grey[500] }} />
-            ) : (
-              <CircularProgress
+            <CardContent
+              sx={{ flexGrow: 1, overflow: "hidden" }}
+              onClick={() => showCards(boards, id)}
+            >
+              <Typography
+                variant="h5"
+                component="h2"
                 sx={{
-                  width: "24px !important",
-                  height: "24px !important",
-                  color: grey[500],
+                  width: "100%",
+                  mb: "18px",
+                  fontSize: 14,
                 }}
-              />
-            )}
-          </Button>
-        </CardActions>
-      </Box>
-      <Confirmation
-        openStatus={popoverStatus}
-        setOpen={setPopoverStatus}
-        elementName={"board"}
-        anchor={anchor}
-        actionCB={() => deleteBoard(id, setDeleting)}
-      />
-    </Card>
+                title={boardName}
+              >
+                {boardName}
+              </Typography>
+            </CardContent>
+            <CardActions
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                zIndex: "100",
+                justifyContent: "flex-end",
+                width: "auto",
+                ml: "auto",
+                p: 0,
+              }}
+            >
+              <Button
+                onClick={onDelete}
+                aria-label="Delete board."
+                sx={{ minWidth: "48px", height: "100%" }}
+              >
+                {!deleting ? (
+                  <DeleteOutline sx={{ color: grey[500] }} />
+                ) : (
+                  <CircularProgress
+                    sx={{
+                      width: "24px !important",
+                      height: "24px !important",
+                      color: grey[500],
+                    }}
+                  />
+                )}
+              </Button>
+            </CardActions>
+          </Box>
+          <Confirmation
+            openStatus={popoverStatus}
+            setOpen={setPopoverStatus}
+            elementName={"board"}
+            anchor={anchor}
+            actionCB={() => deleteBoard(id, setDeleting)}
+          />
+        </Card>
+      </Paper>
+    </Grid>
   );
 };
 

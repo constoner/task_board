@@ -36,27 +36,31 @@ const BoardsPage = () => {
     <>
       {/* header */}
       <AppBar position="sticky" sx={{ py: [1, 2], bgcolor: "primary.light" }}>
-        <Toolbar sx={{ minHeight: "unset" }}>
-          <Box sx={{ mr: 2, "& svg": { display: "block" } }}>
-            <PlaylistAddCheckRoundedIcon
-              sx={{ width: "40px", height: "40px" }}
-              alt="The Logo of the Task Board App."
-            />
-          </Box>
-          <Typography variant="h5" component="h1">
-            Task Board
-          </Typography>
-          {windowWidth < 900 ? null : (
-            <Button
-              variant="contained"
-              sx={{ ml: "auto" }}
-              onClick={() => setModalState(true)}
-            >
-              <AddIcon sx={{ mr: 1 }} />
-              <span>Add new board</span>
-            </Button>
-          )}
-        </Toolbar>
+        <Container>
+          <Toolbar
+            sx={{ minHeight: "unset !important", padding: "0 !important" }}
+          >
+            <Box sx={{ mr: 2, "& svg": { display: "block" } }}>
+              <PlaylistAddCheckRoundedIcon
+                sx={{ width: "40px", height: "40px" }}
+                alt="The Logo of the Task Board App."
+              />
+            </Box>
+            <Typography variant="h5" component="h1">
+              TASK BOARD
+            </Typography>
+            {windowWidth < 900 ? null : (
+              <Button
+                variant="contained"
+                sx={{ ml: "auto" }}
+                onClick={() => setModalState(true)}
+              >
+                <AddIcon sx={{ mr: 1 }} />
+                <span>Add new board</span>
+              </Button>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
 
       {/* main */}
@@ -74,7 +78,21 @@ const BoardsPage = () => {
       </Box>
 
       {/* footer */}
-      {windowWidth >= 900 ? null : (
+      {windowWidth >= 900 ? (
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: "100",
+            bottom: "0 !important",
+            width: "100%",
+            height: "48px",
+            padding: "16px 0 8px",
+            backgroundColor: "transparent",
+            backgroundImage:
+              "linear-gradient(to top, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0))",
+          }}
+        />
+      ) : (
         <Box
           component="footer"
           sx={{
@@ -86,7 +104,11 @@ const BoardsPage = () => {
         >
           <Toolbar
             color="secondary"
-            sx={{ bgcolor: "primary.light", py: [2, 3] }}
+            sx={{
+              minHeight: "unset !important",
+              bgcolor: "primary.light",
+              py: [1, 2],
+            }}
           >
             <Button
               variant="contained"

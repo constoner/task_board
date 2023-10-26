@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 
 // Custom components
 import BoardItem from "../BoardItem/BoardItem";
@@ -70,13 +69,7 @@ const BoardsList = ({ reloadTrigger, triggerReload }) => {
           sx={{ py: [3, 3], px: 1 }}
         >
           {boards.map(({ id, data }) => {
-            return (
-              <Grid item xs={1} sm={1} md={1} lg={1} key={id}>
-                <Paper elevation={2}>
-                  <BoardItem boardName={data.name} id={id} />
-                </Paper>
-              </Grid>
-            );
+            return <BoardItem boardName={data.name} id={id} key={id} />;
           })}
         </Grid>
       )}
