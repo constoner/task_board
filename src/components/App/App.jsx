@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import CardsPage from "../CardsPage/CardsPage";
 
 // Custom components
+import ErrorCatcher from "../ErrorCatcher/ErrorCatcher";
 import BoardsPage from "../BoardsPage/BoardsPage";
 
 // Component App
@@ -21,15 +22,17 @@ const App = () => {
   const state = useAppState();
 
   return (
-    <Context.Provider value={state}>
-      <CssBaseline />
-      <Box
-        id={state.activePage}
-        sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-      >
-        {state.activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
-      </Box>
-    </Context.Provider>
+    <ErrorCatcher>
+      <Context.Provider value={state}>
+        <CssBaseline />
+        <Box
+          id={state.activePage}
+          sx={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
+          {state.activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
+        </Box>
+      </Context.Provider>
+    </ErrorCatcher>
   );
 };
 

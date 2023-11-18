@@ -32,6 +32,15 @@ const BoardsPage = () => {
     };
   }, [handleWindowWidthChange]);
 
+  // for ErrorCatcher testing
+  const [hasError, setError] = useState(false);
+  const throwError = () => {
+    setError(true);
+  };
+  if (hasError) {
+    throw new Error("Don't click on the title!");
+  }
+
   return (
     <>
       {/* header */}
@@ -46,7 +55,7 @@ const BoardsPage = () => {
                 alt="The Logo of the Task Board App."
               />
             </Box>
-            <Typography variant="h5" component="h1">
+            <Typography variant="h5" component="h1" onClick={throwError}>
               TASK BOARD
             </Typography>
             {windowWidth < 900 ? null : (
