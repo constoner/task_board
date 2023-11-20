@@ -46,6 +46,9 @@
     "eslint": "^8.42.0",
     "eslint-plugin-react": "^7.32.2",
     "prop-types": "^15.8.1",
+    "react-router5": "^8.0.1",
+    "router5": "^8.0.1",
+    "router5-plugin-browser": "^8.0.1",
     "swiper": "^9.4.1"
   }
 }

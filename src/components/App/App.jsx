@@ -1,7 +1,7 @@
 // React
 import React from "react";
+import { useRoute } from "react-router5";
 import PAGE from "./costants";
-import Context from "./context";
 import useAppState from "./customHooks";
 
 // MUI components
@@ -14,25 +14,24 @@ import Box from "@mui/material/Box";
 import CardsPage from "../CardsPage/CardsPage";
 
 // Custom components
-import ErrorCatcher from "../ErrorCatcher/ErrorCatcher";
 import BoardsPage from "../BoardsPage/BoardsPage";
 
 // Component App
 const App = () => {
-  const state = useAppState();
+  const { activePage } = useAppState();
+  const { route } = useRoute();
+  console.log(route);
 
   return (
-    <ErrorCatcher>
-      <Context.Provider value={state}>
-        <CssBaseline />
-        <Box
-          id={state.activePage}
-          sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-        >
-          {state.activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
-        </Box>
-      </Context.Provider>
-    </ErrorCatcher>
+    <>
+      <CssBaseline />
+      <Box
+        id={activePage}
+        sx={{ display: "flex", flexDirection: "column", height: "100%" }}
+      >
+        {activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
+      </Box>
+    </>
   );
 };
 
