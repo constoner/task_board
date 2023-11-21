@@ -1,6 +1,8 @@
+import { ROUTEPAGES } from "../../router";
+
 const PAGE = {
-  BOARDS: "boards",
-  CARDS: "cards",
+  [ROUTEPAGES.boards]: "boards",
+  [ROUTEPAGES.cards]: "cards",
 };
 
 export default PAGE;

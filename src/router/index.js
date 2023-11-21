@@ -7,8 +7,8 @@ export const ROUTEPAGES = {
 };
 
 const routes = [
-  { name: ROUTEPAGES.boards, path: "/task_board" },
-  { name: ROUTEPAGES.cards, path: "/board" },
+  { name: ROUTEPAGES.boards.toLowerCase(), path: "/task_board" },
+  { name: ROUTEPAGES.cards.toLowerCase(), path: "/task_board/board" },
 ];
 
 export const initialize = () => {

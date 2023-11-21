@@ -1,6 +1,9 @@
 // React
 import { useState, useContext } from "react";
 import Context from "../App/context";
+import { useRouter } from "react-router5";
+import PAGE from "../App/costants";
+import { ROUTEPAGES } from "../../router";
 import * as backend from "../../data/utils";
 import PropTypes from "prop-types";
 
@@ -21,10 +24,14 @@ import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import Confirmation from "../Confirmation/Confirmation";
 
 const BoardItem = ({ boardName, id }) => {
+  const router = useRouter();
   const { boards, removeBoard, showCards } = useContext(Context);
   const [deleting, setDeleting] = useState(false);
   const [popoverStatus, setPopoverStatus] = useState(false);
   const [anchor, setAnchor] = useState(null);
+
+  // const showCard = () => showCards(boards, id);
+  const showCard = () => router.navigate(PAGE.CARDS);
 
   // Delete doc from firebase
   const onDelete = (evt) => {
@@ -58,7 +65,7 @@ const BoardItem = ({ boardName, id }) => {
           >
             <CardContent
               sx={{ flexGrow: 1, overflow: "hidden" }}
-              onClick={() => showCards(boards, id)}
+              onClick={showCard}
             >
               <Typography
                 variant="h5"

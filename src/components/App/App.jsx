@@ -1,8 +1,10 @@
 // React
 import React from "react";
+import { useEffect } from "react";
 import { useRoute } from "react-router5";
-import PAGE from "./costants";
 import useAppState from "./customHooks";
+import PAGE from "./costants";
+import { ROUTEPAGES } from "../../router";
 
 // MUI components
 import "@fontsource/roboto/300.css";
@@ -18,9 +20,14 @@ import BoardsPage from "../BoardsPage/BoardsPage";
 
 // Component App
 const App = () => {
-  const { activePage } = useAppState();
-  const { route } = useRoute();
+  const { activePage, changeRoute } = useAppState();
+  const { router, route } = useRoute();
+
   console.log(route);
+
+  useEffect(() => {
+    router.subscribe(changeRoute);
+  }, [router, changeRoute]);
 
   return (
     <>
@@ -29,7 +36,11 @@ const App = () => {
         id={activePage}
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        {activePage === PAGE.BOARDS ? <BoardsPage /> : <CardsPage />}
+        {activePage === PAGE[ROUTEPAGES.boards] ? (
+          <BoardsPage />
+        ) : (
+          <CardsPage />
+        )}
       </Box>
     </>
   );

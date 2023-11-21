@@ -3,6 +3,8 @@ import debounce from "../../utils/debounce";
 // React
 import { useState, useEffect, useContext } from "react";
 import Context from "../App/context";
+import PAGE from "../App/costants";
+import { ROUTEPAGES } from "../../router";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -110,7 +112,7 @@ const CardsPage = () => {
             <Button
               variant="contained"
               sx={{ minWidth: 160, mx: "auto" }}
-              onClick={() => setActivePage("boards")}
+              onClick={() => setActivePage(PAGE[ROUTEPAGES.boards])}
             >
               <KeyboardBackspaceIcon sx={{ mr: 1 }} />
               <span>Back</span>
