@@ -1,24 +1,16 @@
 import { useState } from "react";
 import { useRoute } from "react-router5";
-import PAGE from "./costants";
 import { ROUTEPAGES } from "../../router";
 
 const usePageState = () => {
   const router = useRoute();
-  const [activePage, setActivePage] = useState(router ? router.route.name : PAGE[ROUTEPAGES.boards]);
-  const [activeBoard, setActiveBoard] = useState({});
-
-  const showCards = (boardsArray, boardID) => {
-    setActiveBoard(...boardsArray.filter(({ id }) => id === boardID));
-    setActivePage(PAGE[ROUTEPAGES.cards]);
-  };
+  const [activePage, setActivePage] = useState(router?.route ? router.route.name : ROUTEPAGES.boards);
 
   const changeRoute = ({ route }) => {
-    console.log(route);
     setActivePage(route.name)
   };
 
-  return { showCards, activePage, activeBoard, setActivePage, changeRoute };
+  return { activePage, setActivePage, changeRoute };
 };
 
 const useBoardsState = () => {

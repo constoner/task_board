@@ -2,17 +2,17 @@ import createRouter from "router5";
 import browserPluginFactory from "router5-plugin-browser";
 
 export const ROUTEPAGES = {
-  boards: "BOARDS",
-  cards: "CARDS",
+  boards: "boards",
+  cards: "cards",
 };
 
 const routes = [
-  { name: ROUTEPAGES.boards.toLowerCase(), path: "/task_board" },
-  { name: ROUTEPAGES.cards.toLowerCase(), path: "/task_board/board" },
+  { name: ROUTEPAGES.boards, path: "/task_board" },
+  { name: ROUTEPAGES.cards, path: "/task_board/board_:boardID" },
 ];
 
 export const initialize = () => {
-  const router = createRouter(routes);
+  const router = createRouter(routes, { defaultRoute: ROUTEPAGES.boards });
 
   router.usePlugin(browserPluginFactory());
 

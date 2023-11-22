@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect } from "react";
 import { useRoute } from "react-router5";
 import useAppState from "./customHooks";
-import PAGE from "./costants";
 import { ROUTEPAGES } from "../../router";
 
 // MUI components
@@ -21,9 +20,7 @@ import BoardsPage from "../BoardsPage/BoardsPage";
 // Component App
 const App = () => {
   const { activePage, changeRoute } = useAppState();
-  const { router, route } = useRoute();
-
-  console.log(route);
+  const { router } = useRoute();
 
   useEffect(() => {
     router.subscribe(changeRoute);
@@ -36,11 +33,7 @@ const App = () => {
         id={activePage}
         sx={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        {activePage === PAGE[ROUTEPAGES.boards] ? (
-          <BoardsPage />
-        ) : (
-          <CardsPage />
-        )}
+        {activePage === ROUTEPAGES.boards ? <BoardsPage /> : <CardsPage />}
       </Box>
     </>
   );

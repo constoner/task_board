@@ -40,8 +40,8 @@ const setSwiperGrid = (width) => {
   return CARDLISTGRID[size];
 };
 
-const CardsList = () => {
-  const { activeBoard, cards, setCards, addCard, removeCard, tasks, setTasks } =
+const CardsList = ({ activeBoard }) => {
+  const { cards, setCards, addCard, removeCard, tasks, setTasks } =
     useContext(Context);
   const [loadingState, setLoadingState] = useState(true);
   const [isInputBusy, setInputState] = useState(false);
@@ -69,11 +69,13 @@ const CardsList = () => {
   }, [setTasks]);
 
   useEffect(() => {
-    backend
-      .getCards(activeBoard)
-      .then((loadedCards) => setCards(loadedCards))
-      .catch(console.error)
-      .finally(() => setLoadingState(false));
+    if (activeBoard.id) {
+      backend
+        .getCards(activeBoard)
+        .then((loadedCards) => setCards(loadedCards))
+        .catch(console.error)
+        .finally(() => setLoadingState(false));
+    }
   }, [activeBoard, setCards, setTasks]);
 
   const createCard = () => {

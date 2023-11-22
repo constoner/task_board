@@ -2,8 +2,6 @@
 import { useState, useContext } from "react";
 import Context from "../App/context";
 import { useRouter } from "react-router5";
-import PAGE from "../App/costants";
-import { ROUTEPAGES } from "../../router";
 import * as backend from "../../data/utils";
 import PropTypes from "prop-types";
 
@@ -22,16 +20,16 @@ import DeleteOutline from "@mui/icons-material/DeleteOutline";
 
 // Custom components
 import Confirmation from "../Confirmation/Confirmation";
+import { ROUTEPAGES } from "../../router";
 
 const BoardItem = ({ boardName, id }) => {
   const router = useRouter();
-  const { boards, removeBoard, showCards } = useContext(Context);
+  const { removeBoard } = useContext(Context);
   const [deleting, setDeleting] = useState(false);
   const [popoverStatus, setPopoverStatus] = useState(false);
   const [anchor, setAnchor] = useState(null);
 
-  // const showCard = () => showCards(boards, id);
-  const showCard = () => router.navigate(PAGE.CARDS);
+  const showCard = () => router.navigate(ROUTEPAGES.cards, { boardID: id });
 
   // Delete doc from firebase
   const onDelete = (evt) => {

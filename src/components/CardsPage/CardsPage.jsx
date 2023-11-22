@@ -3,8 +3,8 @@ import debounce from "../../utils/debounce";
 // React
 import { useState, useEffect, useContext } from "react";
 import Context from "../App/context";
-import PAGE from "../App/costants";
 import { ROUTEPAGES } from "../../router";
+import { useRoute } from "react-router5";
 
 // MUI components
 import Box from "@mui/material/Box";
@@ -20,13 +20,18 @@ import CardsList from "../CardsList/CardsList";
 import { Container } from "@mui/material";
 
 const CardsPage = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { activeBoard, setActivePage } = useContext(Context);
+  const { route, router } = useRoute();
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { setActivePage, boards } = useContext(Context);
   const handleWindowWidthChange = debounce(
     () => setWindowWidth(window.innerWidth),
     250
   );
+
+  const activeBoard =
+    boards.find((item) => item.id === route.params.boardID) ||
+    router.navigate(ROUTEPAGES.boards);
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowWidthChange);
@@ -86,7 +91,7 @@ const CardsPage = () => {
             height: "100%",
           }}
         >
-          <CardsList />
+          <CardsList activeBoard={activeBoard} />
         </Container>
       </Box>
 
@@ -112,7 +117,7 @@ const CardsPage = () => {
             <Button
               variant="contained"
               sx={{ minWidth: 160, mx: "auto" }}
-              onClick={() => setActivePage(PAGE[ROUTEPAGES.boards])}
+              onClick={() => router.navigate(ROUTEPAGES.boards)}
             >
               <KeyboardBackspaceIcon sx={{ mr: 1 }} />
               <span>Back</span>
