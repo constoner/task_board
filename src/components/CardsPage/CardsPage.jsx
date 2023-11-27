@@ -23,7 +23,7 @@ const CardsPage = () => {
   const { route, router } = useRoute();
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { setActivePage, boards } = useContext(Context);
+  const { boards } = useContext(Context);
   const handleWindowWidthChange = debounce(
     () => setWindowWidth(window.innerWidth),
     250
@@ -72,7 +72,7 @@ const CardsPage = () => {
               <Button
                 variant="contained"
                 sx={{ minWidth: 160, ml: "auto" }}
-                onClick={() => setActivePage("boards")}
+                onClick={() => router.navigate(ROUTEPAGES.boards)}
               >
                 <KeyboardBackspaceIcon sx={{ mr: 1 }} />
                 <span>Back</span>
