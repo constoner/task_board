@@ -89,8 +89,12 @@ const EditableName = ({
             debouncedEditCheckBox(id);
           }}
           sx={{
+            width: "42px",
+            height: "42px",
+            flexShrink: 0,
+            marginLeft: 0,
+            marginRight: -1,
             padding: 0,
-            marginRight: "-4px",
             color: grey[500],
           }}
         />

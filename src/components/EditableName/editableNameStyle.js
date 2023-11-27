@@ -2,6 +2,7 @@ const setNameStyle = (type, color) => {
 
   const StyleEditName = {
     display: "flex",
+    alignItems: "center",
     position: "relative",
     "&::before": {
       display: () => (!type ? "block" : "none"),
